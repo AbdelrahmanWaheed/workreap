@@ -28,6 +28,7 @@ $job_status				= get_post_status( $edit_id );
 $milestone				= array();
 if (function_exists('fw_get_db_settings_option')) {
 	$milestone         	= fw_get_db_settings_option('job_milestone_option', $default_value = null);
+	$proposal_feedback_enabled = fw_get_db_settings_option('job_proposal_feedback_option');
 }
 $milestone					= !empty($milestone['gadget']) ? $milestone['gadget'] : '';
 
@@ -123,7 +124,11 @@ $offline_package		= !empty($offline_package['type']) ? $offline_package['type'] 
 										$order_url	= $order->get_view_order_url();
 									}
 								}
+
+								$feedback = get_post_meta( $post->ID, '_feedback', true );
+								
 								?>
+
 								<div class="wt-userlistinghold wt-featured wt-proposalitem wt-userlistingcontentvtwo" data-id="<?php echo esc_attr($post->ID);?>">
 									<?php do_action('workreap_featured_freelancer_tag', $author_id); ?>
 									<figure class="wt-userlistingimg">
@@ -179,25 +184,64 @@ $offline_package		= !empty($offline_package['type']) ? $offline_package['type'] 
 													</div>
 												</div>
 											</div>
+
+											<?php if(!empty($proposal_feedback_enabled) && $proposal_feedback_enabled == 'yes' ) { ?>
+												<div class="wt-btnarea">
+													<a href="javascript:;" class="wt-btn send-feedback" data-id="<?php echo esc_attr($post->ID);?>">
+														<?php if(!empty($feedback)) { ?>
+															<i class="fa fa-check-circle fa-fw"></i>
+														<?php } ?>
+														<?php esc_html_e('Send Feedback','workreap');?>
+													</a>
+												</div>
+												<div class="modal fade wt-offerpopup-proposal-feedback" tabindex="-1" role="dialog" id="proposalfeedbackmodal-<?php echo esc_attr($post->ID);?>">
+													<div class="modal-dialog modal-dialog-centered" role="document">
+														<div class="wt-modalcontent modal-content">
+															<div class="wt-popuptitle">
+																<h2><?php esc_html_e('Send Feedback','workreap');?></h2>
+																<a href="javascript:;" class="wt-closebtn close"><i class="fa fa-close" data-dismiss="modal"></i></a>
+															</div>
+															<div class="modal-body">
+																<form class=" chat-form">
+																	<div class="wt-formtheme wt-formpopup">
+																		<fieldset>
+																			<div class="form-group">
+																				<textarea class="form-control feedback_msg" name="reply" 
+																				placeholder="<?php esc_html_e('Type feedback here', 'workreap'); ?>" <?php disabled(!empty($feedback)); ?>><?php echo $feedback; ?></textarea>
+																			</div>
+																			<?php if(empty($feedback)) { ?>
+																				<div class="form-group wt-btnarea">
+																					<a href="javascript:;" class="wt-btn wt-proposal-feedback" data-proposal-id="<?php echo esc_attr($post->ID);?>"><?php esc_html_e('Send Feedback','workreap');?></a>
+																				</div>
+																			<?php } ?>
+																		</fieldset>
+																	</div>
+																</form>
+															</div>
+														</div>
+													</div>
+												</div>
+											<?php } ?>
+
 											<?php } 
 											if(!empty($milestone) && $milestone === 'enable') {
 												$_milestone   	= get_post_meta($edit_id,'_milestone',true);
 												$is_milestone	= !empty( $_milestone ) ? $_milestone : 'off';
 												if(!empty($is_milestone) && $is_milestone ==='on' ){?>
 												<div class="wt-btnarea">
-													<a href="<?php Workreap_Profile_Menu::workreap_profile_menu_link('milestone', $user_identity,'','listing',$post->ID); ?>" class="wt-btn" ><?php esc_html_e('Hire and Set Milestones','workreap');?></a>
+													<a href="<?php Workreap_Profile_Menu::workreap_profile_menu_link('milestone', $user_identity,'','listing',$post->ID); ?>" class="wt-btn" ><?php esc_html_e('Choose Winner and Set Milestones','workreap');?></a>
 												</div>
 												<?php } else if( empty($order_id) ){ ?>
-												<div class="wt-btnarea"><a href="javascript:;" class="wt-btn hire-now" data-id="<?php echo intval($post->ID);?>" data-post-id="<?php echo esc_attr($edit_id);?>"><?php esc_html_e('Hire Now','workreap');?></a></div>
+												<div class="wt-btnarea"><a href="javascript:;" class="wt-btn hire-now" data-id="<?php echo intval($post->ID);?>" data-post-id="<?php echo esc_attr($edit_id);?>"><?php esc_html_e('Choose Winner','workreap');?></a></div>
 												<?php }
 											} else if( empty($order_id) ){?>
-												<div class="wt-btnarea"><a href="javascript:;" class="wt-btn hire-now" data-id="<?php echo intval($post->ID);?>" data-post-id="<?php echo esc_attr($edit_id);?>"><?php esc_html_e('Hire Now','workreap');?></a></div>
+												<div class="wt-btnarea"><a href="javascript:;" class="wt-btn hire-now" data-id="<?php echo intval($post->ID);?>" data-post-id="<?php echo esc_attr($edit_id);?>"><?php esc_html_e('Choose Winner','workreap');?></a></div>
 											<?php } ?>
 											<?php if( !empty($order_id) ){ ?>
 												<div class="wt-btnarea"><a href="<?php echo esc_url($order_url);?>" class="wt-btn" target="_blank"><?php esc_html_e('Check Invoice','workreap');?></a></div>
 											<?php } ?>
 										<?php } ?>						
-										<?php do_action('worrketic_proposal_duration_and_amount',$post->ID);?>
+										<?php // do_action('worrketic_proposal_duration_and_amount',$post->ID);?>
 										<?php do_action('worrketic_proposal_cover',$post->ID);?>
 										<?php do_action('worrketic_proposal_attachments',$post->ID);?>													
 									</div>

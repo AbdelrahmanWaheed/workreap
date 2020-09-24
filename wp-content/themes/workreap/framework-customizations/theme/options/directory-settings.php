@@ -215,6 +215,26 @@ $options = array(
 							'yes'	=> esc_html__('Yes', 'workreap')
 						)
 					),
+					'allow_proposal_amount_edit' => array(
+						'label'   		=> esc_html__( 'Allow proposal amount edit', 'workreap' ),
+						'desc'   		=> esc_html__( 'Allow the freelancer to edit their proposals cost', 'workreap' ),
+						'type'    		=> 'select',
+						'value'    		=> 'no',
+						'choices'	=> array(
+							'no'   => esc_html__('No', 'workreap'),
+							'yes'	=> esc_html__('Yes', 'workreap')
+						)
+					),
+					'job_proposal_feedback_option' => array(
+						'label'   		=> esc_html__( 'Allow proposal feedback', 'workreap' ),
+						'desc'   		=> esc_html__( 'Allow the employer to send feedback about the proposal to the freelancer', 'workreap' ),
+						'type'    		=> 'select',
+						'value'    		=> 'yes',
+						'choices'	=> array(
+							'no'   => esc_html__('No', 'workreap'),
+							'yes'	=> esc_html__('Yes', 'workreap')
+						)
+					),
 					'cron_job_interval' => array(
 						'label'   		=> esc_html__( 'Cron job interval', 'workreap' ),
 						'desc'   		=> esc_html__( 'Select interval for job alerts.', 'workreap' ),

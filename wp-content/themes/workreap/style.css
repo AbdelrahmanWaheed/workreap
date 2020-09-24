@@ -2931,6 +2931,10 @@ form[name*="serach-projects"] .wt-widget.wt-startsearch .wt-widgettitle{float:le
 .wt-offerpopup-proposal-chat .wt-popuptitle{text-align:left;background:#f7f7f7;position:relative;border-radius:4px 4px 0 0}
 .wt-offerpopup-proposal-chat .wt-formpopup fieldset .wt-btnarea{padding:0;margin-top:20px}
 .wt-offerpopup-proposal-chat .wt-popuptitle .wt-closebtn{right:20px}
+.wt-offerpopup-proposal-feedback .wt-modalcontent{padding:0}
+.wt-offerpopup-proposal-feedback .wt-popuptitle{text-align:left;background:#f7f7f7;position:relative;border-radius:4px 4px 0 0}
+.wt-offerpopup-proposal-feedback .wt-formpopup fieldset .wt-btnarea{padding:0;margin-top:20px}
+.wt-offerpopup-proposal-feedback .wt-popuptitle .wt-closebtn{right:20px}
 .wt-profile-gallery .wt-projects{padding-bottom:17px}
 .wt-joblistind-short li span,.wt-joblistind-short li a{font-size:14px;display:flex;align-self:center}
 .wt-joblistind-short .wt-budget .wt-tipso.fa-question-circle{float:none}

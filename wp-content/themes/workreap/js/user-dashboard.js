@@ -941,14 +941,65 @@ jQuery(document).on('ready', function() {
 					jQuery.sticky(response.message, {classList: 'important', speed: 200, autoclose: 5000});
 				}
 			}
-		});               
-	 });
+		});
+	});
+	// send proposal feedback
+	jQuery(document).on('click','.wt-proposal-feedback', function (e) {
+		 var _this 			= jQuery(this);
+		 var proposal_id 	= _this.data('proposal-id');
+		 var feedback_msg	= _this.parents('.wt-formpopup').find('textarea.feedback_msg').val(); 
+		//Send message  
+		jQuery('body').append(loader_html);
+		jQuery.ajax({
+			type: "POST",
+			url: scripts_vars.ajaxurl,
+			data:  {
+				action			: 'workreap_send_proposal_feedback',
+				proposal_id		: proposal_id,
+				feedback_msg	: feedback_msg,
+			},
+			dataType: "json",
+			success: function (response) {
+				jQuery('body').find('.wt-preloader-section').remove();
+				if (response.type === 'success') {
+					jQuery.sticky(response.message, {classList: 'success', speed: 200, autoclose: 5000});
+					jQuery("#proposalfeedbackmodal-"+proposal_id).modal('hide');
+					jQuery("#proposalfeedbackmodal-"+proposal_id+" textarea.feedback_msg").text(feedback_msg);
+					jQuery("#proposalfeedbackmodal-"+proposal_id+" textarea.feedback_msg").attr('disabled', 'true');
+					jQuery("#proposalfeedbackmodal-"+proposal_id+" .wt-btnarea").hide();
+					jQuery("#proposalfeedbackmodal-"+proposal_id).prev().find('a.send-feedback').prepend('<i class="fa fa-check-circle fa-fw"></i>');
+				} else {
+					jQuery.sticky(response.message, {classList: 'important', speed: 200, autoclose: 5000});
+				}
+			}
+		});
+	});
+	// send proposal feedback
+	jQuery(document).on('click','.show-feedback', function (e) {
+		var _this 			= jQuery(this);
+		var proposal_id 	= _this.data('id');
+		jQuery("#proposalfeedbackmodal-"+proposal_id).modal();
+	});
 	//send proposal message
 	jQuery(document).on('click','.chat-proposal-now', function($){
 		var _this = jQuery(this);
 		var id		= _this.data("id");
 		if (scripts_vars.user_type == 'employer') {
 			jQuery("#proposalchatmodal-"+id).modal();
+		} else{
+			jQuery('.wt-preloader-section').remove();
+            jQuery.sticky(scripts_vars.service_access, {classList: 'important', speed: 200, autoclose: 7000});
+            return false;
+		}
+		 
+	});
+
+	//send proposal message
+	jQuery(document).on('click','.send-feedback', function($){
+		var _this = jQuery(this);
+		var id		= _this.data("id");
+		if (scripts_vars.user_type == 'employer') {
+			jQuery("#proposalfeedbackmodal-"+id).modal();
 		} else{
 			jQuery('.wt-preloader-section').remove();
             jQuery.sticky(scripts_vars.service_access, {classList: 'important', speed: 200, autoclose: 7000});

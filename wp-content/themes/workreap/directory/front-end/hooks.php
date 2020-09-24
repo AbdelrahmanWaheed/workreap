@@ -4375,7 +4375,7 @@ if( !function_exists( 'workreap_save_project_html') ){
 		}
 		echo ob_get_clean();
     }
-    add_action('workreap_geoloacation_search', 'workreap_geoloacation_search', 10, 1);
+    // add_action('workreap_geoloacation_search', 'workreap_geoloacation_search', 10, 1);
  }
 
 /**

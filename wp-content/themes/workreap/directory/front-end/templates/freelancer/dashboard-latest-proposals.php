@@ -25,12 +25,12 @@ $sorting = 'ID';
 $proposal_page 			= array();
 $allow_proposal_edit 	= '';
 if (function_exists('fw_get_db_post_option')) {
-	$proposal_page 			= fw_get_db_settings_option('dir_proposal_page');
-	$allow_proposal_edit    = fw_get_db_settings_option('allow_proposal_edit');
+	$proposal_page 				= fw_get_db_settings_option('dir_proposal_page');
+	$allow_proposal_edit    	= fw_get_db_settings_option('allow_proposal_edit');
 }
 
 $proposal_page_id = !empty( $proposal_page[0] ) ? $proposal_page[0] : '';
-$submit_proposal  = !empty( $proposal_page_id ) ? get_the_permalink( $proposal_page_id ) : '';		
+$submit_proposal  = !empty( $proposal_page_id ) ? get_the_permalink( $proposal_page_id ) : '';
 ?>
 <div class="wt-haslayout wt-job-proposals">
 	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -96,6 +96,8 @@ $submit_proposal  = !empty( $proposal_page_id ) ? get_the_permalink( $proposal_p
 									
 									$pargs	 = array( 'project_id' => $project_id, 'proposal_id' => $post->ID );
 									$submit_proposal  = !empty( $submit_proposal ) ? add_query_arg( $pargs, $submit_proposal ) : '';
+
+									$feedback = get_post_meta( $post->ID, '_feedback', true );
 									?>
 									<div class="wt-userlistinghold wt-featured wt-proposalitem wt-userlistingcontentvtwo" data-id="<?php echo esc_attr($post->ID);?>">
 										<div class="wt-proposaldetails">
@@ -114,6 +116,36 @@ $submit_proposal  = !empty( $proposal_page_id ) ? get_the_permalink( $proposal_p
 													<span class="wt-btn"><?php esc_html_e('Completed','workreap');?></span>
 												<?php } else if( $job_status !== 'hired' ) { ?>
 													
+
+													<?php  if( !empty($feedback) ){?>
+														<a href="javascript:;" class="wt-btn show-feedback" data-id="<?php echo esc_attr($post->ID);?>">
+															<?php echo esc_html_e('Show Feedback','workreap');?>
+														</a>
+														<div class="modal fade wt-offerpopup-proposal-feedback" tabindex="-1" role="dialog" id="proposalfeedbackmodal-<?php echo esc_attr($post->ID);?>">
+															<div class="modal-dialog modal-dialog-centered" role="document">
+																<div class="wt-modalcontent modal-content">
+																	<div class="wt-popuptitle">
+																		<h2><?php esc_html_e('Feedback','workreap');?></h2>
+																		<a href="javascript:;" class="wt-closebtn close"><i class="fa fa-close" data-dismiss="modal"></i></a>
+																	</div>
+																	<div class="modal-body">
+																		<form class=" chat-form">
+																			<div class="wt-formtheme wt-formpopup">
+																				<fieldset>
+																					<div class="alert alert-warning" role="alert">
+																						<br/><br/>
+																						<?php echo $feedback; ?><br/>
+																						<br/><br/>
+																					</div>
+																				</fieldset>
+																			</div>
+																		</form>
+																	</div>
+																</div>
+															</div>
+														</div>
+													<?php }?>
+
 													<?php  if( !empty($allow_proposal_edit) && $allow_proposal_edit == 'yes' ){?>
 														<a target="_blank" href="<?php echo esc_attr($submit_proposal);?>" class="wt-btn"><?php echo esc_html_e('Edit Proposal','workreap');?></a>
 													<?php }?>
@@ -124,7 +156,7 @@ $submit_proposal  = !empty( $proposal_page_id ) ? get_the_permalink( $proposal_p
 														<span class="wt-btn" ><?php esc_html_e('Pending','workreap');?></span>
 												<?php } ?>
 											</div>											
-											<?php do_action('worrketic_proposal_duration_and_amount',$post->ID);?>
+											<?php // do_action('worrketic_proposal_duration_and_amount',$post->ID);?>
 											<?php do_action('worrketic_proposal_cover',$post->ID);?>
 											<?php do_action('worrketic_proposal_attachments',$post->ID);?>													
 										</div>

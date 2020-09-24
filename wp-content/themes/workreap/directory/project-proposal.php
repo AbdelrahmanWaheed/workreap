@@ -43,6 +43,7 @@ if( !empty( $project_id ) && get_post_type( $project_id ) == 'projects' ){
 		$deduction_hint    	= fw_get_db_settings_option('hint_text_two');
 		$db_project_type    = fw_get_db_post_option($project_id,'project_type');
 		$allow_proposal_edit    	= fw_get_db_settings_option('allow_proposal_edit');
+		$allow_proposal_amount_edit = fw_get_db_settings_option('allow_proposal_amount_edit');
 	}
 	
 	if( !empty( $db_project_type['gadget'] ) && $db_project_type['gadget'] === 'fixed' ){
@@ -133,6 +134,13 @@ if( !empty( $project_id ) && get_post_type( $project_id ) == 'projects' ){
 		$post_author	= get_post_field( 'post_author', $proposal_id, true );
 		$post_status	= get_post_field( 'post_status', $project_id, true );
 		$post_author	= !empty($post_author) ? intval($post_author) : '';
+	}
+
+	if($allow_proposal_amount_edit == 'no') {
+		$proposed_amount = $max_val;
+		$proposed_cost	= !empty($proposed_amount) ? $proposed_amount : 0.00;
+		$service_count	= !empty($service_fee) && !empty($proposed_cost) ? (($service_fee*$proposed_cost)/100) : 0.00;
+		$remaining_cost	= !empty($proposed_cost) && !empty($service_count) ? $proposed_cost - $service_count : 0.00 ;
 	}
 
 	if(!empty($proposal_id) && !empty($post_author) 
@@ -243,7 +251,8 @@ if( !empty( $project_id ) && get_post_type( $project_id ) == 'projects' ){
 							<div class="wt-proposalamount accordion">
 								<div class="form-group">
 									<span>(<i><?php echo esc_attr($price_symbol);?></i> )</span>
-									<input type="number" value="<?php echo esc_html($proposed_amount);?>" name="proposed_amount" class="form-control wt-proposal-amount" min="0" max="<?php echo intval($max_val);?>" placeholder="<?php echo esc_attr($amount_text); ?>">
+									<input type="number" value="<?php echo esc_html($proposed_amount);?>" name="proposed_amount" class="form-control wt-proposal-amount" min="0" max="<?php echo intval($max_val);?>" placeholder="<?php echo esc_attr($amount_text); ?>" 
+									<?php disabled( !empty($proposed_amount)); ?>>
 									<a href="javascript:;" class="collapsed" id="headingOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"><i class="lnr lnr-chevron-up"></i></a>
 									<?php if( !empty( $db_project_type['gadget'] ) && $db_project_type['gadget'] === 'hourly' ){ ?>
 										<input type="number" value="<?php echo esc_html($estimeted_time);?>"  name="estimeted_time" class="form-control wt-estimated-hours" min="0" placeholder="<?php echo esc_attr_e('Estimated Hours','workreap'); ?>">
@@ -256,7 +265,7 @@ if( !empty( $project_id ) && get_post_type( $project_id ) == 'projects' ){
 										<h3>(<i><?php echo esc_attr($price_symbol);?></i> ) <em class="wt-project-cost"><?php echo esc_html($project_cost); ?></em></h3>
 										<span><strong><?php esc_html_e('Employer’s Proposed Project Cost', 'workreap'); ?></strong></span>
 									</li>
-									<li>
+									<li style="display: none;">
 										<h3>(<i><?php echo esc_attr($price_symbol);?></i> ) <em class="wt-project-proposed"><?php echo esc_html($proposed_cost); ?></em></h3>
 										<span><strong><?php esc_html_e('Your proposed project cost', 'workreap'); ?></strong></span>
 									</li>
@@ -275,7 +284,7 @@ if( !empty( $project_id ) && get_post_type( $project_id ) == 'projects' ){
 							</div>
 							<div class="wt-formtheme wt-formproposal">
 								<fieldset>
-									<?php if( !empty( $db_project_type['gadget'] ) && $db_project_type['gadget'] === 'fixed' ){ ?>
+									<?php if( !empty( $db_project_type['gadget'] ) && $db_project_type['gadget'] === 'fixed' && false ){ ?>
 										<div class="form-group">
 											<span class="wt-select">
 												<select name="proposed_time">

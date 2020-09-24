@@ -155,6 +155,8 @@ $post_author = get_post_field('post_author', $edit_id);
 					$fixedClass  = '';
 					$hourlyClass = 'elm-none';
 				}
+
+				$hide = true;
 			?>
 			<form class="post-job-form wt-haslayout">
 				<div class="wt-dashboardbox">
@@ -171,117 +173,121 @@ $post_author = get_post_field('post_author', $edit_id);
 									<div class="form-group">
 										<input type="text" value="<?php the_title();?>" name="job[title]" class="form-control" placeholder="<?php esc_attr_e('Job Title','workreap');?>">
 									</div>
-									<div class="form-group form-group-half wt-formwithlabel">
-										<span class="wt-selects toolip-wrapo">
-											<select name="job[project_level]" class="chosen-select">
-												<option value=""><?php esc_html_e('Select project level','workreap');?></option>
-												<?php 
-												if( !empty( $project_level ) ){
-													foreach( $project_level as $key => $level ){
-													?>
-													<option <?php selected($db_project_level,$key);?> value="<?php echo esc_attr( $key );?>"><?php echo esc_html( $level );?></option>
-												<?php }}?>
-											</select>
-											<?php do_action('workreap_get_tooltip','element','project_level');?>
-										</span>
-										
-									</div>
-									<div class="form-group form-group-half wt-formwithlabel">
-										<span class="wt-selects toolip-wrapo">
-											<select name="job[project_duration]" class="chosen-select">
-												<option value=""><?php esc_html_e('Select job duration','workreap');?></option>
-												<?php 
-												if( !empty( $job_duration ) ){
-													foreach( $job_duration as $key => $level ){?>
-													<option <?php selected($db_project_duration,$key);?> value="<?php echo esc_attr( $key );?>"><?php echo esc_html( $level );?></option>
-												<?php }}?>
-											</select>
-											<?php do_action('workreap_get_tooltip','element','project_duration');?>
-										</span>
-									</div>
-									
-									<div class="form-group form-group-half wt-formwithlabel">
-										<span class="wt-selects toolip-wrapo">
-											<select name="job[freelancer_level][]" data-placeholder="<?php esc_attr_e('Select freelancer type','workreap');?>" <?php echo esc_attr( $multiselect_freelancertype );?>  class="chosen-select">
-												<option value=""><?php esc_html_e('Select freelancer type','workreap');?></option>
-												<?php 
-												if( !empty( $freelancer_level ) ){
-													foreach( $freelancer_level as $key => $level ){
-														$selected = '';
-														if( is_array($db_freelancer_level) && in_array($key,$db_freelancer_level) ){
-															$selected = 'selected';
-														} else if($key == $db_freelancer_level) {
-															$selected = 'selected';
-														}
-													?>
-													<option <?php echo esc_attr($selected);?> value="<?php echo esc_attr( $key );?>"><?php echo esc_html( $level );?></option>
-												<?php }}?>
-											</select>
-											<?php do_action('workreap_get_tooltip','element','freelancer_level');?>
-										</span>
-									</div>
-									<div class="form-group form-group-half wt-formwithlabel">
-										<span class="wt-selects toolip-wrapo">
-											<select name="job[english_level]" class="chosen-select">
-												<option value=""><?php esc_html_e('Select english level','workreap');?></option>
-												<?php 
-												if( !empty( $english_level ) ){
-													foreach( $english_level as $key => $level ){?>
-													<option <?php selected($db_english_level,$key);?> value="<?php echo esc_attr( $key );?>"><?php echo esc_html( $level );?></option>
-												<?php }}?>
-											</select>
-											<?php do_action('workreap_get_tooltip','element','english_level');?>
-										</span>
-									</div>
-									
-									<?php if(!empty($job_option_setting) && $job_option_setting === 'enable' ){ ?>
+									<?php if(!$hide) { ?>
 										<div class="form-group form-group-half wt-formwithlabel">
 											<span class="wt-selects toolip-wrapo">
-												<select name="job[job_option]" class="chosen-select">
-													<option value=""><?php esc_html_e('Project location type','workreap');?></option>
+												<select name="job[project_level]" class="chosen-select">
+													<option value=""><?php esc_html_e('Select project level','workreap');?></option>
 													<?php 
-													if( !empty( $job_options ) ){
-														foreach( $job_options as $key => $val ){
-															$selected	= '';
-															if($db_job_option === $key ) $selected	='selected';
-															?>
-														<option <?php echo esc_attr($selected);?> value="<?php echo esc_attr( $key );?>"><?php echo esc_html( $val );?></option>
+													if( !empty( $project_level ) ){
+														foreach( $project_level as $key => $level ){
+														?>
+														<option <?php selected($db_project_level,$key);?> value="<?php echo esc_attr( $key );?>"><?php echo esc_html( $level );?></option>
 													<?php }}?>
 												</select>
-												<?php do_action('workreap_get_tooltip','element','job_option');?>
+												<?php do_action('workreap_get_tooltip','element','project_level');?>
+											</span>
+											
+										</div>
+										<div class="form-group form-group-half wt-formwithlabel">
+											<span class="wt-selects toolip-wrapo">
+												<select name="job[project_duration]" class="chosen-select">
+													<option value=""><?php esc_html_e('Select job duration','workreap');?></option>
+													<?php 
+													if( !empty( $job_duration ) ){
+														foreach( $job_duration as $key => $level ){?>
+														<option <?php selected($db_project_duration,$key);?> value="<?php echo esc_attr( $key );?>"><?php echo esc_html( $level );?></option>
+													<?php }}?>
+												</select>
+												<?php do_action('workreap_get_tooltip','element','project_duration');?>
+											</span>
+										</div>
+										
+										<div class="form-group form-group-half wt-formwithlabel">
+											<span class="wt-selects toolip-wrapo">
+												<select name="job[freelancer_level][]" data-placeholder="<?php esc_attr_e('Select freelancer type','workreap');?>" <?php echo esc_attr( $multiselect_freelancertype );?>  class="chosen-select">
+													<option value=""><?php esc_html_e('Select freelancer type','workreap');?></option>
+													<?php 
+													if( !empty( $freelancer_level ) ){
+														foreach( $freelancer_level as $key => $level ){
+															$selected = '';
+															if( is_array($db_freelancer_level) && in_array($key,$db_freelancer_level) ){
+																$selected = 'selected';
+															} else if($key == $db_freelancer_level) {
+																$selected = 'selected';
+															}
+														?>
+														<option <?php echo esc_attr($selected);?> value="<?php echo esc_attr( $key );?>"><?php echo esc_html( $level );?></option>
+													<?php }}?>
+												</select>
+												<?php do_action('workreap_get_tooltip','element','freelancer_level');?>
 											</span>
 										</div>
 										<div class="form-group form-group-half wt-formwithlabel">
 											<span class="wt-selects toolip-wrapo">
-												<select name="job[experiences][]"  data-placeholder="<?php esc_attr_e('Select project experience','workreap');?>" <?php echo esc_attr( $job_experience_option );?>  class="chosen-select">
-													<option value=""><?php esc_html_e('Select project experience','workreap');?></option>
+												<select name="job[english_level]" class="chosen-select">
+													<option value=""><?php esc_html_e('Select english level','workreap');?></option>
 													<?php 
-													if( !empty( $experiences ) ){
-														foreach ($experiences as $key => $item) {
-															$term_id   = $item->term_id;
-															$selected = '';
-															if( is_array($db_experience) && in_array($term_id,$db_experience) ){
-																$selected = 'selected';
-															} else if( $db_experience == $key ){
-																$selected = 'selected';
-															}
-															?>
-																<option <?php echo esc_attr($selected);?> value="<?php echo esc_attr( $term_id ); ?>"><?php echo esc_html( $item->name ); ?></option>
-														<?php } ?>
-													<?php } ?>
+													if( !empty( $english_level ) ){
+														foreach( $english_level as $key => $level ){?>
+														<option <?php selected($db_english_level,$key);?> value="<?php echo esc_attr( $key );?>"><?php echo esc_html( $level );?></option>
+													<?php }}?>
 												</select>
-												<?php do_action('workreap_get_tooltip','element','experiences');?>
+												<?php do_action('workreap_get_tooltip','element','english_level');?>
 											</span>
 										</div>
-									<?php } ?>
-									<div class="form-group wt-formwithlabel form-group-half job-expirydate-input toolip-wrapo">
-										<input type="text" name="job[expiry_date]" class="form-control wt-date-pick-job" value="<?php echo esc_attr( $db_expiry_date );?>" placeholder="<?php esc_attr_e('Project Expiry Date (optional)','workreap');?>">
-										<?php do_action('workreap_get_tooltip','element','expiry_date');?>
-									</div>
-									<div class="form-group wt-formwithlabel form-group-half job-expirydate-input toolip-wrapo">
-										<input type="text" name="job[deadline]" class="form-control wt-date-pick-job" value="<?php echo esc_attr( $db_deadline );?>" placeholder="<?php esc_attr_e('Project deadline date (optional)','workreap');?>">
-										<?php do_action('workreap_get_tooltip','element','deadline');?>
-									</div>
+										
+										<?php if(!empty($job_option_setting) && $job_option_setting === 'enable' ){ ?>
+											<div class="form-group form-group-half wt-formwithlabel">
+												<span class="wt-selects toolip-wrapo">
+													<select name="job[job_option]" class="chosen-select">
+														<option value=""><?php esc_html_e('Project location type','workreap');?></option>
+														<?php 
+														if( !empty( $job_options ) ){
+															foreach( $job_options as $key => $val ){
+																$selected	= '';
+																if($db_job_option === $key ) $selected	='selected';
+																?>
+															<option <?php echo esc_attr($selected);?> value="<?php echo esc_attr( $key );?>"><?php echo esc_html( $val );?></option>
+														<?php }}?>
+													</select>
+													<?php do_action('workreap_get_tooltip','element','job_option');?>
+												</span>
+											</div>
+											<div class="form-group form-group-half wt-formwithlabel">
+												<span class="wt-selects toolip-wrapo">
+													<select name="job[experiences][]"  data-placeholder="<?php esc_attr_e('Select project experience','workreap');?>" <?php echo esc_attr( $job_experience_option );?>  class="chosen-select">
+														<option value=""><?php esc_html_e('Select project experience','workreap');?></option>
+														<?php 
+														if( !empty( $experiences ) ){
+															foreach ($experiences as $key => $item) {
+																$term_id   = $item->term_id;
+																$selected = '';
+																if( is_array($db_experience) && in_array($term_id,$db_experience) ){
+																	$selected = 'selected';
+																} else if( $db_experience == $key ){
+																	$selected = 'selected';
+																}
+																?>
+																	<option <?php echo esc_attr($selected);?> value="<?php echo esc_attr( $term_id ); ?>"><?php echo esc_html( $item->name ); ?></option>
+															<?php } ?>
+														<?php } ?>
+													</select>
+													<?php do_action('workreap_get_tooltip','element','experiences');?>
+												</span>
+											</div>
+										<?php } ?>
+										<div class="form-group wt-formwithlabel form-group-half job-expirydate-input toolip-wrapo">
+											<input type="text" name="job[expiry_date]" class="form-control wt-date-pick-job" value="<?php echo esc_attr( $db_expiry_date );?>" placeholder="<?php esc_attr_e('Project Expiry Date (optional)','workreap');?>">
+											<?php do_action('workreap_get_tooltip','element','expiry_date');?>
+										</div>
+										<div class="form-group wt-formwithlabel form-group-half job-expirydate-input toolip-wrapo">
+											<input type="text" name="job[deadline]" class="form-control wt-date-pick-job" value="<?php echo esc_attr( $db_deadline );?>" placeholder="<?php esc_attr_e('Project deadline date (optional)','workreap');?>">
+											<?php do_action('workreap_get_tooltip','element','deadline');?>
+										</div>
+										<?php } else { ?>
+											<input type="hidden" name="job[project_level]" value="basic"> 
+										<?php } ?>
 								</fieldset>
 							</div>
 						</div>
@@ -291,6 +297,7 @@ $post_author = get_post_field('post_author', $edit_id);
 							</div>
 							<div class="wt-formtheme wt-userform wt-userformvtwo">
 								<fieldset>
+									<?php if(!$hide) { ?>
 									<div class="form-group form-group-half wt-formwithlabel">
 										<span class="wt-selects">
 											<select name="job[project_type]" class="wt-job-type chosen-select">
@@ -302,13 +309,16 @@ $post_author = get_post_field('post_author', $edit_id);
 											</select>
 										</span>
 									</div>
-									
 									<div class="form-group form-group-half wt-formwithlabel job-perhour-input <?php echo esc_attr($hourlyClass);?>">
 										<input type="text" class="wt-numeric" name="job[hourly_rate]" value="<?php echo esc_attr( $db_hourly_rate );?>" placeholder="<?php esc_attr_e('Minimum Price','workreap');?>">
 									</div>
+									<?php } else { ?>
+										<input type="hidden" name="job[project_type]" value="fixed">
+									<?php } ?>
 									<div class="form-group form-group-half wt-formwithlabel job-cost-input <?php echo esc_attr($fixedClass);?>">
 										<input type="text" class="wt-numeric" name="job[project_cost]" value="<?php echo esc_attr( $db_project_cost );?>" placeholder="<?php echo esc_attr($place_holder);?>">
 									</div>
+									<?php if(!$hide) { ?>
 									<?php if(!empty($job_price_option) && $job_price_option === 'enable') {?>
 										<div class="form-group form-group-half wt-formwithlabel">
 											<input type="text" name="job[max_price]"  class="form-control wt-numeric" placeholder="<?php esc_attr_e('Maximum price','workreap');?>" value="<?php echo esc_attr( $db_max_price );?>">
@@ -317,7 +327,7 @@ $post_author = get_post_field('post_author', $edit_id);
 									<div class="form-group  wt-formwithlabel form-group-half  job-perhour-input <?php echo esc_attr($hourlyClass);?>">
 										<input type="text" class="wt-numeric" name="job[estimated_hours]" value="<?php echo esc_attr( $db_estimated_hours );?>" placeholder="<?php esc_attr_e('Estimated hours','workreap');?>">
 									</div>
-									
+									<?php } ?>
 									
 								</fieldset>
 								
@@ -346,7 +356,8 @@ $post_author = get_post_field('post_author', $edit_id);
 									<?php do_action('workreap_get_categories_list','job[categories][]',$db_project_cat);?>	
 								</div>
 							</div>
-						</div>	
+						</div>
+						<?php if(!$hide) { ?>
 						<div class="wt-language-holder wt-tabsinfo">
 							<div class="wt-tabscontenttitle">
 								<h2><?php esc_html_e('Languages','workreap');?></h2>
@@ -372,6 +383,7 @@ $post_author = get_post_field('post_author', $edit_id);
 								</div>
 							</div>
 						</div>
+						<?php } ?>
 						<div class="wt-jobdetails wt-tabsinfo">
 							<div class="wt-tabscontenttitle">
 								<h2><?php esc_html_e('Job Details','workreap');?></h2>
@@ -474,6 +486,7 @@ $post_author = get_post_field('post_author', $edit_id);
 									</div>
 								</fieldset>
 							</div>
+							<?php if(!$hide) { ?>
 							<div class="wt-tabscontenttitle">
 								<h2><?php esc_html_e('Attachments','workreap');?></h2>
 								<div class="wt-rightarea">
@@ -485,6 +498,9 @@ $post_author = get_post_field('post_author', $edit_id);
 									<span><?php esc_html_e('Show “Attachments” on job detail page','workreap');?></span>
 								</div>
 							</div>
+							<?php } else { ?>
+								<input type="hidden" value="on" name="job[show_attachments]">
+							<?php } ?>
 							<?php if( apply_filters('workreap_is_job_posting_allowed','wt_jobs', $current_user->ID,'yes') === true ){ ?>
 								<div class="wt-tabscontenttitle">
 									<h2><?php esc_html_e('Featured job','workreap');?></h2>
@@ -499,7 +515,9 @@ $post_author = get_post_field('post_author', $edit_id);
 							<?php }?>
 						</div>
 						<?php 
-							get_template_part('directory/front-end/templates/employer/dashboard', 'job-location'); 
+							if(!$hide) {
+								get_template_part('directory/front-end/templates/employer/dashboard', 'job-location'); 
+							}
 							do_action('workreap_add_fields');
 						?>
 					</div>

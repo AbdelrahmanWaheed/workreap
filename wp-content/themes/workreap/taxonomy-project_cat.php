@@ -12,6 +12,8 @@ global $wp_query;
 get_header();
 $access_type	= workreap_return_system_access();
 		
+
+echo "access_type: $access_type";
 if( !empty($access_type) && $access_type === 'service' ) {
 	get_template_part("directory/services", "search");
 } else{
