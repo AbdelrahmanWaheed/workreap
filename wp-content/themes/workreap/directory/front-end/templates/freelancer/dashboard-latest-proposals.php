@@ -98,6 +98,7 @@ $submit_proposal  = !empty( $proposal_page_id ) ? get_the_permalink( $proposal_p
 									$submit_proposal  = !empty( $submit_proposal ) ? add_query_arg( $pargs, $submit_proposal ) : '';
 
 									$feedback = get_post_meta( $post->ID, '_feedback', true );
+									$feedback_rating = get_post_meta( $post->ID, '_feedback_rating', true );
 									?>
 									<div class="wt-userlistinghold wt-featured wt-proposalitem wt-userlistingcontentvtwo" data-id="<?php echo esc_attr($post->ID);?>">
 										<div class="wt-proposaldetails">
@@ -117,7 +118,7 @@ $submit_proposal  = !empty( $proposal_page_id ) ? get_the_permalink( $proposal_p
 												<?php } else if( $job_status !== 'hired' ) { ?>
 													
 
-													<?php  if( !empty($feedback) ){?>
+													<?php  if( !empty($feedback) && !empty($feedback_rating) ){?>
 														<a href="javascript:;" class="wt-btn show-feedback" data-id="<?php echo esc_attr($post->ID);?>">
 															<?php echo esc_html_e('Show Feedback','workreap');?>
 														</a>
@@ -129,13 +130,37 @@ $submit_proposal  = !empty( $proposal_page_id ) ? get_the_permalink( $proposal_p
 																		<a href="javascript:;" class="wt-closebtn close"><i class="fa fa-close" data-dismiss="modal"></i></a>
 																	</div>
 																	<div class="modal-body">
-																		<form class=" chat-form">
+																		<form class="chat-form">
 																			<div class="wt-formtheme wt-formpopup">
 																				<fieldset>
-																					<div class="alert alert-warning" role="alert">
-																						<br/><br/>
-																						<?php echo $feedback; ?><br/>
-																						<br/><br/>
+																					<div class="form-group wt-ratingholder form-group-margin" data-ratingtitle="Feedback Rating">
+																						<div class="wt-ratepoints wt-ratingbox-<?php echo esc_attr($post->ID); ?>">
+																							<div class="counter wt-pointscounter"><?php echo number_format($feedback_rating, 1, '.', ''); ?></div>
+																							<div id="jRate-<?php echo esc_attr($post->ID); ?>" class="wt-jrate"></div>
+																						</div>
+																						<?php
+																							$script = "jQuery(function () {
+																								var that = this;
+																								var toolitup = jQuery('#jRate-" . esc_attr($post->ID) . "').jRate({
+																									rating: $feedback_rating,
+																									readOnly: true,
+																									shapeGap: '6px',
+																									startColor: '#fdd003',
+																									endColor: '#fdd003',
+																									width: 20,
+																									height: 20,
+																									backgroundColor: '#DFDFE0',
+																								});
+																							});";
+																							wp_add_inline_script('workreap-user-dashboard', $script, 'after');
+																						?>
+																					</div>
+																					<div class="form-group">
+																						<div class="alert alert-warning" role="alert">
+																							<br/><br/>
+																							<?php echo nl2br($feedback); ?><br/>
+																							<br/><br/>
+																						</div>
 																					</div>
 																				</fieldset>
 																			</div>

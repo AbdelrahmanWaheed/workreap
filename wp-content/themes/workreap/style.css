@@ -3765,3 +3765,6 @@ body.single .wt-chatbox .wt-replaybox .form-control{overflow:visible;}
 	width: auto;
     margin-left: 7px;
 }
+.wt-formpopup fieldset .form-group-margin {
+	margin-bottom: 20px;
+}

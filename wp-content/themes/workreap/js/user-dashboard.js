@@ -945,10 +945,11 @@ jQuery(document).on('ready', function() {
 	});
 	// send proposal feedback
 	jQuery(document).on('click','.wt-proposal-feedback', function (e) {
-		 var _this 			= jQuery(this);
-		 var proposal_id 	= _this.data('proposal-id');
-		 var feedback_msg	= _this.parents('.wt-formpopup').find('textarea.feedback_msg').val(); 
-		//Send message  
+		 var _this 			 = jQuery(this);
+		 var proposal_id 	 = _this.data('proposal-id');
+		 var feedback_msg	 = _this.parents('.wt-formpopup').find('textarea.feedback_msg').val(); 
+		 var feedback_rating = _this.parents('.wt-formpopup').find('input.feedback_rating').val();
+		//Send message
 		jQuery('body').append(loader_html);
 		jQuery.ajax({
 			type: "POST",
@@ -957,6 +958,7 @@ jQuery(document).on('ready', function() {
 				action			: 'workreap_send_proposal_feedback',
 				proposal_id		: proposal_id,
 				feedback_msg	: feedback_msg,
+				feedback_rating : feedback_rating,
 			},
 			dataType: "json",
 			success: function (response) {
@@ -966,7 +968,20 @@ jQuery(document).on('ready', function() {
 					jQuery("#proposalfeedbackmodal-"+proposal_id).modal('hide');
 					jQuery("#proposalfeedbackmodal-"+proposal_id+" textarea.feedback_msg").text(feedback_msg);
 					jQuery("#proposalfeedbackmodal-"+proposal_id+" textarea.feedback_msg").attr('disabled', 'true');
-					jQuery("#proposalfeedbackmodal-"+proposal_id+" .wt-btnarea").hide();
+					$("#jRate-" + proposal_id).html('').jRate({
+						rating: feedback_rating,
+						readOnly: true,
+						min: 0,
+						max: 5,
+						precision: 1,
+						shapeGap: '6px',
+						startColor: '#fdd003',
+						endColor: '#fdd003',
+						width: 20,
+						height: 20,
+						backgroundColor: '#DFDFE0',
+					});
+					jQuery("#proposalfeedbackmodal-"+proposal_id+" .wt-btnarea").remove();
 					jQuery("#proposalfeedbackmodal-"+proposal_id).prev().find('a.send-feedback').prepend('<i class="fa fa-check-circle fa-fw"></i>');
 				} else {
 					jQuery.sticky(response.message, {classList: 'important', speed: 200, autoclose: 5000});

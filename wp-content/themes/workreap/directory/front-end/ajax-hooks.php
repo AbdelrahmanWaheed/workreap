@@ -4029,9 +4029,10 @@ if ( !function_exists( 'workreap_send_proposal_feedback' ) ) {
 
 	function workreap_send_proposal_feedback() {
 		global $current_user, $woocommerce;
-		$json			= array();
-		$proposal_id	= !empty( $_POST['proposal_id'] ) ? intval( $_POST['proposal_id'] ) : '';
+		$json			  = array();
+		$proposal_id	  = !empty( $_POST['proposal_id'] ) ? intval( $_POST['proposal_id'] ) : '';
         $feedback_message = !empty( $_POST['feedback_msg'] ) ? esc_attr( $_POST['feedback_msg'] ) : '';
+        $feedback_rating  = !empty( $_POST['feedback_rating'] ) ? intval( $_POST['feedback_rating'] ) : '';
 
 		if( function_exists('workreap_is_demo_site') ) { 
 			workreap_is_demo_site();
@@ -4039,7 +4040,11 @@ if ( !function_exists( 'workreap_send_proposal_feedback' ) ) {
 
         if( empty($feedback_message) ) {
             $json['type'] = 'error';
-            $json['message'] = esc_html__('Feedback message is missing.', 'workreap');
+            $json['message'] = esc_html__('Feedback message is missing', 'workreap');
+            wp_send_json($json);
+        } elseif ( empty($feedback_rating) ) {
+            $json['type'] = 'error';
+            $json['message'] = esc_html__('Feedback rating is missing', 'workreap');
             wp_send_json($json);
         } elseif ( empty($proposal_id) ) {
             $json['type'] = 'error';
@@ -4048,6 +4053,7 @@ if ( !function_exists( 'workreap_send_proposal_feedback' ) ) {
         }
 
         update_post_meta( $proposal_id, '_feedback', $feedback_message );
+        update_post_meta( $proposal_id, '_feedback_rating', $feedback_rating );
         $json['type'] = 'success';
         $json['message'] = esc_html__('Feedback sent successfully.', 'workreap');
         wp_send_json($json);

@@ -126,6 +126,7 @@ $offline_package		= !empty($offline_package['type']) ? $offline_package['type'] 
 								}
 
 								$feedback = get_post_meta( $post->ID, '_feedback', true );
+								$feedback_rating = get_post_meta( $post->ID, '_feedback_rating', true );
 								
 								?>
 
@@ -205,6 +206,43 @@ $offline_package		= !empty($offline_package['type']) ? $offline_package['type'] 
 																<form class=" chat-form">
 																	<div class="wt-formtheme wt-formpopup">
 																		<fieldset>
+																			<div class="form-group wt-ratingholder form-group-margin" data-ratingtitle="Feedback Rating">
+																				<div class="wt-ratepoints wt-ratingbox-<?php echo esc_attr($post->ID); ?>">
+																					<div class="counter wt-pointscounter">
+																						<?php echo (!empty($feedback_rating) ? number_format($feedback_rating, 1, '.', '') : '1.0'); ?>
+																					</div>
+																					<div id="jRate-<?php echo esc_attr($post->ID); ?>" class="wt-jrate"></div>
+																					<input type="hidden" name="feedback_rating" class="rating-<?php echo esc_attr($post->ID); ?> feedback_rating" value="1" />
+																				</div>
+																				<?php
+																					$script = "jQuery(function () {
+																						var that = this;
+																						var toolitup = jQuery('#jRate-" . esc_attr($post->ID) . "').jRate({
+																							rating: " . (!empty($feedback_rating) ? intval($feedback_rating) : 1) . ",
+																							min: 0,
+																							max: 5,
+																							readOnly: " . (!empty($feedback_rating) ? 'true' : 'false') . ",
+																							precision: 1,
+																							shapeGap: '6px',
+																							startColor: '#fdd003',
+																							endColor: '#fdd003',
+																							width: 20,
+																							height: 20,
+																							touch: true,
+																							backgroundColor: '#DFDFE0',
+																							onChange: function (rating) {
+																								jQuery('.rating-" . esc_attr($post->ID) . "').val(rating);
+																								jQuery('.wt-ratingbox-" . esc_attr($post->ID) . " .wt-pointscounter').html(rating+'.0');
+																							},
+																							onSet: function (rating) {
+																								jQuery('.rating-" . esc_attr($post->ID) . "').val(rating);
+																								jQuery('.wt-ratingbox-" . esc_attr($post->ID) . " .wt-pointscounter').html(rating+'.0');
+																							}
+																						});
+																					});";
+																					wp_add_inline_script('workreap-user-dashboard', $script, 'after');
+																				?>
+																			</div>
 																			<div class="form-group">
 																				<textarea class="form-control feedback_msg" name="reply" 
 																				placeholder="<?php esc_html_e('Type feedback here', 'workreap'); ?>" <?php disabled(!empty($feedback)); ?>><?php echo $feedback; ?></textarea>
