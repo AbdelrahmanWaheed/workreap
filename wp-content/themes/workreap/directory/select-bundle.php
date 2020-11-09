@@ -39,7 +39,7 @@ the_post();
 								$args = array(
 									'post_type' 	=> 'bundles',
 									'meta_key' 		=> 'fw_options',
-									'meta_value' 	=> 'one-to-one',
+									'meta_value' 	=> 'contest',
 									'meta_compare' 	=> 'LIKE',
 									'orderby' 		=> 'menu_order',
 									'order'			=> 'ASC', 
