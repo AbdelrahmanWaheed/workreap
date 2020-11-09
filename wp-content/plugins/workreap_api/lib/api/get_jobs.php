@@ -17,6 +17,7 @@ if (!class_exists('AndroidAppGetJobsRoutes')) {
                         'methods' 	=> WP_REST_Server::READABLE,
                         'callback' 	=> array(&$this, 'get_listing'),
                         'args' 		=> array(),
+						'permission_callback' => '__return_true',
                     ),
                 )
             );
@@ -26,6 +27,7 @@ if (!class_exists('AndroidAppGetJobsRoutes')) {
                         'methods' 	=> WP_REST_Server::CREATABLE,
                         'callback' 	=> array(&$this, 'add_job'),
                         'args' 		=> array(),
+						'permission_callback' => '__return_true',
                     ),
                 )
             );
@@ -309,6 +311,7 @@ if (!class_exists('AndroidAppGetJobsRoutes')) {
 					'post_status' 	 	  => 'publish',
 					'ignore_sticky_posts' => 1
 				);
+				
 				//order by pro member
 				$query_args['meta_key'] = '_featured_job_string';
 				$query_args['orderby']	 = array( 
@@ -421,11 +424,15 @@ if (!class_exists('AndroidAppGetJobsRoutes')) {
 				
 				if ( !empty($categories) ) {    
 					$query_relation = array('relation' => 'OR',);
-					$category_args 	= array(
-						'taxonomy' => 'project_cat',
-						'field'    => 'slug',
-						'terms'    => $categories,
-					);
+					$category_args  = array();
+
+					foreach( $categories as $key => $cat ){
+						$category_args[] = array(
+								'taxonomy' => 'project_cat',
+								'field'    => 'slug',
+								'terms'    => $cat,
+							);
+					}
 
 					$tax_query_args[] = array_merge($query_relation, $category_args);
 				}
@@ -531,21 +538,6 @@ if (!class_exists('AndroidAppGetJobsRoutes')) {
 					$meta_query_args[] = array_merge($query_relation, $price_args);
 				}
 
-				/*if( !empty( $project_type ) &&  $project_type === 'hourly' ) {
-					$hourly_rate = !empty( $request['hourlyrate'] ) ? $request['hourlyrate'] : '';
-					$range_array = !empty($hourly_rate) ? str_replace('$', '', explode('-', $hourly_rate)) : array();
-					if( !empty( $range_array ) ) {
-						$hourlyrate_args[] = array(
-							'key'     => '_perhour_rate',
-							'value'   => $range_array,
-							'compare' => 'BETWEEN',
-						);  
-
-						$meta_query_args = array_merge($meta_query_args, $hourlyrate_args);
-					}
-
-				}*/
-
 				//Main Query
 				$query_args = array(
 					'posts_per_page' 	  => $limit,
@@ -579,7 +571,7 @@ if (!class_exists('AndroidAppGetJobsRoutes')) {
 					$meta_query_args 			= array_merge($query_relation, $meta_query_args);
 					$query_args['meta_query'] 	= $meta_query_args;
 				}
-				//print_r($query_args);die();
+
 				$query 			= new WP_Query($query_args); 
 				$count_post 	= $query->found_posts;		
 				
@@ -594,9 +586,8 @@ if (!class_exists('AndroidAppGetJobsRoutes')) {
 					return new WP_REST_Response($json, 203);
 				}
 			}
-			
+
 			//Start Query working.
-			
 			if ($query->have_posts()) {
 				$duration_list 			= worktic_job_duration_list();
 				if (function_exists('fw_get_db_settings_option')) {

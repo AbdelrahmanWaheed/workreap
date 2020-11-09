@@ -134,7 +134,7 @@ if (!function_exists('workreap_offline_onhold')) {
  */
 if (!function_exists('workreap_payment_complete')) {
     add_action('woocommerce_payment_complete', 'workreap_payment_complete');
-	//add_action( 'woocommerce_order_status_completed','workreap_payment_complete' );
+	add_action( 'woocommerce_order_status_completed','workreap_payment_complete' );
     function workreap_payment_complete($order_id) {
 		global $current_user, $wpdb;
 		
@@ -169,12 +169,28 @@ if (!function_exists('workreap_payment_complete')) {
 							do_action('workreap_update_users_marketing_product_creation', $current_user->ID, $project_id, 'product_status_update');
 						}
 					}
-				}else if( !empty( $payment_type )  && $payment_type == 'hiring_service') {
+				} else if( !empty( $payment_type )  && $payment_type == 'hiring_service') {
 					workreap_update_hiring_service_data( $order_id,$user->ID );
 				} else if( !empty( $payment_type )  && $payment_type == 'milestone') {
 					workreap_update_hiring_milestone_data( $order_id,$user->ID );
 				} else if( !empty( $payment_type ) && $payment_type == 'subscription' ) {
 					workreap_update_pakage_data( $product_id ,$user->ID,$order_id );
+				} else if( !empty( $payment_type ) && $payment_type == 'posting_job' ) {
+					$order_detail = wc_get_order_item_meta( $key, 'cus_woo_product_data', true );
+					$project_id = intval($order_detail['project_id']);
+					if (function_exists('fw_get_db_settings_option')) {
+						$job_status	= fw_get_db_settings_option('job_status');
+					}
+					$job_status	=  !empty( $job_status ) ? $job_status : 'publish';
+
+					if(!empty($project_id)) {
+						$project_post_data 	= array(
+							'ID'            => $project_id,
+							'post_status'   => $job_status,
+						);
+						wp_update_post( $project_post_data );
+						update_post_meta( $project_id, '_order_id', $order_id );
+					}
 				}
             }
         }
@@ -1168,7 +1184,7 @@ if (!function_exists('workreap_woo_order_meta')) {
 														<span><?php echo workreap_get_hiring_milestone_value( $value, $key );?></span>
 													</div>
 												</div>
-											<?php } else if( !empty($payment_type) && $payment_type === 'hiring') {?>
+											<?php } else if( !empty($payment_type) && ($payment_type === 'hiring' || $payment_type === 'posting_job')) {?>
 												<div class="cus-options-data">
 													<label><span><?php echo workreap_get_hiring_payment_title($key);?></span></label>
 													<div class="step-value">
@@ -1289,6 +1305,48 @@ if (!function_exists('workreap_get_hired_product_id')) {
 }
 
 /**
+ * Posting job product ID
+ *
+ * @throws error
+ * @author Amentotech <theamentotech@gmail.com>
+ * @return 
+ */
+if (!function_exists('workreap_get_posting_job_product_id')) {
+
+    function workreap_get_posting_job_product_id() {
+		$meta_query_args = array();
+		$args = array(
+			'post_type' 			=> 'product',
+			'posts_per_page' 		=> -1,
+			'order' 				=> 'DESC',
+			'orderby' 				=> 'ID',
+			'post_status' 			=> 'publish',
+			'ignore_sticky_posts' 	=> 1
+		);
+
+
+		$meta_query_args[] = array(
+			'key' 			=> '_workreap_posting_job',
+			'value' 		=> 'yes',
+			'compare' 		=> '=',
+		);
+		
+		$query_relation 		= array('relation' => 'AND',);
+		$meta_query_args 		= array_merge($query_relation, $meta_query_args);
+		$args['meta_query'] 	= $meta_query_args;
+		
+		$hired_product = get_posts($args);
+		
+		if (!empty($hired_product)) {
+            return (int) $hired_product[0]->ID;
+        } else{
+			 return 0;
+		}
+		
+	}
+}
+
+/**
  * Price override
  *
  * @throws error
@@ -1310,6 +1368,11 @@ if (!function_exists('workreap_apply_custom_price_to_cart_item')) {
 							$value['data']->set_price($bk_price);
 						}
 					} else if( !empty( $value['payment_type'] ) && $value['payment_type'] == 'hiring_service' ){
+						if( isset( $value['cart_data']['price'] ) ){
+							$bk_price = floatval( $value['cart_data']['price'] );
+							$value['data']->set_price($bk_price);
+						}
+					} else if( !empty( $value['payment_type'] ) && $value['payment_type'] == 'posting_job' ){
 						if( isset( $value['cart_data']['price'] ) ){
 							$bk_price = floatval( $value['cart_data']['price'] );
 							$value['data']->set_price($bk_price);
@@ -1348,6 +1411,14 @@ if (!function_exists('workreap_product_type_options')) {
 					'default' => 'no'
 				);
 			}
+
+			$options['workreap_posting_job'] = array(
+				'id' 			=> '_workreap_posting_job',
+				'wrapper_class' => 'show_if_simple show_if_variable',
+				'label' 		=> esc_html__('Post Job', 'workreap'),
+				'description' 	=> esc_html__('Post job product will be used to make the payment for posting project/job', 'workreap'),
+				'default' => 'no'
+			);
 		}
 		
 		return $options;
@@ -1412,6 +1483,67 @@ if (!function_exists('workreap_update_hiring_product')) {
             $counter = 0;
             foreach ($booking_product as $key => $product) {
                 update_post_meta($product->ID, '_workreap_hiring', 'no');
+            }
+        }
+		
+	}
+}
+
+/**
+ * Save products meta
+ *
+ * @throws error
+ * @author Amentotech <theamentotech@gmail.com>
+ * @return 
+ */
+if (!function_exists('workreap_woocommerce_process_posting_job_product_meta')) {
+	add_action('woocommerce_process_product_meta_variable', 'workreap_woocommerce_process_posting_job_product_meta', 10, 1);
+	add_action('woocommerce_process_product_meta_simple', 'workreap_woocommerce_process_posting_job_product_meta', 10, 1);
+	function workreap_woocommerce_process_posting_job_product_meta( $post_id ) {
+		workreap_update_hiring_product(); //update default booking product
+
+		$is_workreap_posting_job	= isset($_POST['_workreap_posting_job']) ? 'yes' : 'no';
+		update_post_meta($post_id, '_workreap_posting_job', $is_workreap_posting_job);
+	}
+}
+
+/**
+ * Update posting job product
+ *
+ * @throws error
+ * @author Amentotech <theamentotech@gmail.com>
+ * @return 
+ */
+if (!function_exists('workreap_update_posting_job_product')) {
+
+    function workreap_update_posting_job_product() {
+		$meta_query_args = array();
+		$args = array(
+			'post_type' 		=> 'product',
+			'posts_per_page' 	=> -1,
+			'order' 			=> 'DESC',
+			'orderby'			=> 'ID',
+			'post_status' 		=> 'publish',
+			'ignore_sticky_posts' => 1
+		);
+
+
+		$meta_query_args[] = array(
+			'key' 			=> '_workreap_posting_job',
+			'value' 		=> 'yes',
+			'compare' 		=> '=',
+		);
+		
+		$query_relation 		= array('relation' => 'AND',);
+		$meta_query_args 		= array_merge($query_relation, $meta_query_args);
+		$args['meta_query'] 	= $meta_query_args;
+		
+		$booking_product = get_posts($args);
+		
+		if (!empty($booking_product)) {
+            $counter = 0;
+            foreach ($booking_product as $key => $product) {
+                update_post_meta($product->ID, '_workreap_posting_job', 'no');
             }
         }
 		

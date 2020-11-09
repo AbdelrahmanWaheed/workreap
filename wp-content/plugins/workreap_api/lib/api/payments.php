@@ -16,6 +16,7 @@ if (!class_exists('AndroidAppGetPaymentsRoutes')) {
                         'methods' 	=> WP_REST_Server::CREATABLE,
                         'callback' 	=> array(&$this, 'add_payment'),
                         'args' 		=> array(),
+						'permission_callback' => '__return_true',
                     ),
                 )
             );
@@ -27,6 +28,7 @@ if (!class_exists('AndroidAppGetPaymentsRoutes')) {
                         'methods' 	=> WP_REST_Server::READABLE,
                         'callback' 	=> array(&$this, 'available_payment_methods'),
                         'args' 		=> array(),
+						'permission_callback' => '__return_true',
                     ),
                 )
             );

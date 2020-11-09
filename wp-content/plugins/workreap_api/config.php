@@ -20,7 +20,7 @@ if( !class_exists( 'AndroidAppGlobalSettings' ) ) {
 
 	abstract class AndroidAppGlobalSettings{
 		const PluginName 		= "Android App API";
-		const PluginVersion 	 = '1.5';
+		const PluginVersion 	 = '1.7';
 		
 		 /**
 		 * Getter for Plugin Version

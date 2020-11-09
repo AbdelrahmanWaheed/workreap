@@ -2793,10 +2793,11 @@ if ( !function_exists( 'workreap_post_job' ) ) {
 
 		if (function_exists('fw_get_db_settings_option')) {
 			$hide_map	= fw_get_db_settings_option('hide_map');
-			$job_status	= fw_get_db_settings_option('job_status');
+			// $job_status	= fw_get_db_settings_option('job_status');
 		}
 		
-		$job_status	=  !empty( $job_status ) ? $job_status : 'publish';
+		// $job_status	=  !empty( $job_status ) ? $job_status : 'publish';
+        $job_status = 'not_paid';
 
 		if( function_exists('workreap_is_demo_site') ) { 
 			workreap_is_demo_site() ;
@@ -2818,7 +2819,7 @@ if ( !function_exists( 'workreap_post_job' ) ) {
 			$required = array(
 				'title'   			=> esc_html__('Job title is required', 'workreap'),
 				'description'       => esc_html__('Job Details are required', 'workreap'),
-				'project_cost'      => esc_html__('Project cost is required', 'workreap'),
+				// 'project_cost'      => esc_html__('Project cost is required', 'workreap'),
 				'skills'            => esc_html__('Project skills are required', 'workreap'),
 				// 'project_level'  	=> esc_html__('Project level is required', 'workreap'),
 				// 'project_duration'  => esc_html__('Project duration is required', 'workreap'),
@@ -2834,7 +2835,7 @@ if ( !function_exists( 'workreap_post_job' ) ) {
 			$required = array(
 				'title'   			=> esc_html__('Job title is required', 'workreap'),
 				'description'       => esc_html__('Job Details are required', 'workreap'),
-				'project_cost'      => esc_html__('Project cost is required', 'workreap'),
+				// 'project_cost'      => esc_html__('Project cost is required', 'workreap'),
 				'skills'            => esc_html__('Project skills are required', 'workreap'),
 				// 'project_level'  	=> esc_html__('Project level is required', 'workreap'),
 				// 'project_duration'  => esc_html__('Project duration is required', 'workreap'),
@@ -2887,10 +2888,10 @@ if ( !function_exists( 'workreap_post_job' ) ) {
 				$json['type'] 		= 'error';
 				$json['message'] 	= esc_html__('Maximum project cost should not be less than minimum project cost', 'workreap');        
 				wp_send_json($json);
-			} else if( $key == 'project_type' && $_POST['job']['project_type'] === 'fixed' && empty( $_POST['job']['project_cost'] )  ){
-				$json['type'] 		= 'error';
-				$json['message'] 	= esc_html__('Project cost is required', 'workreap');        
-				wp_send_json($json);
+			// } else if( $key == 'project_type' && $_POST['job']['project_type'] === 'fixed' && empty( $_POST['job']['project_cost'] )  ){
+			// 	$json['type'] 		= 'error';
+			// 	$json['message'] 	= esc_html__('Project cost is required', 'workreap');        
+			// 	wp_send_json($json);
 			}
 
 		}
@@ -3014,7 +3015,7 @@ if ( !function_exists( 'workreap_post_job' ) ) {
 			}
 
 			//update langs
-			wp_set_post_terms( $post_id, $languages, 'languages' );
+			// wp_set_post_terms( $post_id, $languages, 'languages' );
 			
 			//update cats
 			wp_set_post_terms( $post_id, $categories, 'project_cat' );
@@ -3034,15 +3035,15 @@ if ( !function_exists( 'workreap_post_job' ) ) {
 			}
 			
 			//update
-			update_post_meta($post_id, '_expiry_date', $expiry_date);
-			update_post_meta($post_id, 'deadline', $deadline);
-			update_post_meta($post_id, '_project_type', $project_type);
-			update_post_meta($post_id, '_project_duration', $project_duration);
-			update_post_meta($post_id, '_english_level', $english_level);
+			// update_post_meta($post_id, '_expiry_date', $expiry_date);
+			// update_post_meta($post_id, 'deadline', $deadline);
+			// update_post_meta($post_id, '_project_type', $project_type);
+			// update_post_meta($post_id, '_project_duration', $project_duration);
+			// update_post_meta($post_id, '_english_level', $english_level); 
 
-			update_post_meta($post_id, '_estimated_hours', $estimated_hours);
-			update_post_meta($post_id, '_hourly_rate', $hourly_rate);
-			update_post_meta($post_id, '_project_cost', $project_cost);
+			// update_post_meta($post_id, '_estimated_hours', $estimated_hours);
+			// update_post_meta($post_id, '_hourly_rate', $hourly_rate);
+			// update_post_meta($post_id, '_project_cost', $project_cost);
 
 
 			$project_data	= array(); 
@@ -3055,15 +3056,15 @@ if ( !function_exists( 'workreap_post_job' ) ) {
 			$project_data['fixed']['max_price']			= !empty( $_POST['job']['max_price'] ) ? $_POST['job']['max_price'] : '';
 
 			//update location
-			$address    = !empty( $_POST['job']['address'] ) ? $_POST['job']['address'] : '';
-			$country    = !empty( $_POST['job']['country'] ) ? $_POST['job']['country'] : '';
-			$latitude   = !empty( $_POST['job']['latitude'] ) ? $_POST['job']['latitude'] : '';
-			$longitude  = !empty( $_POST['job']['longitude'] ) ? $_POST['job']['longitude'] : '';
+			// $address    = !empty( $_POST['job']['address'] ) ? $_POST['job']['address'] : '';
+			// $country    = !empty( $_POST['job']['country'] ) ? $_POST['job']['country'] : '';
+			// $latitude   = !empty( $_POST['job']['latitude'] ) ? $_POST['job']['latitude'] : '';
+			// $longitude  = !empty( $_POST['job']['longitude'] ) ? $_POST['job']['longitude'] : '';
 			
-			update_post_meta($post_id, '_address', $address);
-			update_post_meta($post_id, '_country', $country);
-			update_post_meta($post_id, '_latitude', $latitude);
-			update_post_meta($post_id, '_longitude', $longitude);
+			// update_post_meta($post_id, '_address', $address);
+			// update_post_meta($post_id, '_country', $country);
+			// update_post_meta($post_id, '_latitude', $latitude);
+			// update_post_meta($post_id, '_longitude', $longitude);
 			
 
 			//Set country for unyson
@@ -3112,8 +3113,8 @@ if ( !function_exists( 'workreap_post_job' ) ) {
 			$fw_options['deadline']         	 = $deadline;
 			$fw_options['project_level']         = $project_level;
 			$fw_options['project_type']          = $project_data;
-			$fw_options['project_duration']      = $project_duration;
-			$fw_options['english_level']         = $english_level;
+			// $fw_options['project_duration']      = $project_duration;
+			// $fw_options['english_level']         = $english_level;
 			$fw_options['show_attachments']      = $show_attachments;
 			$fw_options['project_documents']     = $job_files;
 			$fw_options['address']            	 = $address;
@@ -3125,6 +3126,20 @@ if ( !function_exists( 'workreap_post_job' ) ) {
 			//Update User Profile
 			fw_set_db_post_option($post_id, null, $fw_options);
 			
+            // redirect to bundle selection page
+            $job_bundles_tpl      = fw_get_db_settings_option('job_bundles_tpl');
+            if(empty($job_bundles_tpl)) {
+                $json['type']         = 'error';
+                $json['message']      = esc_html__('Please specify the bundle selection page in dashboard.', 'workreap');
+                wp_send_json($json);
+            }
+
+            $json['type']         = 'redirect';
+            $json['message']      = esc_html__('Please wait while you are redirecting to bundle selection page.', 'workreap');
+            $json['redirect_url'] = add_query_arg('project', $post_id, get_permalink((int) $job_bundles_tpl[0]));
+            wp_send_json($json);
+
+            // TODO to be moved to another function
 			if( isset( $_POST['submit_type'] ) && $_POST['submit_type'] === 'update' ){
 				$json['type'] 		= 'success';
 				$json['url'] 		= Workreap_Profile_Menu::workreap_profile_menu_link('jobs', $current_user->ID, true,'posted');
@@ -3182,6 +3197,112 @@ if ( !function_exists( 'workreap_post_job' ) ) {
 
 	add_action( 'wp_ajax_workreap_post_job', 'workreap_post_job' );
 	add_action( 'wp_ajax_nopriv_workreap_post_job', 'workreap_post_job' );
+}
+
+/**
+ * Post a job
+ *
+ * @throws error
+ * @author Amentotech <theamentotech@gmail.com>
+ * @return 
+ */
+if ( !function_exists( 'workreap_select_project_bundle' ) ) {
+
+    function workreap_select_project_bundle() {
+
+        global $current_user;
+
+        $user_id    = $current_user->ID;
+        $project_id = intval( $_POST['project_id'] );
+        $bundle_id  = intval( $_POST['bundle_id'] );
+
+        // check project id
+        if( empty($project_id) || $project_id == 0 || empty($bundle_id) || $bundle_id == 0 ){
+            $json['type'] = 'error';
+            $json['message'] = esc_html__('Error proceeding with the bundle selection', 'workreap');
+            wp_send_json($json);
+        }
+        $project = get_post($project_id);
+        if($project->post_type != 'projects' || $project->post_status != 'not_paid' || $project->post_author != $user_id) {
+            $json['type'] = 'error';
+            $json['message'] = esc_html__('Error proceeding with the bundle selection', 'workreap');
+            wp_send_json($json);
+        }
+        $bundle = get_post($bundle_id);
+        if($bundle->post_type != 'bundles' || $bundle->post_status != 'publish') {
+            $json['type'] = 'error';
+            $json['message'] = esc_html__('Error proceeding with the bundle selection', 'workreap');
+            wp_send_json($json);
+        }
+
+        // set project cost
+        $project_category = wp_get_post_terms($project_id, 'project_cat', array('fields' => 'ids'))[0];
+        $price = intval(fw_get_db_post_option($bundle_id, 'price_cat_' . $project_category));
+        update_post_meta($project_id, '_project_cost', $price);
+
+        $db_project_type = fw_get_db_post_option($project_id, 'project_type');
+        $db_project_type['fixed']['project_cost'] = $price;
+        fw_set_db_post_option($project_id, 'project_type', $db_project_type);
+
+        // prepare checkout process
+        $bk_settings = worrketic_hiring_payment_setting();
+        $product_id = workreap_get_posting_job_product_id();
+        if( !empty( $product_id )) {
+            if ( class_exists('WooCommerce') ) {
+                global $woocommerce;
+
+                $price_symbol       = workreap_get_current_currency();
+                $admin_shares       = 0.0;
+                $freelancer_shares  = 0.0;
+                
+                if( !empty( $price ) ){
+                    if( isset( $bk_settings['percentage'] ) && $bk_settings['percentage'] > 0 ){
+                        $admin_shares       = $price * $bk_settings['percentage'] / 100;
+                        $freelancer_shares  = $price - $admin_shares;
+                        $admin_shares       = number_format($admin_shares, 2, '.', '');
+                        $freelancer_shares  = number_format($freelancer_shares, 2, '.', '');
+                    } else{
+                        $admin_shares       = 0.0;
+                        $freelancer_shares  = $price;
+                        $admin_shares       = number_format($admin_shares, 2, '.', '');
+                        $freelancer_shares  = number_format($freelancer_shares, 2, '.', '');
+                    }
+                }
+                
+                $cart_meta['project_id'] = $project_id;
+                $cart_meta['price']      = $price;
+                
+                $cart_data = array(
+                    'product_id'        => $product_id,
+                    'cart_data'         => $cart_meta,
+                    'price'             => $price_symbol['symbol'].$price,
+                    'payment_type'      => 'posting_job',
+                    'admin_shares'      => $admin_shares,
+                    'freelancer_shares' => $freelancer_shares,
+                );
+
+                $woocommerce->cart->empty_cart();
+                $cart_item_data = $cart_data;
+                WC()->cart->add_to_cart($product_id, 1, null, null, $cart_item_data);
+
+                $json['type']           = 'checkout';
+                $json['message']        = esc_html__('Please wait you are redirecting to the checkout page.', 'workreap');
+                $json['checkout_url']   = wc_get_checkout_url();
+                wp_send_json($json);
+            } else {
+                $json['type']       = 'error';
+                $json['message']    = esc_html__('Please install WooCommerce plugin to process this order', 'workreap');
+                wp_send_json($json);
+            }
+        } else {
+            $json['type']       = 'error';
+            $json['message']    = esc_html__('Please add posting job product', 'workreap');
+            wp_send_json($json);
+        }
+    }
+
+    add_action( 'wp_ajax_workreap_select_project_bundle', 'workreap_select_project_bundle' );
+    add_action( 'wp_ajax_nopriv_workreap_select_project_bundle', 'workreap_select_project_bundle' );
 }
 
 /**
@@ -3933,85 +4054,34 @@ if ( !function_exists( 'workreap_hire_freelancer' ) ) {
         if( function_exists('workreap_is_demo_site') ) { 
             workreap_is_demo_site() ;
         }; //if demo site then prevent
-
-        $bk_settings    = worrketic_hiring_payment_setting();
         
-        if( isset( $bk_settings['type'] ) && ($bk_settings['type'] === 'woo' || $bk_settings['type'] === 'offline_woo')) {
+        if( !empty($job_id) && !empty($proposal_id) ) {
+            // prepare the hiring data
+            $order_id       = get_post_meta( $job_id, '_order_id', true );
+            $order          = wc_get_order( $order_id );
+            $items          = $order->get_items();
+            $item_id        = array_key_first( $items );
+            $order_detail   = wc_get_order_item_meta( $item_id, 'cus_woo_product_data', true );
+            $order_detail['proposal_id'] = $proposal_id;
+            wc_update_order_item_meta( $item_id, 'cus_woo_product_data', $order_detail );
+
+            workreap_update_hiring_data($order_id);
             
-            $product_id = workreap_get_hired_product_id();
-            if( !empty( $product_id )) {
-                
-                if ( class_exists('WooCommerce') ) {
+            // hire the freelancer
+            workreap_hired_freelancer_after_payment($job_id, $proposal_id); 
 
-                    $woocommerce->cart->empty_cart(); //empty cart before update cart
-                    $user_id            = $current_user->ID;
-                    $price              = get_post_meta($proposal_id ,'_amount',true);
-                    $price_symbol       = workreap_get_current_currency();
-                    $admin_shares       = 0.0;
-                    $freelancer_shares  = 0.0;
-                    
-                    if( !empty( $price ) ){
-                        if( isset( $bk_settings['percentage'] ) && $bk_settings['percentage'] > 0 ){
-                            $admin_shares       = $price/100*$bk_settings['percentage'];
-                            $freelancer_shares  = $price - $admin_shares;
-                            $admin_shares       = number_format($admin_shares,2,'.', '');
-                            $freelancer_shares  = number_format($freelancer_shares,2,'.', '');
-                        } else{
-                            $admin_shares       = 0.0;
-                            $freelancer_shares  = $price;
-                            $admin_shares       = number_format($admin_shares,2,'.', '');
-                            $freelancer_shares  = number_format($freelancer_shares,2,'.', '');
-                        }
-                    }
-                    
-                    $cart_meta['project_id']        = $job_id;
-                    $cart_meta['price']             = $price;
-                    $cart_meta['proposal_id']       = $proposal_id;
-                    
-                    $cart_data = array(
-                        'product_id'        => $product_id,
-                        'cart_data'         => $cart_meta,
-                        'price'             => $price_symbol['symbol'].$price,
-                        'payment_type'      => 'hiring',
-                        'admin_shares'      => $admin_shares,
-                        'freelancer_shares' => $freelancer_shares,
-                    );
-
-                    $woocommerce->cart->empty_cart();
-                    $cart_item_data = $cart_data;
-                    WC()->cart->add_to_cart($product_id, 1, null, null, $cart_item_data);
-
-                    $json['type']           = 'checkout';
-                    $json['message']        = esc_html__('Please wait you are redirecting to the checkout page.', 'workreap');
-                    $json['checkout_url']   = wc_get_checkout_url();
-                    wp_send_json($json);
-                } else {
-                    $json['type']       = 'error';
-                    $json['message']    = esc_html__('Please install WooCommerce plugin to process this order', 'workreap');
-                    wp_send_json($json);
-                }
-            } else{
-                $json['type']       = 'error';
-                $json['message']    = esc_html__('Hiring settings is missing, please contact to administrator.', 'workreap');
-                wp_send_json($json);
-            }
+            // update api key data
+            if( apply_filters('workreap_filter_user_promotion', 'disable') === 'enable' ){  
+                do_action('workreap_update_users_marketing_product_creation', $current_user->ID, $job_id, 'product_status_update');
+            }          
+            $json['type']       = 'success';
+            $json['message']    = esc_html__('Freelancer has hired successfully.', 'workreap');
+            wp_send_json($json);
         } else {
-
-            if( !empty($job_id) && !empty($proposal_id) ) {
-                workreap_hired_freelancer_after_payment($job_id, $proposal_id); 
-                //update api key data
-                if( apply_filters('workreap_filter_user_promotion', 'disable') === 'enable' ){  
-                    do_action('workreap_update_users_marketing_product_creation', $current_user->ID, $job_id, 'product_status_update');
-                }          
-                $json['type']       = 'success';
-                $json['message']    = esc_html__('Freelancer has hired successfully.', 'workreap');
-                wp_send_json($json);
-            } else{
-                $json['type']       = 'error';
-                $json['message']    = esc_html__('Some error occur, please try again later', 'workreap');
-                wp_send_json($json);
-            }
-        }           
+            $json['type']       = 'error';
+            $json['message']    = esc_html__('Some error occur, please try again later', 'workreap');
+            wp_send_json($json);
+        }
     }
 
     add_action( 'wp_ajax_workreap_hire_freelancer', 'workreap_hire_freelancer' );

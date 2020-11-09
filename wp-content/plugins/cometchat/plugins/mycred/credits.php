@@ -111,6 +111,12 @@ function deductMycredPoints(){
 		$interval = "message";
 		$amount = $creditToDeduct["creditToDeduct"];
 		$deductionInterval = $creditToDeduct["creditOnMessage"];
+		if(!empty(get_transient('messageCounter'.$id))){
+			$messageCounter[$type.$name.$id.$isGroup] = get_transient('messageCounter'.$id);
+		}else{
+			$messageCounter[$type.$name.$id.$isGroup] = 0;
+		}
+		$messageCounter[$type.$name.$to.$isGroup]++;
 	}
 
 
@@ -126,15 +132,29 @@ function deductMycredPoints(){
 		$result['errorcode'] = '2';
 		$result['message'] = 'The Credit Deduction is not enabled for the '.$name.' '.$type.' for the '.$role.' role';
 		$result['balance'] = $credits;
-	}elseif($timeCounter[$type.$name.$id.$isGroup]>time()-$deductionInterval*60 && ($name == "Video" || $name == "Audio")){
+	}elseif($timeCounter[$type.$name.$id.$isGroup]>time()-$deductionInterval*60 && $name != "Text"){
 			$result["success"] = false;
 			$result['errorcode'] = '4';
 			$result['message'] = 'Already deducted '.$creditsToDeduct.' credits for the '.$type.' '.$name.' for the interval of '.$deductionInterval.' minutes';
 			$result['balance'] = $credits;
-	}elseif(!empty($credits["credits"]) && $credits["credits"] >= $amount){
-		if($name == "Video" || $name == "Audio"){
-			$timeCounter[$type.$name.$id.$isGroup] = time();
-			set_transient('timer'.$id,$timeCounter ,60 * 24);
+	}elseif(!empty($credits["credits"]) && $credits["credits"] >= $amount && $name != "Text"){
+		$timeCounter[$type.$name.$id.$isGroup] = time();
+		set_transient('timer'.$id,$timeCounter ,60 * 24);
+		$balance = mycred_subtract( 'Message', $userid, $amount, $message );
+		$result["success"] = true;
+		$result["message"] = $message;
+	}elseif($messageCounter[$type.$name.$to.$isGroup]>1 && $messageCounter[$type.$name.$to.$isGroup]<=$deductionInterval && $name == "Text"){
+		if($messageCounter[$type.$name.$to.$isGroup] == $deductionInterval){
+			$messageCounter[$type.$name.$to.$isGroup] = 0;
+		}
+		set_transient('messageCounter'.$id,$messageCounter[$type.$name.$id.$isGroup],60 * 24);
+		$result["success"] = false;
+		$result['errorcode'] = '4';
+		$result['message'] = 'Already deducted '.$creditsToDeduct.' credits for the Text Chat on number of messages for the '.$deductionInterval.' message';
+		$result['balance'] = $credits;
+	}elseif(!empty($credits["credits"]) && $credits["credits"] >= $amount && $name == "Text" && ($messageCounter[$type.$name.$id.$isGroup] == 1 || $messageCounter[$type.$name.$id.$isGroup] == 0)){
+		if($deductionInterval > 1){
+			set_transient('messageCounter'.$id,$messageCounter[$type.$name.$id.$isGroup],60 * 24);
 		}
 		$balance = mycred_subtract( 'Message', $userid, $amount, $message );
 		$result["success"] = true;
@@ -183,6 +203,9 @@ function getCreditsToDeductForMyCred($params=array()){
 		if(property_exists($data, 'name') && $data->name == "audiochat"){
 			$name = "Audio";
 		}
+		if(property_exists($data, 'name') && $data->name == "core"){
+			$name = $data->name;
+		}
 
 		if(property_exists($data, 'name') && $data->name == "broadcast"){
 			$creditsinfo["creditsinfo"] = array("creditsToDeduct" => 0,"deductionInterval" => 0);
@@ -196,6 +219,24 @@ function getCreditsToDeductForMyCred($params=array()){
 			$rolefeature = unserialize($rolefeature);
 		}else{
 			$creditsinfo["creditsinfo"] = array("creditsToDeduct" => 0,"deductionInterval" => 0,"creditsToDeductOnMessage" => 0,"messageCount" => 0);
+		}
+
+		if($type == "core" && $name == "core"){
+			if(property_exists($data, 'balance') && $data->balance == 1){
+				$result["balance"] = getMyCredCredits($id);
+			}			
+			if(!empty($rolefeature)){
+				$result["creditsinfo"] = array(
+					"creditsToDeduct" => "0",
+					"deductionInterval" => "0",
+					"creditsToDeductOnMessage" => !empty($rolefeature["creditToDeduct"]) ? $rolefeature["creditToDeduct"] : "0",
+					"messageCount" => !empty($rolefeature["creditOnMessage"]) ? $rolefeature["creditOnMessage"] : "0"
+				);
+			}else{
+				$result["creditsinfo"] = array("creditsToDeduct" => 0,"deductionInterval" => 0,"creditsToDeductOnMessage" => 0,"messageCount" => 0);
+			}
+			echo json_encode($result);
+			exit();
 		}
 
 		if(!empty($role) && !empty($type) && !empty($name)){

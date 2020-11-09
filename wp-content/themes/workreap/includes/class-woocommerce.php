@@ -35,6 +35,11 @@ if (!class_exists('workreap_woocommerace')) {
 				'compare' 		=> 'NOT EXISTS',
 			);
 			
+			$meta_query[] = array(
+				'key' 			=> '_workreap_posting_job',
+				'compare' 		=> 'NOT EXISTS',
+			);
+
 			$q->set( 'meta_query', $meta_query );
 		}
 		

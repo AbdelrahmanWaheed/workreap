@@ -28,13 +28,14 @@ if (!class_exists('AndroidApp_User_Route')) {
                     array(
                         'methods' => WP_REST_Server::READABLE,
                         'callback' => array(&$this, 'get_items'),
-                        'args' => array(
-                        ),
+                        'args' => array(),
+						'permission_callback' => '__return_true',
                     ),
                     array(
                         'methods' => WP_REST_Server::CREATABLE,
                         'callback' => array(&$this, 'user_login'),
                         'args' => array(),
+						'permission_callback' => '__return_true',
                     ),
                 )
             );
@@ -46,6 +47,7 @@ if (!class_exists('AndroidApp_User_Route')) {
                         'methods' 	=> WP_REST_Server::CREATABLE,
                         'callback' 	=> array(&$this, 'signup'),
                         'args' 		=> array(),
+						'permission_callback' => '__return_true',
                     ),
                 )
             );
@@ -57,6 +59,7 @@ if (!class_exists('AndroidApp_User_Route')) {
                         'methods' 	=> WP_REST_Server::CREATABLE,
                         'callback' 	=> array(&$this, 'resend_code'),
                         'args' 		=> array(),
+						'permission_callback' => '__return_true',
                     ),
                 )
             );
@@ -68,6 +71,7 @@ if (!class_exists('AndroidApp_User_Route')) {
                         'methods' 	=> WP_REST_Server::CREATABLE,
                         'callback' 	=> array(&$this, 'account_verification'),
                         'args' 		=> array(),
+						'permission_callback' => '__return_true',
                     ),
                 )
             );
@@ -79,6 +83,7 @@ if (!class_exists('AndroidApp_User_Route')) {
                         'methods' 	=> WP_REST_Server::READABLE,
                         'callback' 	=> array(&$this, 'check_package'),
                         'args' 		=> array(),
+						'permission_callback' => '__return_true',
                     ),
                 )
             );
@@ -90,10 +95,24 @@ if (!class_exists('AndroidApp_User_Route')) {
                         'methods' 	=> WP_REST_Server::READABLE,
                         'callback' 	=> array(&$this, 'get_access'),
                         'args' 		=> array(),
+						'permission_callback' => '__return_true',
                     ),
                 )
             );
 			
+			register_rest_route($namespace, '/' . $base . '/get_user_balance',
+                array(
+                  array(
+                        'methods' 	=> WP_REST_Server::READABLE,
+                        'callback' 	=> array(&$this, 'get_user_balance'),
+                        'args' 		=> array(),
+						'permission_callback' => '__return_true',
+                    ),
+                )
+            );
+			
+			
+				
 			//user login
             register_rest_route($namespace, '/' . $base . '/do_logout',
                 array(                 
@@ -101,6 +120,7 @@ if (!class_exists('AndroidApp_User_Route')) {
                         'methods' => WP_REST_Server::CREATABLE,
                         'callback' => array(&$this, 'do_logout'),
                         'args' => array(),
+						'permission_callback' => '__return_true',
                     ),
                 )
             );
@@ -112,6 +132,7 @@ if (!class_exists('AndroidApp_User_Route')) {
                         'methods' => WP_REST_Server::CREATABLE,
                         'callback' => array(&$this, 'do_favorite'),
                         'args' => array(),
+						'permission_callback' => '__return_true',
                     ),
                 )
             );
@@ -123,11 +144,13 @@ if (!class_exists('AndroidApp_User_Route')) {
                         'methods' => WP_REST_Server::READABLE,
                         'callback' => array(&$this, 'get_items'),
                         'args' => array(),
+						'permission_callback' => '__return_true',
                     ),
                     array(
                         'methods' => WP_REST_Server::CREATABLE,
                         'callback' => array(&$this, 'get_forgot_password'),
                         'args' => array(),
+						'permission_callback' => '__return_true',
                     ),
                 )
             );
@@ -139,11 +162,13 @@ if (!class_exists('AndroidApp_User_Route')) {
                         'methods' => WP_REST_Server::READABLE,
                         'callback' => array(&$this, 'get_items'),
                         'args' => array(),
+						'permission_callback' => '__return_true',
                     ),
                     array(
                         'methods' => WP_REST_Server::CREATABLE,
                         'callback' => array(&$this, 'reporting_user'),
                         'args' => array(),
+						'permission_callback' => '__return_true',
                     ),
                 )
             );
@@ -154,6 +179,7 @@ if (!class_exists('AndroidApp_User_Route')) {
 					'methods' 	=> WP_REST_Server::CREATABLE,
 					'callback' 	=> array($this, 'create_checkout_page'),
 					'args' 		=> array(),
+					'permission_callback' => '__return_true',
 				),
 			));
         }
@@ -211,7 +237,6 @@ if (!class_exists('AndroidApp_User_Route')) {
 			
 			$json			= array();
 			$validations 	= array(
-								'gender' 		=> esc_html__('Gender field is required', 'workreap_api'),
 								'username' 		=> esc_html__('User Name field is required', 'workreap_api'),
 								'first_name' 	=> esc_html__('First Name is required', 'workreap_api'),
 								'last_name' 	=> esc_html__('Last Name is required.', 'workreap_api'),
@@ -619,7 +644,34 @@ if (!class_exists('AndroidApp_User_Route')) {
 			if( apply_filters('workreap_system_access','job_base') === true ){
 				$user_meta['access_type']['job_access']	= 'yes';
 			}
+			$service_fee 		= ''; 
+			if( function_exists('fw_get_db_settings_option') ){
+				$service_fee    	= fw_get_db_settings_option('service_fee');
+			}
+
+			$service_fee 		= ''; 
+			if( function_exists('fw_get_db_settings_option') ){
+				$service_fee    	= fw_get_db_settings_option('service_fee');
+			}
+			
+			$user_meta['theme_name']	= get_bloginfo( 'name' );
+			$user_meta['service_fee']	= $service_fee;
+			$currency						= workreap_get_current_currency();
+			$user_meta['currency_symbol']	= !empty($currency['symbol']) ? $currency['symbol'] : '$';
 			$json	= maybe_unserialize($user_meta);
+			return new WP_REST_Response($json, 200);
+		}
+		
+		public function get_user_balance() {
+			$json			= array();
+			$user_meta		= array();
+			$user_id		= !empty( $request['user_id'] ) ? intval( $request['user_id'] ) : '';
+			$current_balance = workreap_get_sum_earning_freelancer($user_id,'completed','freelancer_amount');
+
+			$json['type'] 	 = "success";
+			$json['message'] = esc_html__("Data returned", 'workreap_api');
+			$json['balance'] = workreap_price_format($current_balance,'return');;
+
 			return new WP_REST_Response($json, 200);
 		}
 		/**
@@ -879,7 +931,12 @@ if (!class_exists('AndroidApp_User_Route')) {
 					if( apply_filters('workreap_system_access','job_base') === true ){
 						$user_meta['job_access']	= 'yes';
 					}
-					
+
+					$user_meta['listing_type']	= 'free';
+					if(apply_filters('workreap_is_listing_free',false,$user->data->ID) === false ){
+						$user_meta['listing_type']	= 'paid';
+					}
+
 					if ( class_exists('WC_Customer') ) {
 						$customer 	= new WC_Customer( $user->data->ID );
 						$shipping	= $customer->get_shipping();

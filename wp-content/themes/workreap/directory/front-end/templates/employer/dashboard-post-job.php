@@ -174,47 +174,49 @@ $hide = true;
 							</fieldset>
 						</div>
 					</div>
-					<div class="wt-category-holder wt-tabsinfo">
-						<div class="wt-tabscontenttitle">
-							<h2><?php esc_html_e('Prices','workreap');?></h2>
-						</div>
-						<div class="wt-formtheme wt-userform wt-userformvtwo">
-							<fieldset>
-								<?php if(!$hide) { ?>
-									<div class="form-group form-group-half wt-formwithlabel">
-										<span class="wt-selects">
-											<select name="job[project_type]" class="wt-job-type chosen-select">
-												<option value=""><?php esc_html_e('Select job type','workreap');?></option>
-												<?php if( !empty( $job_type ) ){
-													foreach( $job_type as $key => $level ){?>
-													<option <?php selected('fixed',$key);?> data-key="<?php echo esc_attr( $key );?>" value="<?php echo esc_attr( $key );?>"><?php echo esc_html( $level );?></option>
-												<?php }}?>
-											</select>
-										</span>
-									</div>
-									<div class="form-group form-group-half wt-formwithlabel job-perhour-input" style="display: none;">
-										<input type="text" name="job[hourly_rate]" value=""  class="form-control wt-numeric" placeholder="<?php esc_attr_e('Minimum Price','workreap');?>">
-									</div>
-								<?php } else { ?>
-									<input type="hidden" name="job[project_type]" value="fixed">
-								<?php } ?>
-								<div class="form-group wt-formwithlabel job-cost-input">
-									<input type="text" name="job[project_cost]" value=""  class="form-control wt-numeric" placeholder="<?php esc_attr_e('Project Cost','workreap');?>">
-								</div>
-								<?php if(!$hide) { ?>
-									<?php if(!empty($job_price_option) && $job_price_option === 'enable') {?>
+					<?php if(!$hide) : ?>
+						<div class="wt-category-holder wt-tabsinfo">
+							<div class="wt-tabscontenttitle">
+								<h2><?php esc_html_e('Prices','workreap');?></h2>
+							</div>
+							<div class="wt-formtheme wt-userform wt-userformvtwo">
+								<fieldset>
+									<?php if(!$hide) { ?>
 										<div class="form-group form-group-half wt-formwithlabel">
-											<input type="text" name="job[max_price]" value="" class="form-control wt-numeric" placeholder="<?php esc_attr_e('Maximum price','workreap');?>">
+											<span class="wt-selects">
+												<select name="job[project_type]" class="wt-job-type chosen-select">
+													<option value=""><?php esc_html_e('Select job type','workreap');?></option>
+													<?php if( !empty( $job_type ) ){
+														foreach( $job_type as $key => $level ){?>
+														<option <?php selected('fixed',$key);?> data-key="<?php echo esc_attr( $key );?>" value="<?php echo esc_attr( $key );?>"><?php echo esc_html( $level );?></option>
+													<?php }}?>
+												</select>
+											</span>
 										</div>
-									<?php }?>
-									<div class="form-group  form-group-half wt-formwithlabel job-perhour-input" style="display: none;">
-										<input type="text" name="job[estimated_hours]" value=""  class="form-control wt-numeric" placeholder="<?php esc_attr_e('Estimated hours','workreap');?>">
+										<div class="form-group form-group-half wt-formwithlabel job-perhour-input" style="display: none;">
+											<input type="text" name="job[hourly_rate]" value=""  class="form-control wt-numeric" placeholder="<?php esc_attr_e('Minimum Price','workreap');?>">
+										</div>
+									<?php } else { ?>
+										<input type="hidden" name="job[project_type]" value="fixed">
+									<?php } ?>
+									<div class="form-group wt-formwithlabel job-cost-input">
+										<input type="text" name="job[project_cost]" value=""  class="form-control wt-numeric" placeholder="<?php esc_attr_e('Project Cost','workreap');?>">
 									</div>
-								<?php } ?>
-								
-							</fieldset>
+									<?php if(!$hide) { ?>
+										<?php if(!empty($job_price_option) && $job_price_option === 'enable') {?>
+											<div class="form-group form-group-half wt-formwithlabel">
+												<input type="text" name="job[max_price]" value="" class="form-control wt-numeric" placeholder="<?php esc_attr_e('Maximum price','workreap');?>">
+											</div>
+										<?php }?>
+										<div class="form-group  form-group-half wt-formwithlabel job-perhour-input" style="display: none;">
+											<input type="text" name="job[estimated_hours]" value=""  class="form-control wt-numeric" placeholder="<?php esc_attr_e('Estimated hours','workreap');?>">
+										</div>
+									<?php } ?>
+									
+								</fieldset>
+							</div>
 						</div>
-					</div>
+					<?php endif; ?>
 					<?php if(!empty($milestone) && $milestone ==='enable' ){ ?>
 						<div class="job-cost-input <?php echo esc_attr($fixedClass);?>">
 							<div class="wt-tabscontenttitle">
@@ -337,7 +339,7 @@ $hide = true;
 						<?php } else { ?>
 							<input type="hidden" value="on" name="job[show_attachments]">
 						<?php } ?>
-						<?php if( apply_filters('workreap_is_job_posting_allowed','wt_jobs', $current_user->ID,'yes') === true ){ ?>
+						<?php if( !$hide && apply_filters('workreap_is_job_posting_allowed','wt_jobs', $current_user->ID,'yes') === true ){ ?>
 							<div class="wt-tabscontenttitle">
 								<h2><?php esc_html_e('Featured job','workreap');?></h2>
 								<div class="wt-rightarea">

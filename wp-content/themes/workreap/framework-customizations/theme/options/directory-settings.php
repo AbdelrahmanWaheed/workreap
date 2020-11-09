@@ -696,6 +696,15 @@ $options = array(
 						'limit' => 1,
 						'prepopulate' => 100,
 					), 
+					'job_bundles_tpl' => array(
+						'label' => esc_html__('Choose Posting Job Bundle Selection page', 'workreap'),
+						'type' => 'multi-select',
+						'population' => 'posts',
+						'source' => 'page',
+						'desc' => esc_html__('Choose Posting Job Bundle Selection template page.', 'workreap'),
+						'limit' => 1,
+						'prepopulate' => 100,
+					), 
 					'search_services_tpl' => array(
 						'label' 		=> esc_html__('Choose Service Search Page', 'workreap'),
 						'type' 			=> 'multi-select',

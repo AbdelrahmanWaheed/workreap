@@ -95,10 +95,14 @@ jQuery(document).ready(function() {
         }else{
             enable_mycred = "true";
         }
-        mycred_url = location.href;
-        var postion = mycred_url.search("wp-admin");
-        mycred_url = mycred_url.slice(0,postion-1);
-        mycred_url = mycred_url.replace("https://","");
+        if(enable_mycred != "false"){
+            mycred_url = location.href;
+            var postion = mycred_url.search("wp-admin");
+            mycred_url = mycred_url.slice(0,postion-1);
+            mycred_url = mycred_url.replace("https://","");
+        }else{
+            mycred_url = "";
+        }
         data = {
             'action': 'cc_action',
             'api': 'cometchat_mycred_setting',

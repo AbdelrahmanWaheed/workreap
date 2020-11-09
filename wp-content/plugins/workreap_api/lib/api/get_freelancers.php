@@ -17,6 +17,7 @@ if (!class_exists('AndroidAppGetFreelancersRoutes')) {
                         'methods' => WP_REST_Server::READABLE,
                         'callback' => array(&$this, 'get_listing'),
                         'args' => array(),
+						'permission_callback' => '__return_true',
                     ),
                 )
             );
@@ -469,7 +470,7 @@ if (!class_exists('AndroidAppGetFreelancersRoutes')) {
 						} else {
 							$item['location']['_country']			= '';
 						}
-						$icon          				= fw_get_db_term_option($terms[0]->term_id,'locations', 'image');
+						$icon          				= !empty($countries) ? fw_get_db_term_option($countries,'locations', 'image') : '';
 						$item['location']['flag'] 	= !empty($icon['url']) ? workreap_add_http($icon['url']) : '';
 					}
 					

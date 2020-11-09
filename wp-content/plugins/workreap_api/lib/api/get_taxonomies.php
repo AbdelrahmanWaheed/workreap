@@ -28,8 +28,8 @@ if (!class_exists('AndroidApp_Taxonomies_Route')) {
                     array(
                         'methods' => WP_REST_Server::READABLE,
                         'callback' => array(&$this, 'get_taxonomies'),
-                        'args' => array(
-                        ),
+                        'args' => array(),
+						'permission_callback' => '__return_true',
                     )
                 )
             );
@@ -39,8 +39,8 @@ if (!class_exists('AndroidApp_Taxonomies_Route')) {
                     array(
                         'methods' => WP_REST_Server::READABLE,
                         'callback' => array(&$this, 'get_remaining_offers'),
-                        'args' => array(
-                        ),
+                        'args' => array(),
+						'permission_callback' => '__return_true',
                     )
                 )
             );
@@ -50,8 +50,8 @@ if (!class_exists('AndroidApp_Taxonomies_Route')) {
                     array(
                         'methods' => WP_REST_Server::READABLE,
                         'callback' => array(&$this, 'get_taxonomy'),
-                        'args' => array(
-                        ),
+                        'args' => array(),
+						'permission_callback' => '__return_true',
                     ),
                 )
             );
@@ -61,8 +61,8 @@ if (!class_exists('AndroidApp_Taxonomies_Route')) {
                     array(
                         'methods' => WP_REST_Server::READABLE,
                         'callback' => array(&$this, 'get_list'),
-                        'args' => array(
-                        ),
+                        'args' => array(),
+						'permission_callback' => '__return_true',
                     ),
                 )
             );

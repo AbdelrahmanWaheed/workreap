@@ -57,7 +57,7 @@
 
 	$bk_settings	= worrketic_hiring_payment_setting();
 		
-	if( isset( $bk_settings['type'] ) && $bk_settings['type'] === 'woo' ) {
+	if( isset( $bk_settings['type'] ) && $bk_settings['type'] === 'woo' && !empty($order_type) ) {
 		if( $order_type === 'service' ){
 			$product_id	= workreap_get_hired_product_id();
 			if( !empty( $product_id )) {
@@ -121,6 +121,56 @@
 			} else{
 				$esc_html_e('Some error occur, please try again later.','workreap_api'); 
 				return false;
+			}
+		} else if( $order_type === 'package'){
+		
+			$product_id		= !empty( $product_id ) ?  $product_id : ''; 
+			if( !empty( $product_id )) {
+				if ( class_exists('WooCommerce') ) {
+				
+					global $current_user, $woocommerce;
+					$woocommerce->cart->empty_cart(); //empty cart before update cart
+					$user_id			= $current_user->ID;
+										
+					$cart_meta					= array();
+					$user_type					= workreap_get_user_type( $user_id );
+					$pakeges_features			= workreap_get_pakages_features();
+	
+					if ( !empty ( $pakeges_features )) {
+						foreach( $pakeges_features as $key => $vals ) {
+							if( $vals['user_type'] === $user_type || $vals['user_type'] === 'common' ) {
+								$item			= get_post_meta($product_id,$key,true);
+								$text			=  !empty( $vals['text'] ) ? ' '.esc_html($vals['text']) : '';
+								if( $key === 'wt_duration_type' ) {
+									$feature 	= workreap_get_duration_types($item,'value');
+								} else if( $key === 'wt_badget' ) {
+									$feature 	= !empty( $item ) ? $item : 0;
+								} else {
+									$feature 	= $item;
+								}
+								
+								$cart_meta[$key]	= $feature.$text;
+							}
+						}
+					}
+					
+					$cart_data = array(
+						'product_id' 		=> $product_id,
+						'cart_data'     	=> $cart_meta,
+						'payment_type'     	=> 'subscription',
+					);
+	
+					$woocommerce->cart->empty_cart();
+					$cart_item_data = $cart_data;
+					WC()->cart->add_to_cart($product_id, 1, null, null, $cart_item_data);
+				} else {
+					$json = array();
+					$json['type'] 		= 'error';
+					$json['message'] 	= esc_html__('Please install WooCommerce plugin to process this order', 'workreap_api');
+				}
+			} else{
+				$json['type'] 		= 'error';
+				$json['message'] 	= esc_html__('Some error occur, please try again later', 'workreap_api');
 			}
 		}
 	}

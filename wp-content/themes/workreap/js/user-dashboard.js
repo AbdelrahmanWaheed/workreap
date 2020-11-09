@@ -1576,6 +1576,12 @@ jQuery(document).on('ready', function() {
 				if (response.type === 'success') {
 					jQuery.sticky(response.message, {classList: 'success', speed: 200, autoclose: 5000}); 
 					window.location = _string_replace_url(response.url);
+				} else if (response.type === 'checkout') {
+					jQuery.sticky(response.message, {classList: 'success', speed: 200, autoclose: 5000});
+					window.location.href = response.checkout_url;
+				} else if (response.type === 'redirect') {
+					jQuery.sticky(response.message, {classList: 'success', speed: 200, autoclose: 5000});
+					window.location.href = response.redirect_url;
 				} else {
 					jQuery.sticky(response.message, {classList: 'important', speed: 200, autoclose: 5000});
 				}

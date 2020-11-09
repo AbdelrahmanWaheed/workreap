@@ -39,3 +39,5 @@ require_once ( get_template_directory() . '/directory/back-end/hooks.php');
 require_once ( get_template_directory() . '/directory/back-end/functions.php');
 require_once ( get_template_directory() . '/directory/front-end/ajax-hooks.php');
 require_once ( get_template_directory() . '/directory/front-end/term_walkers.php'); //Term walkers
+
+require_once ( get_template_directory() . '/woocommerce/payment/checkout-fields.php'); //woocommerce

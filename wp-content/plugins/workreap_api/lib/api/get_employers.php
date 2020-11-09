@@ -17,6 +17,7 @@ if (!class_exists('AndroidAppGetEmployersRoutes')) {
                         'methods' => WP_REST_Server::READABLE,
                         'callback' => array(&$this, 'get_listing'),
                         'args' => array(),
+						'permission_callback' => '__return_true',
                     ),
                 )
             );

@@ -17,6 +17,7 @@ if (!class_exists('AndroidAppGetServicesRoutes')) {
                         'methods' 	=> WP_REST_Server::READABLE,
                         'callback' 	=> array(&$this, 'get_services'),
                         'args' 		=> array(),
+						'permission_callback' => '__return_true',
                     ),
                 )
             );
@@ -27,6 +28,7 @@ if (!class_exists('AndroidAppGetServicesRoutes')) {
                         'methods' 	=> WP_REST_Server::READABLE,
                         'callback' 	=> array(&$this, 'get_addons_services'),
                         'args' 		=> array(),
+						'permission_callback' => '__return_true',
                     ),
                 )
             );
@@ -37,6 +39,7 @@ if (!class_exists('AndroidAppGetServicesRoutes')) {
                         'methods' 	=> WP_REST_Server::CREATABLE,
                         'callback' 	=> array(&$this, 'add_service'),
                         'args' 		=> array(),
+						'permission_callback' => '__return_true',
                     ),
                 )
             );
@@ -47,9 +50,34 @@ if (!class_exists('AndroidAppGetServicesRoutes')) {
                         'methods' 	=> WP_REST_Server::CREATABLE,
                         'callback' 	=> array(&$this, 'add_addon_service'),
                         'args' 		=> array(),
+						'permission_callback' => '__return_true',
                     ),
                 )
             );
+			
+			register_rest_route($namespace, '/' . $base . '/delete_addon_service',
+                array(
+                  array(
+                        'methods' 	=> WP_REST_Server::CREATABLE,
+                        'callback' 	=> array(&$this, 'delete_addon_service'),
+                        'args' 		=> array(),
+						'permission_callback' => '__return_true',
+                    ),
+                )
+            );
+			
+			register_rest_route($namespace, '/' . $base . '/delete_service',
+                array(
+                  array(
+                        'methods' 	=> WP_REST_Server::CREATABLE,
+                        'callback' 	=> array(&$this, 'delete_service'),
+                        'args' 		=> array(),
+						'permission_callback' => '__return_true',
+                    ),
+                )
+            );
+			
+			
         }
 		
 		/**
@@ -168,7 +196,6 @@ if (!class_exists('AndroidAppGetServicesRoutes')) {
 						);
 
 						$addon_post_id    		= wp_insert_post( $user_post );
-
 						$addons[]				= $addon_post_id;
 
 						$price	        		= !empty( $item['price'] ) ? $item['price'] : '';
@@ -383,6 +410,7 @@ if (!class_exists('AndroidAppGetServicesRoutes')) {
 				$fw_options['latitude']         = $latitude;
 				$fw_options['country']          = $location;
 				$fw_options['videos']           = $videos;
+				
 				//Update User Profile
 				fw_set_db_post_option($post_id, null, $fw_options);
 
@@ -428,6 +456,8 @@ if (!class_exists('AndroidAppGetServicesRoutes')) {
          */
 		public function add_addon_service($request) {
 			$user_id			= !empty( $request['user_id'] ) ? intval( $request['user_id'] ) : '';
+			$submit_type		= !empty( $request['submit_type'] ) ? intval( $request['submit_type'] ) : '';
+			
 			$json				= array();
 			$items				= array();
 			$required = array(
@@ -449,7 +479,8 @@ if (!class_exists('AndroidAppGetServicesRoutes')) {
 			$description		= !empty( $request['description'] ) ?  $request['description'] : '';
 			$price				= !empty( $request['price'] ) ?  $request['price'] : '';
 			
-			if( isset( $request['submit_type'] ) && $request['submit_type'] === 'update' ){
+			if( isset( $submit_type ) && $submit_type === 'update' ){
+				
 				$current = !empty($request['id']) ? intval($request['id']) : '';
 
 				$post_author = get_post_field('post_author', $current);
@@ -573,6 +604,76 @@ if (!class_exists('AndroidAppGetServicesRoutes')) {
 				$items[] 			= $json;
 				return new WP_REST_Response($items, 203);
 			}
+			
+		}
+		
+		/**
+         * Delete addon service
+         *
+         * @param WP_REST_Request $request Full data about the request.
+         * @return WP_Error|WP_REST_Response
+         */
+        public function delete_addon_service($request){
+			$user_id		= !empty( $request['user_id'] ) ? intval( $request['user_id'] ) : '';
+			$service_id		= !empty( $request['id'] ) ?  $request['id'] : '';
+			$items			= array();
+			$itm			= array();
+			
+			if(empty($service_id)){
+				
+				$json['type'] 		= 'error';
+				$json['message'] 	= esc_html__('Addons service ID is required', 'workreap_api');;     
+				$items[] 			= $json;
+				return new WP_REST_Response($items, 203);
+			}
+
+			if( !empty( $service_id ) ){
+				wp_delete_post($service_id);
+				$json['type'] 		= 'success';
+				$json['message'] 	= esc_html__('Successfully!  removed this addon service.', 'workreap_api');	
+				$items[] 			= $json;
+				return new WP_REST_Response($items, 203);
+			} 
+			
+		}
+		
+		/**
+         * Delete service
+         *
+         * @param WP_REST_Request $request Full data about the request.
+         * @return WP_Error|WP_REST_Response
+         */
+        public function delete_service($request){
+			$user_id		= !empty( $request['user_id'] ) ? intval( $request['user_id'] ) : '';
+			$service_id		= !empty( $request['id'] ) ?  $request['id'] : '';
+			$items			= array();
+			$itm			= array();
+			
+			if(empty($service_id)){
+				
+				$json['type'] 		= 'error';
+				$json['message'] 	= esc_html__('Addons service ID is required', 'workreap_api');;     
+				$items[] 			= $json;
+				return new WP_REST_Response($items, 203);
+			}
+
+			if( !empty( $service_id ) ){
+
+				$queu_services		= workreap_get_services_count('services-orders',array('hired'), $service_id);
+				if( $queu_services === 0 ){
+					$update				= workreap_save_service_status($service_id, 'deleted');
+					$json['type'] 		= 'success';
+					$json['message'] 	= esc_html__('Successfully!  removed this service.', 'workreap_api');	
+				} else {
+					$json['type'] 		= 'error';
+					$json['message'] 	= esc_html__('You can\'t your service because you have orders in queue.', 'workreap_api');
+				}
+				
+				$json['type'] 		= 'success';
+				$json['message'] 	= esc_html__('Successfully!  removed this addon service.', 'workreap_api');	
+				$items[] 			= $json;
+				return new WP_REST_Response($items, 203);
+			} 
 			
 		}
 		

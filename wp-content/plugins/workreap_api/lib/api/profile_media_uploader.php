@@ -28,6 +28,7 @@ if (!class_exists('AndroidApp_uploadmedia')) {
                         'methods' => WP_REST_Server::CREATABLE,
                         'callback' => array($this, 'upload_avatar'),
                         'args' => array(),
+						'permission_callback' => '__return_true',
                     ),
                 )
             );
@@ -38,6 +39,7 @@ if (!class_exists('AndroidApp_uploadmedia')) {
                         'methods' => WP_REST_Server::CREATABLE,
                         'callback' => array($this, 'upload_banner'),
                         'args' => array(),
+						'permission_callback' => '__return_true',
                     ),
                 )
             );

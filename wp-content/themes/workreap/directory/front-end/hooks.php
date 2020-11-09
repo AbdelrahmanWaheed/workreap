@@ -627,11 +627,11 @@ if( !function_exists( 'workreap_get_categories_list' ) ) {
 								'taxonomy' 			=> 'project_cat',
 								'hide_empty' 		=> false,
 								'hierarchical' 		=> 1,
-								'walker' 			=> new Workreap_Walker_Category_Dropdown,
-								'class' 			=> 'item-category-dp chosen-select',
+								// 'walker' 			=> new Workreap_Walker_Category_Dropdown,
+								'class' 			=> 'item-category-dp',
 								'orderby' 			=> 'name',
 								'name' 				=> $name,
-								'id'                => 'project_cat_multiselect',
+								// 'id'                => 'project_cat_multiselect',
 								'current' 			=> $selected,
 								'required' 			=> 'required',
 							)
@@ -1687,12 +1687,29 @@ if( !function_exists( 'worktic_job_statuses' ) ) {
 			'hired' 		=> esc_html__('Hired','workreap'),
 			'completed' 	=> esc_html__('Completed','workreap'),
 			'cancelled' 	=> esc_html__('Cancelled','workreap'),
+			'not_paid'		=> esc_html__('Not Paid','workreap'),
         );
 
         $list = apply_filters('worktic_filters_job_statuses', $list);         
         return $list;
     }
     add_filter('worktic_job_statuses', 'worktic_job_statuses', 10, 1);
+}
+
+/**
+ * Proposal public statuses
+ *
+ * @throws error
+ * @author Amentotech <theamentotech@gmail.com>
+ * @return 
+ */
+if( !function_exists( 'worktic_job_public_statuses' ) ) {
+    function worktic_job_public_statuses(){
+        $list = worktic_job_statuses();
+        unset($list['not_paid']);
+        return $list;
+    }
+    add_filter('worktic_job_public_statuses', 'worktic_job_public_statuses', 10, 1);
 }
 
 /**
@@ -1733,11 +1750,13 @@ if( !function_exists( 'worktic_register_job_statuses' ) ) {
 			} else {
 				$public	= false;
 			}
+
+			$exclude_from_search = $key == 'not_paid' ? true : false;
 			
 			register_post_status($key, array(
 				'label'                     => $val,
 				'public'                    => $public,
-				'exclude_from_search'       => false,
+				'exclude_from_search'       => $exclude_from_search,
 				'show_in_admin_all_list'    => true,
 				'show_in_admin_status_list' => true,
 			) );

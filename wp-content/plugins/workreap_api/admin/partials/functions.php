@@ -104,7 +104,7 @@ if( !function_exists('workreap_api_autoupdate') ){
 	function workreap_api_autoupdate() {
 		$protocol = is_ssl() ? 'https' : 'http';
 		$host						= $protocol.'://amentotech.com/autoupdate/workreap/';
-		$plugin_current_version 	= 1.5;
+		$plugin_current_version 	= 1.7;
 		$plugin_remote_path 		= $host.'workreap_api.php';
 		$plugin_slug 				= 'workreap_api/init.php';
 		$license_user 				= 'anonymous';

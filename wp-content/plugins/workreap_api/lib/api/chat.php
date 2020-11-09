@@ -29,6 +29,7 @@ if (!class_exists('AndroidApp_Chat_Route')) {
                         'methods' 	=> WP_REST_Server::CREATABLE,
                         'callback' 	=> array(&$this, 'send_offer'),
                         'args' 		=> array(),
+						'permission_callback' => '__return_true',
                     ),
                 )
             );
@@ -40,6 +41,7 @@ if (!class_exists('AndroidApp_Chat_Route')) {
                         'methods' 	=> WP_REST_Server::CREATABLE,
                         'callback' 	=> array(&$this, 'sendUserMessage'),
                         'args' 		=> array(),
+						'permission_callback' => '__return_true',
                     ),
                 )
             );
@@ -50,6 +52,7 @@ if (!class_exists('AndroidApp_Chat_Route')) {
                         'methods' 	=> WP_REST_Server::READABLE,
                         'callback' 	=> array(&$this, 'employer_jobs'),
                         'args' 		=> array(),
+						'permission_callback' => '__return_true',
                     ),
                 )
             );
@@ -60,6 +63,7 @@ if (!class_exists('AndroidApp_Chat_Route')) {
                         'methods' 	=> WP_REST_Server::READABLE,
                         'callback' 	=> array(&$this, 'list_users'),
                         'args' 		=> array(),
+						'permission_callback' => '__return_true',
                     ),
                 )
             );
@@ -70,6 +74,7 @@ if (!class_exists('AndroidApp_Chat_Route')) {
                     'methods' 	=> WP_REST_Server::READABLE,
                     'callback' 	=> array(&$this, 'list_user_messages'),
                     'args' 		=> array(),
+					'permission_callback' => '__return_true',
                 ),
             )
         );

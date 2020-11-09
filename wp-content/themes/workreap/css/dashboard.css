@@ -677,7 +677,7 @@ a.wt-back:focus,a.wt-back:hover{color:#55acee}
 .wt-infouploading .wt-labelgroup>span{display:none!important}
 .wt-userlistingvtwo .wt-userlistingcontent .wt-btnarea .wt-btn+.wt-btn{margin-left:5px}
 .wt-hireduserstatus{min-height:138px;text-align:center;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column;-webkit-box-pack:center;-webkit-justify-content:center;-ms-flex-pack:center;justify-content:center;-webkit-box-align:center;-webkit-align-items:center;-ms-flex-align:center;align-items:center;-webkit-align-content:center;-ms-flex-line-pack:center}
-.wt-jobdescription .wt-userform fieldset .form-group input{width:100%}
+.wt-jobdescription .wt-userform fieldset .form-group input,.form-group select{width:100%}
 .wt-dashboardbox .wt-emptydata{top:0;width:100%;float:none;margin:0 auto 0}
 .wt-category-holder .wt-userform .form-group .chosen-container-multi{z-index:3}
 .wt-hireduserimgs figure img{min-width:28px;min-height:28px}

@@ -29,11 +29,244 @@ if (!class_exists('AndroidApp_Proposal_Route')) {
                         'methods' => WP_REST_Server::CREATABLE,
                         'callback' => array(&$this, 'add_proposal'),
                         'args' => array(),
+						'permission_callback' => '__return_true',
                     ),
                 )
-            );
+			);
+
+			 //Send user message
+             register_rest_route($namespace, '/' . $base . '/sendproposal_chat',
+				array(                 
+					array(
+						'methods' 	=> WP_REST_Server::CREATABLE,
+						'callback' 	=> array(&$this, 'sendproposal_chat'),
+						'args' 		=> array(),
+				 		'permission_callback' => '__return_true',
+					),
+				)
+			);
         }
 
+		/**
+         * add new proposal
+         *
+         * @param WP_REST_Request $request Full data about the request.
+         * @return WP_Error|WP_REST_Request
+         */
+        public function sendproposal_chat($request){
+
+			$user_id 		= !empty($request['sender_id']) ? $request['sender_id'] : ''; 
+			$user_email 	= !empty($user_id) ? get_userdata($user_id)->user_email : '';  
+			$author 		= workreap_get_username($user_id);
+			if (empty($user_id)) {
+                $json['type']           = 'error';
+                $json['message']        = esc_html__('No kiddies please.', 'workreap_api');
+                $json					= maybe_unserialize($json);
+                return new WP_REST_Response($json, 203);
+            }	
+			if ( apply_filters('workreap_get_user_type', $user_id) === 'employer' ){
+				$employer_post_id   		= get_user_meta($user_id, '_linked_profile', true);
+				$avatar = apply_filters(
+					'workreap_employer_avatar_fallback', workreap_get_employer_avatar(array('width' => 100, 'height' => 100), $employer_post_id), array('width' => 100, 'height' => 100) 
+				);
+			} else {
+				$freelancer_post_id   		= get_user_meta($user_id, '_linked_profile', true);
+				$avatar = apply_filters(
+					'workreap_freelancer_avatar_fallback', workreap_get_freelancer_avatar(array('width' => 100, 'height' => 100), $freelancer_post_id), array('width' => 100, 'height' => 100) 
+				);
+			}    	
+			
+			$json = array();
+
+			//Form Validation
+			if( empty( $request['id'] ) || empty( $request['chat_desc'] ) ){
+				$json['type'] = 'error';
+				$json['message'] = esc_html__('Message is required.', 'workreap_api');
+				return new WP_REST_Response($json, 203);
+			}
+
+			$post_id 			= !empty( $request['id'] ) ? $request['id'] : '';     	
+			$total_attachments 	= !empty( $request['size']) ? ($request['size']) : 0;
+			$content 			= !empty( $request['chat_desc'] ) ? $request['chat_desc'] : ''; 
+			
+			$post_type	= get_post_type($post_id);
+
+			if( !empty( $_FILES ) && $total_attachments != 0 ){
+				if ( ! function_exists( 'wp_handle_upload' ) ) {
+					require_once( ABSPATH . 'wp-admin/includes/file.php' );
+					require_once(ABSPATH . 'wp-admin/includes/image.php');
+					require_once( ABSPATH . 'wp-includes/pluggable.php' );
+				}
+				$counter	= 0;
+				for ($x = 0; $x < $total_attachments; $x++) {
+					$submitted_files = $_FILES['project_files'.$x];
+					$uploaded_image  = wp_handle_upload($submitted_files, array('test_form' => false));
+					$file_name		 = basename($submitted_files['name']);
+					$file_type 		 = wp_check_filetype($uploaded_image['file']);
+
+					// Prepare an array of post data for the attachment.
+					$attachment_details = array(
+						'guid' => $uploaded_image['url'],
+						'post_mime_type' => $file_type['type'],
+						'post_title' => preg_replace('/\.[^.]+$/', '', basename($file_name)),
+						'post_content' => '',
+						'post_status' => 'inherit'
+					);
+
+					$attach_id = wp_insert_attachment($attachment_details, $uploaded_image['file']);
+					$attach_data = wp_generate_attachment_metadata($attach_id, $uploaded_image['file']);
+					wp_update_attachment_metadata($attach_id, $attach_data);
+					$attachments['attachment_id']	= $attach_id;
+					$attachments['url']	= wp_get_attachment_url($attach_id);
+		
+					$project_files[]	= $attachments;
+				}
+			}
+						
+			if( isset( $post_type ) && $post_type === 'services-orders' ){
+				$project_id 				= get_post_meta( $post_id, '_service_id', true);
+				$hired_freelance_id 		= get_post_field('post_author', $project_id);
+				$freelancer_id				= workreap_get_linked_profile_id($hired_freelance_id);
+				$employer_id				= get_post_field('post_author', $post_id);
+			} else{
+				$project_id 				= get_post_meta( $post_id, '_project_id', true);
+				$freelancer_id 				= get_post_meta( $project_id, '_freelancer_id', true);
+				$hired_freelance_id			= get_post_field('post_author', $post_id);
+				$employer_id				= get_post_field('post_author', $project_id);
+			}
+
+			$time = current_time('mysql');
+							
+			$data = array(
+				'comment_post_ID' 		=> $post_id,
+				'comment_author' 		=> $author,
+				'comment_author_email' 	=> $user_email,
+				'comment_author_url' 	=> 'http://',
+				'comment_content' 		=> $content,
+				'comment_type' 			=> '',
+				'comment_parent' 		=> 0,
+				'user_id' 				=> $user_id,
+				'comment_date' 			=> $time,
+				'comment_approved' 		=> 1,
+			);
+
+			$comment_id = wp_insert_comment($data);
+			
+			if( !empty( $comment_id ) ) {	
+				$is_files	= 'no';
+				if( !empty( $project_files )) {
+					$is_files	= 'yes';
+					add_comment_meta($comment_id, 'message_files', $project_files);		
+				}
+				
+				if( isset( $post_type ) && $post_type === 'services-orders' ){
+					if($user_type === 'employer'){
+						$receiver_id = $hired_freelance_id;
+					} else{
+						$receiver_id = $employer_id;
+					}
+
+					//Send email to users
+					if (class_exists('Workreap_Email_helper')) {
+						if (class_exists('WorkreapServiceMessage')) {
+							$email_helper = new WorkreapServiceMessage();
+							$emailData = array();
+
+							$employer_name 		= workreap_get_username($employer_id);
+							$employer_profile 	= get_permalink(workreap_get_linked_profile_id($employer_id));
+
+							$job_title 			= esc_html( get_the_title($project_id) );
+							$job_link 			= get_permalink($project_id);
+
+							$freelancer_link 	= get_permalink($freelancer_id);
+							$freelancer_title 	= esc_html( get_the_title($freelancer_id));
+
+							$freelancer_email 	= get_userdata( $hired_freelance_id )->user_email;
+							$employer_email 	= get_userdata( $employer_id )->user_email;
+
+
+							$emailData['employer_name'] 		= esc_html( $employer_name );
+							$emailData['employer_link'] 		= esc_url( $employer_profile );
+							$emailData['employer_email'] 		= sanitize_email( $employer_email );
+
+							$emailData['freelancer_link']       = esc_url( $freelancer_link );
+							$emailData['freelancer_name']       = esc_html( $freelancer_title );
+							$emailData['freelancer_email']      = sanitize_email( $freelancer_email );
+
+							$emailData['service_title'] 		= esc_html( $job_title );
+							$emailData['service_link'] 			= esc_url( $job_link );
+							$emailData['service_msg']			= esc_textarea( $content );
+
+							if ( apply_filters('workreap_get_user_type', $user_id) === 'employer' ){
+								$email_helper->send_service_message_freelancer($emailData);
+							} else{
+								$email_helper->send_service_message_employer($emailData);
+							}
+
+						}
+					}
+					
+				} else{
+					if($user_type === 'employer'){
+						$receiver_id = $hired_freelance_id;
+					} else{
+						$receiver_id = $employer_id;
+					}
+					
+					//Send email to users
+					if (class_exists('Workreap_Email_helper')) {
+						if (class_exists('WorkreapProposalMessage')) {
+							$email_helper = new WorkreapProposalMessage();
+							$emailData = array();
+
+							$employer_name 		= workreap_get_username($employer_id);
+							$employer_profile 	= get_permalink(workreap_get_linked_profile_id($employer_id));
+
+							$job_title 			= esc_html( get_the_title($project_id) );
+							$job_link 			= get_permalink($project_id);
+
+							$freelancer_link 	= get_permalink($freelancer_id);
+							$freelancer_title 	= esc_html( get_the_title($freelancer_id));
+
+							$freelancer_email 	= get_userdata( $hired_freelance_id )->user_email;
+							$employer_email 	= get_userdata( $employer_id )->user_email;
+
+
+							$emailData['employer_name'] 		= esc_html( $employer_name );
+							$emailData['employer_link'] 		= esc_url( $employer_profile );
+							$emailData['employer_email'] 		= sanitize_email( $employer_email );
+
+							$emailData['freelancer_link']       = esc_url( $freelancer_link );
+							$emailData['freelancer_name']       = esc_html( $freelancer_title );
+							$emailData['freelancer_email']      = sanitize_email( $freelancer_email );
+
+							$emailData['job_title'] 			= esc_html( $job_title );
+							$emailData['job_link'] 				= esc_url( $job_link );
+							$emailData['proposal_msg']			= $content;
+							
+							if ( apply_filters('workreap_get_user_type', $user_id) == 'employer' ){
+								$email_helper->send_proposal_message_freelancer($emailData);
+							} else{
+								$email_helper->send_proposal_message_employer($emailData);
+							}
+
+						}
+					}
+				}
+				
+				$json['comment_id']			= $comment_id;
+				$json['user_id']			= intval( $user_id );
+				$json['receiver_id']		= intval( $receiver_id );
+				$json['type'] 				= 'success';
+				$json['message'] 			= esc_html__('Your message has sent.', 'workreap_api');
+				$json['content_message'] 	= esc_html( wp_strip_all_tags( $content ) );
+				$json['user_name'] 			= $author;
+				$json['is_files'] 			= $is_files;
+				$json['date'] 				= date(get_option('date_format'), strtotime($time));
+				$json['img'] 				= $avatar;
+				return new WP_REST_Response($json, 200);
+			}
+		}
 		 /**
          * add new proposal
          *

@@ -28,6 +28,7 @@ if (!class_exists('AndroidAppProfileSettingRoutes')) {
                         'methods' 	=> WP_REST_Server::READABLE,
                         'callback' 	=> array(&$this, 'get_profile'),
                         'args' 		=> array(),
+						'permission_callback' => '__return_true',
                     ),
                 )
             );
@@ -37,6 +38,7 @@ if (!class_exists('AndroidAppProfileSettingRoutes')) {
                         'methods' 	=> WP_REST_Server::CREATABLE,
                         'callback' 	=> array(&$this, 'update_profile_setting'),
                         'args' 		=> array(),
+						'permission_callback' => '__return_true',
                     ),
                 )
             );

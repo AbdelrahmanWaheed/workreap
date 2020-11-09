@@ -3,7 +3,7 @@ Contributors: cometchat
 Tags: wordpress chat, buddypress chat, user-to-user chat, group chat, chat plugin, wordpress, webrtc, video chat, audio chat, voice chat, stickers, emojis, real time translation, translation, games, hangouts, gtalk, embedded chat
 Requires at least: 4.7
 Tested up to: 5.3
-Stable tag: 7.47.0
+Stable tag: 7.47.1
 License: GNU General Public License v2.0 or later
 
 CometChat helps you increase user engagement as well as monetise your traffic by empowering your users to voice, video & text chat with each other.
@@ -223,3 +223,6 @@ CometChat is the <a href="https://www.cometchat.com" rel="friend" title="CometCh
 = 7.47.0 =
 * Added myCRED plugin support
 * Miscellaneous bug fixes
+
+= 7.47.1 =
+* Fixed issue with myCRED credit deduction implementation

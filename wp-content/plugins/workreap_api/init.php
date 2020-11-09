@@ -14,7 +14,7 @@
  * Plugin Name:       Workreap APP API
  * Plugin URI:        https://codecanyon.net/user/amentotech/portfolio
  * Description:       This plugin is used for creating custom API for Workreap WordPress Theme
- * Version:           1.5
+ * Version:           1.7
  * Author:            Amento Tech
  * Author URI:        https://themeforest.net/user/amentotech
  * License:           GPL-2.0+

@@ -79,7 +79,7 @@ class _FW_Extension_Sidebars_Frontend {
 	public function get_preset_position() {
 		$preset = $this->get_current_page_preset();
 
-		return $preset['position'];
+		return ! empty( $preset['position'] ) ? $preset['position'] : false;
 	}
 
 	/**
@@ -162,7 +162,7 @@ class _FW_Extension_Sidebars_Frontend {
 		if ( is_singular() ) {
 			$data['type']     = $this->config->get_type_by_prefix( _FW_Extension_Sidebars_Config::POST_TYPES_PREFIX );
 			$data['sub_type'] = get_post_type();
-			$data['id']       = get_the_id();
+			$data['id']       = get_queried_object_id();
 
 			$result = $this->get_preset_sidebars( $data );
 			if ( $result ) {

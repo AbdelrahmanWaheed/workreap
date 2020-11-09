@@ -68,7 +68,7 @@ class Loco_ajax_MsginitController extends Loco_ajax_common_BundleController {
         
         // Permit forcing of any parsable file as strings template
         if( $source = $post->source ){
-            $potfile = new Loco_fs_File( $source );
+            $potfile = new Loco_fs_LocaleFile( $source );
             $potfile->normalize( $base );
             $data = Loco_gettext_Data::load($potfile);
             // Remove target strings when copying PO 
@@ -96,6 +96,16 @@ class Loco_ajax_MsginitController extends Loco_ajax_common_BundleController {
         // relative path from bundle root to the template/source this file was created from
         if( $potfile && $post->link ){
             $headers['X-Loco-Template'] = $potfile->getRelativePath( $bundle->getDirectoryPath() );
+            // legacy behaviour was to sync source AND target strings in the absence of the following
+            if( $post->strip ){
+                $headers['X-Loco-Template-Mode'] = 'POT';
+            }
+            // without strip argument we need to remember the source PO is effectively a fallback locale
+            else {
+                $fallback = $potfile instanceof Loco_fs_LocaleFile ? $potfile->getLocale() : $locale;
+                $headers['X-Loco-Fallback'] = (string) $fallback;
+                $headers['X-Loco-Template-Mode'] = 'PO';
+            }
         }
 
         $data->localize( $locale, $headers );
