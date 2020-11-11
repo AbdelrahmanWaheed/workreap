@@ -66,8 +66,8 @@ the_post();
 												array('label' => '100% Money Back Guarantee', 'value' => $money_back_guarantee, 'type' => 'boolean'),
 												array('label' => 'Full Copyright Ownership', 'value' => $copyright_ownership, 'type' => 'boolean'),
 												array('label' => 'Prioritized Support', 'value' => $prioritized_support, 'type' => 'boolean'),
-												array('label' => 'Highlighted', 'value' => $highlighted, 'type' => 'boolean'),
-												array('label' => 'Featured', 'value' => $featured, 'type' => 'boolean'),
+												array('label' => 'Highlighted Project', 'value' => $highlighted, 'type' => 'boolean'),
+												array('label' => 'Featured Project', 'value' => $featured, 'type' => 'boolean'),
 											);
 											?>
 											<div class="col-md-6 col-lg-4 employer-packages">
