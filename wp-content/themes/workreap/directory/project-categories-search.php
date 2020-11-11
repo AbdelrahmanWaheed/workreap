@@ -13,7 +13,12 @@ get_header();
 $caregories = get_terms('project_cat', array (
 	'hide_empty' => false,
 ));
-$search_page = workreap_get_search_page_uri('jobs');
+
+global $current_user;
+$search_page 	= workreap_get_search_page_uri('jobs');
+$post_job_page  = Workreap_Profile_Menu::workreap_profile_menu_link('post_job', $current_user->ID, true);
+$user_type 		= apply_filters('workreap_get_user_type', $current_user->ID);
+
 the_post();
 ?>
 <div class="wt-sc-explore-categories wt-haslayout">
@@ -35,8 +40,13 @@ the_post();
 							$category_icon = !empty($icon['category_icon']) ? $icon['category_icon'] : array();
 						}	
 
-						$query_arg['category[]']   = urlencode($category->slug);
-						$permalink                 = add_query_arg($query_arg, esc_url($search_page));
+						$query_arg['category[]'] = urlencode($category->slug);
+
+						if(is_user_logged_in() && $user_type == 'employer') {
+							$permalink = add_query_arg('category', $category->term_id, $post_job_page);
+						} else {
+							$permalink = add_query_arg($query_arg, esc_url($search_page));
+						}
 						?>
 						<div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3 float-left">
 							<div class="wt-categorycontent">

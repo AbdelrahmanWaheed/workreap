@@ -632,7 +632,7 @@ if( !function_exists( 'workreap_get_categories_list' ) ) {
 								'orderby' 			=> 'name',
 								'name' 				=> $name,
 								// 'id'                => 'project_cat_multiselect',
-								'current' 			=> $selected,
+								'selected' 			=> $selected,
 								'required' 			=> 'required',
 							)
 						);

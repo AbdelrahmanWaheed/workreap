@@ -237,7 +237,8 @@ $hide = true;
 						</div>
 						<div class="wt-divtheme wt-userform wt-userformvtwo">
 							<div class="form-group">
-								<?php do_action('workreap_get_categories_list','job[categories][]','');?>
+								<?php $project_cat = isset($_GET['category']) ? intval($_GET['category']) : ''; ?>
+								<?php do_action('workreap_get_categories_list', 'job[categories][]', $project_cat);?>
 							</div>
 						</div>
 					</div>
