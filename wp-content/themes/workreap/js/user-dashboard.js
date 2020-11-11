@@ -982,7 +982,7 @@ jQuery(document).on('ready', function() {
 						backgroundColor: '#DFDFE0',
 					});
 					jQuery("#proposalfeedbackmodal-"+proposal_id+" .wt-btnarea").remove();
-					jQuery("#proposalfeedbackmodal-"+proposal_id).prev().find('a.send-feedback').prepend('<i class="fa fa-check-circle fa-fw"></i>');
+					jQuery("#proposalfeedbackmodal-"+proposal_id).prev().find('a.send-feedback').text('Show Feedback').prepend('<i class="fa fa-check-circle fa-fw"></i>');
 				} else {
 					jQuery.sticky(response.message, {classList: 'important', speed: 200, autoclose: 5000});
 				}
@@ -994,6 +994,20 @@ jQuery(document).on('ready', function() {
 		var _this 			= jQuery(this);
 		var proposal_id 	= _this.data('id');
 		jQuery("#proposalfeedbackmodal-"+proposal_id).modal();
+
+		if(_this.hasClass('new-feedback')) {
+			_this.removeClass('new-feedback');
+			_this.text('Show Feedback');
+			jQuery.ajax({
+				type: "POST",
+				url: scripts_vars.ajaxurl,
+				data:  {
+					action			: 'workreap_mark_proposal_feedback',
+					proposal_id		: proposal_id,
+				},
+				dataType: "json"
+			});
+		}
 	});
 	//send proposal message
 	jQuery(document).on('click','.chat-proposal-now', function($){

@@ -4124,6 +4124,7 @@ if ( !function_exists( 'workreap_send_proposal_feedback' ) ) {
 
         update_post_meta( $proposal_id, '_feedback', $feedback_message );
         update_post_meta( $proposal_id, '_feedback_rating', $feedback_rating );
+        update_post_meta( $proposal_id, '_feedback_seen', false );
         $json['type'] = 'success';
         $json['message'] = esc_html__('Feedback sent successfully.', 'workreap');
         wp_send_json($json);
@@ -4131,6 +4132,34 @@ if ( !function_exists( 'workreap_send_proposal_feedback' ) ) {
 
 	add_action( 'wp_ajax_workreap_send_proposal_feedback', 'workreap_send_proposal_feedback' );
 	add_action( 'wp_ajax_nopriv_workreap_send_proposal_feedback', 'workreap_send_proposal_feedback' );
+}
+
+/**
+ * Mark proposal feedback as seen 
+ */
+if ( !function_exists( 'workreap_mark_proposal_feedback' ) ) {
+
+    function workreap_mark_proposal_feedback() {
+        global $current_user, $woocommerce;
+        $proposal_id      = !empty( $_POST['proposal_id'] ) ? intval( $_POST['proposal_id'] ) : '';
+
+        if( function_exists('workreap_is_demo_site') ) { 
+            workreap_is_demo_site();
+        }; //if demo site then prevent
+
+        if ( empty($proposal_id) ) {
+            $json['type'] = 'error';
+            $json['message'] = esc_html__('Some error occur, please try again later', 'workreap');
+            wp_send_json($json);
+        }
+
+        update_post_meta( $proposal_id, '_feedback_seen', true );
+        $json['type'] = 'success';
+        wp_send_json($json);
+    }
+
+    add_action( 'wp_ajax_workreap_mark_proposal_feedback', 'workreap_mark_proposal_feedback' );
+    add_action( 'wp_ajax_nopriv_workreap_mark_proposal_feedback', 'workreap_mark_proposal_feedback' );
 }
 
 /**

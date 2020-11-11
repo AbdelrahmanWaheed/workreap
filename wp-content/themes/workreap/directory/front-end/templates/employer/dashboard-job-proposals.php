@@ -192,7 +192,7 @@ $offline_package		= !empty($offline_package['type']) ? $offline_package['type'] 
 														<?php if(!empty($feedback)) { ?>
 															<i class="fa fa-check-circle fa-fw"></i>
 														<?php } ?>
-														<?php esc_html_e('Send Feedback','workreap');?>
+														<?php esc_html_e(empty($feedback) ? 'Send Feedback' : 'Show Feedback','workreap');?>
 													</a>
 												</div>
 												<div class="modal fade wt-offerpopup-proposal-feedback" tabindex="-1" role="dialog" id="proposalfeedbackmodal-<?php echo esc_attr($post->ID);?>">

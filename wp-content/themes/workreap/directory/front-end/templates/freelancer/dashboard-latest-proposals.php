@@ -99,6 +99,7 @@ $submit_proposal  = !empty( $proposal_page_id ) ? get_the_permalink( $proposal_p
 
 									$feedback = get_post_meta( $post->ID, '_feedback', true );
 									$feedback_rating = get_post_meta( $post->ID, '_feedback_rating', true );
+									$feedback_seen = get_post_meta( $post->ID, '_feedback_seen', true );
 									?>
 									<div class="wt-userlistinghold wt-featured wt-proposalitem wt-userlistingcontentvtwo" data-id="<?php echo esc_attr($post->ID);?>">
 										<div class="wt-proposaldetails">
@@ -119,8 +120,12 @@ $submit_proposal  = !empty( $proposal_page_id ) ? get_the_permalink( $proposal_p
 													
 
 													<?php  if( !empty($feedback) && !empty($feedback_rating) ){?>
-														<a href="javascript:;" class="wt-btn show-feedback" data-id="<?php echo esc_attr($post->ID);?>">
-															<?php echo esc_html_e('Show Feedback','workreap');?>
+														<a href="javascript:;" class="wt-btn show-feedback <?php echo !$feedback_seen ? 'new-feedback' : '' ?>"
+															data-id="<?php echo esc_attr($post->ID);?>">
+															<?php echo esc_html_e(!$feedback_seen ? 'New Feedback' : 'Show Feedback','workreap');?>
+															<?php if($feedback_seen == false) : ?>
+																<span class="badge badge-dark badge-pill">1</span>
+															<?php endif; ?>
 														</a>
 														<div class="modal fade wt-offerpopup-proposal-feedback" tabindex="-1" role="dialog" id="proposalfeedbackmodal-<?php echo esc_attr($post->ID);?>">
 															<div class="modal-dialog modal-dialog-centered" role="document">
