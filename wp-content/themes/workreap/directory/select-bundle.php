@@ -53,15 +53,21 @@ the_post();
 										$bundles->the_post();
 										$bk_settings = worrketic_hiring_payment_setting();
 										if (function_exists('fw_get_db_post_option')) {
-											$designs   		= fw_get_db_post_option(get_the_ID(), 'designs');
-											$featured   	= fw_get_db_post_option(get_the_ID(), 'featured');
-											$highlighted	= fw_get_db_post_option(get_the_ID(), 'highlighted');
-											$price   		= intval(fw_get_db_post_option(get_the_ID(), 'price_cat_' . $project_category));
-											$freelancer_shares = intval($price * (100 - $bk_settings['percentage']) / 100.0);
+											$designs   				= fw_get_db_post_option(get_the_ID(), 'designs');
+											$money_back_guarantee 	= fw_get_db_post_option(get_the_ID(), 'money_back_guarantee');
+											$copyright_ownership	= fw_get_db_post_option(get_the_ID(), 'copyright_ownership');
+											$prioritized_support	= fw_get_db_post_option(get_the_ID(), 'prioritized_support');
+											$featured   			= fw_get_db_post_option(get_the_ID(), 'featured');
+											$highlighted			= fw_get_db_post_option(get_the_ID(), 'highlighted');
+											$price   				= intval(fw_get_db_post_option(get_the_ID(), 'price_cat_' . $project_category));
+											$freelancer_shares 		= intval($price * (100 - $bk_settings['percentage']) / 100.0);
 											$package_features = array(
 												array('label' => 'Number Of Designs', 'value' => $designs, 'type' => 'text'),
-												array('label' => 'Featured', 'value' => $featured, 'type' => 'boolean'),
+												array('label' => '100% Money Back Guarantee', 'value' => $money_back_guarantee, 'type' => 'boolean'),
+												array('label' => 'Full Copyright Ownership', 'value' => $copyright_ownership, 'type' => 'boolean'),
+												array('label' => 'Prioritized Support', 'value' => $prioritized_support, 'type' => 'boolean'),
 												array('label' => 'Highlighted', 'value' => $highlighted, 'type' => 'boolean'),
+												array('label' => 'Featured', 'value' => $featured, 'type' => 'boolean'),
 											);
 											?>
 											<div class="col-md-6 col-lg-4 employer-packages">

@@ -23,12 +23,25 @@ $options = array(
                         ),
                     ),
                     'designs' => array(
-                        'label' => esc_html__('Number of designs', 'workreap'),
+                        'label' => esc_html__('Number Of Designs', 'workreap'),
                         'type'  => 'text',
                         'value' => '',
                     ),
-                    'featured' => array(
-                        'label' => esc_html__('Featured', 'workreap'),
+                    'money_back_guarantee' => array(
+                        'label' => esc_html__('100% Money Back Guarantee', 'workreap'),
+                        'type' => 'switch',
+                        'value' => 'disabled',
+                        'left-choice' => array(
+                            'value' => 'enabled',
+                            'label' => esc_html__('Enabled', 'workreap'),
+                        ),
+                        'right-choice' => array(
+                            'value' => 'disabled',
+                            'label' => esc_html__('Disabled', 'workreap'),
+                        ),
+                    ),
+                    'copyright_ownership' => array(
+                        'label' => esc_html__('Full Copyright Ownership', 'workreap'),
                         'type' => 'switch',
                         'value' => 'disabled',
                         'left-choice' => array(
@@ -41,7 +54,33 @@ $options = array(
                         ),
                     ),
                     'highlighted' => array(
-                        'label' => esc_html__('Highlighted', 'workreap'),
+                        'label' => esc_html__('Highlighted Project', 'workreap'),
+                        'type' => 'switch',
+                        'value' => 'disabled',
+                        'left-choice' => array(
+                            'value' => 'enabled',
+                            'label' => esc_html__('Enabled', 'workreap'),
+                        ),
+                        'right-choice' => array(
+                            'value' => 'disabled',
+                            'label' => esc_html__('Disabled', 'workreap'),
+                        ),
+                    ),
+                    'featured' => array(
+                        'label' => esc_html__('Featured Project', 'workreap'),
+                        'type' => 'switch',
+                        'value' => 'disabled',
+                        'left-choice' => array(
+                            'value' => 'enabled',
+                            'label' => esc_html__('Enabled', 'workreap'),
+                        ),
+                        'right-choice' => array(
+                            'value' => 'disabled',
+                            'label' => esc_html__('Disabled', 'workreap'),
+                        ),
+                    ),
+                    'prioritized_support' => array(
+                        'label' => esc_html__('Prioritized Support', 'workreap'),
                         'type' => 'switch',
                         'value' => 'disabled',
                         'left-choice' => array(
