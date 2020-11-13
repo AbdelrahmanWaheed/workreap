@@ -2936,3 +2936,40 @@ if ( ! function_exists( 'workreap_foldersize' ) ) {
 		return $total_size;
 	}
 }
+
+/**
+ * Display form field with list of freelancers.
+ *
+ * @throws error
+ * @author Amentotech <theamentotech@gmail.com>
+ * @return 
+ */
+if (!function_exists('workreap_show_freelancers_list')) {
+	function workreap_show_freelancers_list($field_name) {
+		$roles	= array('freelancers');
+		wp_dropdown_users( array(
+			'role__in' 	=> $roles,
+			'name' 		=> $field_name,
+			'id'		=> 'users_multiselect',
+			'class'		=> 'chosen-select',
+			'show' 		=> 'display_name_with_login',
+			'include_selected' => true,
+		));
+	}
+}
+
+/**
+ * init multiselect wp dropdown
+ *
+ * @throws error
+ * @author Amentotech <theamentotech@gmail.com>
+ * @return 
+ */
+if( !function_exists( 'workreap_apply_multiple_users_select_dropdown' ) ) {
+	add_filter('wp_dropdown_users','workreap_apply_multiple_users_select_dropdown', 10, 1);
+	function workreap_apply_multiple_users_select_dropdown($output){
+		$output = str_replace("id='users_multiselect'","id='users_multiselect' multiple data-placeholder='" . 
+			esc_html__('Select Freelancers', 'workreap') . "'", $output);
+		return trim( $output );
+	}
+}

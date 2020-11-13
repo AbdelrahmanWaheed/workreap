@@ -86,6 +86,7 @@ if (!function_exists('workreap_prepare_pagination')) {
 
 /**
  * Add New User Roles
+ * And add each role capabilities
  *
  * @param json
  * @return string
@@ -95,6 +96,17 @@ if (!function_exists('workreap_add_user_roles')) {
     function workreap_add_user_roles() {
         $provider = add_role('employers', esc_html__('Employer', 'workreap'));
         $provider = add_role('freelancers', esc_html__('Freelancer', 'workreap'));
+
+        $roles_capabilities = array(
+            'employers' => array( 'read' ),
+            'freelancers' => array( 'read' ),
+        );
+        foreach ($roles_capabilities as $role_key => $capabilities) {
+            $role = get_role($role_key);
+            foreach ($capabilities as $capability) {
+                $role->add_cap($capability);
+            }
+        }
     }
 
     add_action('admin_init', 'workreap_add_user_roles');

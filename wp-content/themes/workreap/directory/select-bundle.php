@@ -36,10 +36,11 @@ the_post();
 					<?php if (class_exists('WooCommerce')) { ?>
 						<div class="wt-packagestwo">
 							<?php 
+								$type = get_post_meta($project_id, 'type', true);
 								$args = array(
 									'post_type' 	=> 'bundles',
 									'meta_key' 		=> 'fw_options',
-									'meta_value' 	=> 'contest',
+									'meta_value' 	=> $type,
 									'meta_compare' 	=> 'LIKE',
 									'orderby' 		=> 'menu_order',
 									'order'			=> 'ASC', 

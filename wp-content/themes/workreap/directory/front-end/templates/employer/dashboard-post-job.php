@@ -267,6 +267,27 @@ $hide = true;
 					<?php } ?>
 					<div class="wt-jobdetails wt-tabsinfo">
 						<div class="wt-tabscontenttitle">
+							<h2><?php esc_html_e('Job Type','workreap');?></h2>
+						</div>
+						<div class="wt-formtheme wt-userform wt-userformvtwo">
+							<fieldset>
+								<div class="form-group">
+									<span class="wt-selects toolip-wrapo">
+										<select name="job[type]" id="job_project_type">
+											<option value=""><?php esc_html_e('Select job type', 'workreap');?></option>
+											<option value="one-to-one"><?php esc_html_e('One To One', 'workreap');?></option>
+											<option value="contest"><?php esc_html_e('Contest', 'workreap');?></option>
+										</select>
+									</span>
+								</div>
+								<div class="form-group" id="form-group-freelancers" style="display: none;">
+									<?php workreap_show_freelancers_list('job[freelancers][]'); ?>
+								</div>
+							</fieldset>
+						</div>
+					</div>
+					<div class="wt-jobdetails wt-tabsinfo">
+						<div class="wt-tabscontenttitle">
 							<h2><?php esc_html_e('Job Details','workreap');?></h2>
 						</div>
 						<div class="wt-formtheme wt-userform wt-userformvtwo">
@@ -276,7 +297,7 @@ $hide = true;
 								</div>
 							</fieldset>
 						</div>
-					</div>	
+					</div>
 					<div class="wt-jobskills wt-tabsinfo">
 						<div class="wt-tabscontenttitle">
 							<h2><?php esc_html_e('Skills Required','workreap');?></h2>

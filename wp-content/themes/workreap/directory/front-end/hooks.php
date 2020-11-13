@@ -622,22 +622,29 @@ if( !function_exists( 'worktic_get_locations_list' ) ) {
  * @return 
  */
 if( !function_exists( 'workreap_get_categories_list' ) ) {
-	function workreap_get_categories_list($name='location',$selected=''){
-		wp_dropdown_categories( array(
-								'taxonomy' 			=> 'project_cat',
-								'hide_empty' 		=> false,
-								'hierarchical' 		=> 1,
-								// 'walker' 			=> new Workreap_Walker_Category_Dropdown,
-								'class' 			=> 'item-category-dp',
-								'orderby' 			=> 'name',
-								'name' 				=> $name,
-								// 'id'                => 'project_cat_multiselect',
-								'selected' 			=> $selected,
-								'required' 			=> 'required',
-							)
-						);
+	function workreap_get_categories_list($name='location',$selected='',$disable=false){
+		$output = wp_dropdown_categories(array(
+				'taxonomy' 			=> 'project_cat',
+				'hide_empty' 		=> false,
+				'hierarchical' 		=> 1,
+				// 'walker' 			=> new Workreap_Walker_Category_Dropdown,
+				'class' 			=> 'item-category-dp',
+				'orderby' 			=> 'name',
+				'name' 				=> $name,
+				// 'id'                => 'project_cat_multiselect',
+				'selected' 			=> $selected,
+				'required' 			=> 'required',
+				'echo'				=> false,
+			)
+		);
+
+		if( $disable ) {
+			$output = str_replace("<select", "<select disabled", $output);
+		}
+
+		echo $output;
 	}
-	add_action('workreap_get_categories_list', 'workreap_get_categories_list', 10,2);
+	add_action('workreap_get_categories_list', 'workreap_get_categories_list', 10,3);
 }
 
 /**
@@ -4217,6 +4224,34 @@ if( !function_exists( 'workreap_job_detail_documents' ) ) {
  }
 
 /**
+ * Return project bundle
+ *
+ * @throws error
+ * @author Amentotech <theamentotech@gmail.com>
+ * @return 
+ */
+if( !function_exists( 'workreap_display_project_bundle_html' ) ){
+    function workreap_display_project_bundle_html( $post_id = '', $title = '' ) {
+        if( !empty( $post_id ) ) {
+			$bundle_id = get_post_meta($post_id, '_bundle_id', true);
+			$designs = fw_get_db_post_option($bundle_id, 'designs');
+			?>
+			<div class="wt-skillsrequired">
+				<?php if( !empty( $title ) ){ ?>
+					<div class="wt-title">
+						<h3><?php echo esc_html( $title ); ?></h3>
+					</div>
+				<?php } ?>
+				<div class="wt-tag wt-widgettag">
+					<a href="#"><?php echo esc_html( $designs ); ?> Designs</a>
+				</div>
+			</div>
+		<?php }
+    }
+    add_action('workreap_display_project_bundle_html', 'workreap_display_project_bundle_html', 10, 2);
+}
+
+/**
  * Return save project html
  *
  * @throws error
@@ -6046,4 +6081,31 @@ if ( !function_exists( 'workreap_add_share_meta' ) ) {
 			<meta name="twitter:image" content="<?php echo esc_attr($avatar);?>">
 		<?php }
 	}
+}
+
+/**
+ * Allow freelancer to view the job in which he is invited to work
+ *
+ * @throws error
+ * @author Amentotech <theamentotech@gmail.com>
+ * @return 
+ */
+if( !function_exists( 'allow_freelancer_to_view_private_project_invited_to_him' ) ) {
+	function allow_freelancer_to_view_private_project_invited_to_him( $capauser, $capask, $param) {
+		if( !empty($param) && !empty($capask) ) {
+			$capability = $param[0];
+			if($capability == 'read_post') {
+				$user_id = intval( $param[1] );
+				$job_id  = intval( $param[2] );
+				$allowed_jobs = array_map('intval', get_user_meta($user_id, 'allowed_jobs', false));
+				if(in_array($job_id, $allowed_jobs)) {
+					$capauser[ $capask[0] ] = true;
+				}
+			}
+		}
+
+		return $capauser;
+	}
+
+	add_filter('user_has_cap', 'allow_freelancer_to_view_private_project_invited_to_him', 100, 3);
 }

@@ -134,7 +134,7 @@ if (!function_exists('workreap_offline_onhold')) {
  */
 if (!function_exists('workreap_payment_complete')) {
     add_action('woocommerce_payment_complete', 'workreap_payment_complete');
-	add_action( 'woocommerce_order_status_completed','workreap_payment_complete' );
+	// add_action( 'woocommerce_order_status_completed','workreap_payment_complete' );
     function workreap_payment_complete($order_id) {
 		global $current_user, $wpdb;
 		
@@ -146,8 +146,7 @@ if (!function_exists('workreap_payment_complete')) {
 		//Update order status
 		$order->update_status( 'completed' );
 		$order->save();
-		
-		
+				
 		$invoice_id = esc_html__('Order #','workreap') . '&nbsp;' . $order_id;
         foreach ($items as $key => $item) {
             $product_id 	= !empty($item['product_id']) ? intval($item['product_id']) : '';
@@ -176,12 +175,18 @@ if (!function_exists('workreap_payment_complete')) {
 				} else if( !empty( $payment_type ) && $payment_type == 'subscription' ) {
 					workreap_update_pakage_data( $product_id ,$user->ID,$order_id );
 				} else if( !empty( $payment_type ) && $payment_type == 'posting_job' ) {
-					$order_detail = wc_get_order_item_meta( $key, 'cus_woo_product_data', true );
-					$project_id = intval($order_detail['project_id']);
+					$order_detail 	= wc_get_order_item_meta( $key, 'cus_woo_product_data', true );
+					$project_id 	= intval($order_detail['project_id']);
+					$type 			= get_post_meta($project_id, 'type', true);
+					$freelancers  	= get_post_meta($project_id, 'suggested_freelancers', false);
+
 					if (function_exists('fw_get_db_settings_option')) {
-						$job_status	= fw_get_db_settings_option('job_status');
+						$job_public_status 		= fw_get_db_settings_option('job_status');
+						$job_invitation_message = fw_get_db_settings_option('job_invitation_message');
+						$job_private_status = 'private';
 					}
-					$job_status	=  !empty( $job_status ) ? $job_status : 'publish';
+					$job_status = $type == 'one-to-one' ? $job_private_status : $job_public_status;
+					$job_status	= !empty( $job_status ) ? $job_status : 'publish';
 
 					if(!empty($project_id)) {
 						$project_post_data 	= array(
@@ -190,6 +195,76 @@ if (!function_exists('workreap_payment_complete')) {
 						);
 						wp_update_post( $project_post_data );
 						update_post_meta( $project_id, '_order_id', $order_id );
+
+						// Send email to users that the job is posted
+						if (class_exists('Workreap_Email_helper')) {
+							if (class_exists('WorkreapJobPost')) {
+								$email_helper = new WorkreapJobPost();
+								$emailData 	  = array();
+
+								$employer_name 		= workreap_get_username($current_user->ID);
+								$employer_email 	= get_userdata( $current_user->ID )->user_email;
+								$employer_profile 	= get_permalink( workreap_get_linked_profile_id($current_user->ID) );
+								$job_title 			= esc_html( get_the_title($project_id) );
+								$job_link 			= get_permalink($project_id);
+
+								$emailData['employer_name'] 	= esc_html( $employer_name );
+								$emailData['employer_email'] 	= sanitize_email( $employer_email );
+								$emailData['employer_link'] 	= esc_url( $employer_profile );
+								$emailData['status'] 			= esc_html( $job_status );
+								$emailData['job_link'] 			= esc_url( $job_link );
+								$emailData['job_title'] 		= esc_html( $job_title );
+
+								$email_helper->send_admin_job_post($emailData);
+								$email_helper->send_employer_job_post($emailData);
+							}
+						}
+
+						// send messages to freelancers in case of one to one job
+						if($type == 'one-to-one' && !empty($freelancers)) {
+							foreach ($freelancers as $freelancer) {
+								$message = $job_invitation_message;
+								$message = str_replace('[FREELANCER]', workreap_get_username($freelancer), $message);
+								$message = str_replace('[PROJECT_LINK]', get_permalink($project_id), $message);
+								$insert_data = array(
+									'sender_id' 		=> $current_user->ID,
+									'receiver_id' 		=> $freelancer,
+									'chat_message' 		=> $message,
+									'status' 			=> 1,
+									'timestamp' 		=> time(),
+									'time_gmt' 			=> get_gmt_from_date(current_time('mysql')),
+								);
+								ChatSystem::instance()->getUsersThreadListData($current_user->ID, $freelancer, 'insert_msg', $insert_data);
+
+								if (class_exists('Workreap_Email_helper')) {
+									if (class_exists('WorkreapSendOffer')) {
+										$email_helper = new WorkreapSendOffer();
+										$emailData 	  = array();
+										
+										$employer_id	= workreap_get_linked_profile_id($current_user->ID);
+										$freelancer_id	= workreap_get_linked_profile_id($freelancer);
+										//update invitation
+										$invitation_count 	= get_user_meta(intval($freelancer_id), '_invitation_count', true);
+										$invitation_count	= !empty($invitation_count) ? $invitation_count + 1 : 1;
+										update_post_meta( $freelancer_id, '_invitation_count', $invitation_count);
+				                        
+										$emailData['freelancer_link'] 		= get_the_permalink( $freelancer_id );
+										$emailData['freelancer_name'] 		= get_the_title($freelancer_id);
+										$emailData['employer_link']       	= get_the_permalink( $employer_id );
+										$emailData['employer_name'] 		= get_the_title($employer_id);
+										$emailData['project_link']        	= !empty( $project_id ) ?  get_the_permalink( $project_id ) : '';
+										$emailData['project_title']      	= !empty( $project_id ) ?  get_the_title( $project_id ) : '';
+										$emailData['project_id']      		= $project_id;
+										$emailData['employer_id']      		= $employer_id;
+										$emailData['freelancer_id']      	= $freelancer_id;
+										$emailData['message']      			= $message;
+										$emailData['email_to']      		= get_userdata( $freelancer )->user_email;
+
+										$email_helper->send_offer($emailData);
+									}
+								}
+							}
+						}
 					}
 				}
             }

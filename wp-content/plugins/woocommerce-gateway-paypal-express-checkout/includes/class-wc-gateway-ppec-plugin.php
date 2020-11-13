@@ -480,7 +480,6 @@ class WC_Gateway_PPEC_Plugin {
 	public static function needs_shipping() {
 		$needs_shipping = false;
 
-		error_log(json_encode(WC()->cart->cart_contents, JSON_PRETTY_PRINT));
 		if ( ! empty( WC()->cart->cart_contents ) ) {
 			foreach ( WC()->cart->cart_contents as $cart_item_key => $values ) {
 				if ( $values['data']->needs_shipping() ) {

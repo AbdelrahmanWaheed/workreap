@@ -27,7 +27,7 @@ $args = array('posts_per_page' => $show_posts,
     'post_type' 		=> 'projects',
     'orderby' 			=> $sorting,
     'order' 			=> $order,
-    'post_status' 		=> array('publish','pending'),
+    'post_status' 		=> array('publish','pending','private'),
     'author' 			=> $user_identity,
     'paged' 			=> $paged,
     'suppress_filters'  => false

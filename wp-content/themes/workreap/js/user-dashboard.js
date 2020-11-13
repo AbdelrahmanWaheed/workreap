@@ -2705,6 +2705,20 @@ jQuery(document).on('ready', function() {
 		jQuery(this).parents('span.wt-selects').css('z-index', zindex - i);
 		jQuery(this).closest('div').addClass('workreap-custom-zindex');
 	});
+
+	jQuery(document).on('change', 'select#job_project_type', function () {
+		if(jQuery("#form-group-freelancers").length == 0) {
+			return;
+		}
+
+		var value = $(this).val();
+		console.log(value);
+		if(value == 'one-to-one') {
+			jQuery("#form-group-freelancers").show();
+		} else {
+			jQuery("#form-group-freelancers").hide();
+		}
+	});
 });
 
 //Date picker
@@ -3131,5 +3145,5 @@ function init_files_uploader(current_uploader, current_type,role) {
 		var _this = jQuery(this);
         var img   = _this.parents('.wt-experienceaccordion').data('id');
 		_this.parents('ul.wt-attachfile').remove();
-	});    
+	});
 }

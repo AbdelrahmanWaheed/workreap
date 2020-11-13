@@ -761,7 +761,7 @@ if (!class_exists('ChatSystem')) {
 			
 			if (!empty($project_id)) {
 				$link		= get_the_permalink($project_id);
-                $message	= $message.' '.$link;
+                $message	= $message.'\n'.$link;
 
 				//update api key data
 				if( apply_filters('workreap_filter_user_promotion', 'disable') === 'enable' ){	

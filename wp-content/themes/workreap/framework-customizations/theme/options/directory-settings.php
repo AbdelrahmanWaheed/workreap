@@ -262,6 +262,15 @@ $options = array(
 							'publish'	=> esc_html__('No ( Published )', 'workreap')
 						)
 					),
+					'job_invitation_message' => array(
+						'label' => esc_html__( 'Job Invitation Message', 'workreap' ),
+						'type'  => 'textarea',
+						'value' => "Hello [FREELANCER]\nFor your great performance, You have been invited to work in the following project\n[PROJECT_LINK]\nCome on, open the project and submit your proposal.",
+						'desc' 	=> 'Describe the job invitation message that will be sent to the selected freelancers in one to one projects.<br/> 
+							use the following keywords to express their value in the message:<br/>
+							1) [FREELANCER]   : The freelancer name that will receive the invitation message.<br/>
+							2) [PROJECT_LINK] : The link of the project in which the employer wants to invite the freelancer to work.<br/>',
+					),
 					'upload_resume'  => array(
 						'label' => esc_html__( 'Upload Resume', 'workreap' ),
 						'type'  => 'select',

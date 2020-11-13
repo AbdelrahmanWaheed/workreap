@@ -110,7 +110,7 @@ body.logged-in main.wt-main{background:transparent;padding:20px 40px 20px 310px}
 .wt-offerermessage figure img,.wt-memessage figure img{display:block}
 .wt-offerermessage .wt-description p,.wt-memessage .wt-description p{padding:10px;font-size:14px;color:#323232;margin:0 0 5px;max-width:485px;line-height:24px;background:#f7f7f7}
 .wt-offerermessage .wt-description p{float:left}
-.wt-memessage .wt-description p{float:right}
+.wt-memessage .wt-description p{float:right;white-space: break-spaces;}
 .wt-offerermessage .wt-description p{border-radius:10px 10px 10px 0}
 .wt-memessage .wt-description p{border-radius:10px 10px 0 10px}
 .wt-offerermessage .wt-description p a,.wt-memessage .wt-description p a{color:#55acee;text-decoration:none}

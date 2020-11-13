@@ -76,17 +76,20 @@ $post_author = get_post_field('post_author', $edit_id);
 				$_milestone   	= get_post_meta($post->ID,'_milestone',true);
 				$is_milestone	= !empty( $_milestone ) ? $_milestone : 'off';
 			
-				$db_project_cat = wp_get_post_terms($post->ID, 'project_cat');
+				$db_project_cat = wp_get_post_terms($post->ID, 'project_cat', array('fields' => 'ids'))[0];
 				$db_skills 		= wp_get_post_terms($post->ID, 'skills');
 				$db_location	= wp_get_post_terms($post->ID, 'locations');
 				$db_languages	= wp_get_post_terms($post->ID, 'languages');
+
+				$type 			= get_post_meta($post->ID, 'type', true);
+				$freelancers 	= get_post_meta($post->ID, 'suggested_freelancers');
 				
 				$db_experience =  array();
 				if(term_exists('project_experience')){
 					$db_experience	= wp_get_post_terms($post->ID, 'project_experience');
 				}
 			
-				$db_project_cat	= !empty( $db_project_cat ) ? wp_list_pluck($db_project_cat,'term_id') : array();
+				// $db_project_cat	= !empty( $db_project_cat ) ? wp_list_pluck($db_project_cat,'term_id') : array();
 				$db_location	= !empty( $db_location ) ? wp_list_pluck($db_location,'term_id') : array();
 				$db_languages	= !empty( $db_languages ) ? wp_list_pluck($db_languages,'term_id') : array();
 				$db_experience	= !empty( $db_experience ) ? wp_list_pluck($db_experience,'term_id') : array();
@@ -171,7 +174,7 @@ $post_author = get_post_field('post_author', $edit_id);
 							<div class="wt-formtheme wt-userform wt-userformvtwo">
 								<fieldset>
 									<div class="form-group">
-										<input type="text" value="<?php the_title();?>" name="job[title]" class="form-control" placeholder="<?php esc_attr_e('Job Title','workreap');?>">
+										<input type="text" value="<?php echo $post->post_title; ?>" name="job[title]" class="form-control" placeholder="<?php esc_attr_e('Job Title','workreap');?>">
 									</div>
 									<?php if(!$hide) { ?>
 										<div class="form-group form-group-half wt-formwithlabel">
@@ -355,7 +358,7 @@ $post_author = get_post_field('post_author', $edit_id);
 							</div>
 							<div class="wt-divtheme wt-userform wt-userformvtwo">
 								<div class="form-group">
-									<?php do_action('workreap_get_categories_list','job[categories][]',$db_project_cat);?>	
+									<?php do_action('workreap_get_categories_list','job[categories][]',$db_project_cat,true);?>	
 								</div>
 							</div>
 						</div>
@@ -386,6 +389,44 @@ $post_author = get_post_field('post_author', $edit_id);
 							</div>
 						</div>
 						<?php } ?>
+						<div class="wt-jobdetails wt-tabsinfo">
+							<div class="wt-tabscontenttitle">
+								<h2><?php esc_html_e('Job Type','workreap');?></h2>
+							</div>
+							<div class="wt-formtheme wt-userform wt-userformvtwo">
+								<fieldset>
+									<div class="form-group">
+										<span class="wt-selects toolip-wrapo">
+											<select name="job[type]" disabled>
+												<option value="one-to-one" <?php selected($type, 'one-to-one'); ?>>
+													<?php esc_html_e('One To One', 'workreap');?>
+												</option>
+												<option value="contest" <?php selected($type, 'contest'); ?>>
+													<?php esc_html_e('Contest', 'workreap');?>
+												</option>
+											</select>
+										</span>
+									</div>
+									<?php if($type == 'one-to-one') : ?>
+										<div class="form-group" id="form-group-freelancers">
+											<?php if(!empty($freelancers)) : ?>
+												<hr>
+												<div class="wt-skillsrequired">
+													<div class="wt-title">
+														<h5><?php esc_html_e('Freelancers', 'workreap'); ?></h5>
+													</div>
+													<div class="wt-tag wt-widgettag">
+														<?php foreach ($freelancers as $freelancer) : ?>
+															<a href="#"><?php echo workreap_get_username($freelancer); ?></a>
+														<?php endforeach; ?>
+													</div>
+												</div>
+											<?php endif; ?>
+										</div>
+									<?php endif; ?>
+								</fieldset>
+							</div>
+						</div>
 						<div class="wt-jobdetails wt-tabsinfo">
 							<div class="wt-tabscontenttitle">
 								<h2><?php esc_html_e('Job Details','workreap');?></h2>

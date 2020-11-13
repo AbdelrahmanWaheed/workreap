@@ -63,7 +63,7 @@ if( apply_filters('workreap_system_access','job_base') === true ){
 							<?php 
 							if( is_user_logged_in() ) {
 								$user_type		= apply_filters('workreap_get_user_type', $current_user->ID );
-								if( $post_status === 'publish' && $user_type === 'freelancer' ) { ?>
+								if( in_array($post_status, array('publish', 'private')) && $user_type === 'freelancer' ) { ?>
 								<div class="wt-btnarea"><a href="<?php echo esc_url( $submit_proposal ); ?>" class="wt-btn wt-submit-proposal"><?php esc_html_e('Send Proposal', 'workreap'); ?></a></div>
 							<?php }}else{?>
 								<div class="wt-btnarea"><a href="javascript:;" class="wt-btn wt-submit-proposal"><?php esc_html_e('Send Proposal', 'workreap'); ?></a></div>
@@ -80,6 +80,7 @@ if( apply_filters('workreap_system_access','job_base') === true ){
 									<div class="wt-description"><?php the_content(); ?></div>
 								</div>
 							<?php }?>
+							<?php do_action( 'workreap_display_project_bundle_html', $post->ID, esc_html__('Bundle', 'workreap') ); ?>
 							<?php do_action( 'workreap_print_skills_html', $post->ID, esc_html__('Skills Required', 'workreap'),5000 ); ?>	
 							<?php do_action( 'workreap_display_categories_html', $post->ID); ?>
 							<?php do_action( 'workreap_display_langauges_html', $post->ID); ?>
