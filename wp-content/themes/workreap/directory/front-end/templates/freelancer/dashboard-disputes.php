@@ -84,7 +84,7 @@ if( !empty($dispute_query) && !empty( $dispute_service_query ) ){
 						<div class="form-group">
 							<span class="wt-select">
 								<select name="dispute[project]">
-									<option value=""><?php esc_html_e('Select project/service', 'workreap'); ?></option>
+									<option value=""><?php esc_html_e('Select project', 'workreap'); ?></option>
 									<?php foreach ($dispute_query as $key => $item) { ?>
 										<option value="<?php echo esc_attr( $item->ID ); ?>"><?php echo esc_html( $item->post_title ); ?></option>
 									<?php } ?>										

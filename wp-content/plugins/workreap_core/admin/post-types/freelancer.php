@@ -347,9 +347,9 @@ if (!class_exists('Workreap_Freelancer')) {
 			unset($columns['author']);
 			unset($columns['date']);
 			$columns['per_hour'] 		= esc_html__('Charge Per hour','workreap_core');
-			$columns['onegoing_prj'] 	= esc_html__('Ongoing Projects/Services','workreap_core');
-			$columns['completed_prj'] 	= esc_html__('Completed Projects/Services','workreap_core');
-			$columns['cancelled_prj'] 	= esc_html__('Cancelled Projects/Services','workreap_core');
+			$columns['onegoing_prj'] 	= esc_html__('Ongoing Projects','workreap_core');
+			$columns['completed_prj'] 	= esc_html__('Completed Projects','workreap_core');
+			$columns['cancelled_prj'] 	= esc_html__('Cancelled Projects','workreap_core');
 			$columns['rating'] 			= esc_html__('Rating','workreap_core');
 			$columns['earnings'] 		= esc_html__('Total Earning','workreap_core');
 		 

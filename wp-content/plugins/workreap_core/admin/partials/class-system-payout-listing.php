@@ -164,8 +164,27 @@ if( !class_exists('Payouts_List') ){
 				case 'amount':
 					return workreap_price_format($item[ $column_name ]);
 				case 'payment_method':
-					$payrols = !empty( $payrols[$item[ $column_name ]]['title'] ) ? $payrols[$item[ $column_name ]]['title'] : '';
-					return $payrols;
+					$payrol_title = !empty( $payrols[$item[ $column_name ]]['title'] ) ? $payrols[$item[ $column_name ]]['title'] : '';
+					if( !empty( $item['payment_method'] ) && $item['payment_method'] === 'bacs' ){
+						$payment_details = '';
+						$payrols_fields	= !empty( $payrols['bacs']['fields'] ) ? $payrols['bacs']['fields'] : array();
+						$bank_detail 	= !empty( $item['payment_details'] ) ? maybe_unserialize($item['payment_details']) : array();
+
+						if( !empty( $payrols_fields ) ){
+							foreach( $payrols_fields as $key => $pay ){
+								if( !empty( $bank_detail[$key] ) ){
+									if( ! empty($payment_details) ) {
+										$payment_details .= '<br />';
+									}
+									$payment_details .= '<strong>'.$pay['placeholder'].':</strong> <em>'.$bank_detail[$key].'</em>';
+								}
+							}
+						}
+					} else {
+						$payment_details = '<strong>Paypal Email:</strong> <em>'.$item['paypal_email'].'</em>';
+					}
+
+					return $payrol_title . '<br />' . $payment_details;
 				case 'processed_date':
 					return date_i18n($date_formate,strtotime($item[ $column_name ]));
 				case 'status':

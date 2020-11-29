@@ -880,8 +880,8 @@ $options = array(
                                 'dispute' => esc_html__('', 'workreap'),
                                 'html' => ' %user_name% — To display user who submit the dispute<br/>
 											%user_link% — To display the user link who send the dispute<br/>
-											%project_link% — To display project/service link<br/>
-											%project_title% — To display project/service title<br/>
+											%project_link% — To display project link<br/>
+											%project_title% — To display project title<br/>
                                             %message% — To display the dispute message<br/>
 											%dispute_subject% — To display dispute title<br/>
                                             %signature%',
@@ -2359,7 +2359,7 @@ $options = array(
                                 'type' => 'html',
                                 'html' => esc_html__('Job/Services Noticification Email', 'workreap'),
                                 'label' => esc_html__('', 'workreap'),
-                                'desc' => esc_html__('This email will be sent to employer when project/service is hired.', 'workreap'),
+                                'desc' => esc_html__('This email will be sent to employer when project is hired.', 'workreap'),
                                 'help' => esc_html__('', 'workreap'),
                             ),
                             'offline_order_notification_subject' => array(
@@ -2376,7 +2376,7 @@ $options = array(
                                 'desc' => esc_html__('', 'workreap'),
                                 'help' => esc_html__('', 'workreap'),
                                 'html' => ' %employer_name% — To display Employer Name. <br/>
-                                            %order_link% — To display project/Service link<br/>
+                                            %order_link% — To display project link<br/>
                                             %order_name% - To display Job/Service title<br/>
                                             %signature%',
                             ),

@@ -57,6 +57,14 @@ if( apply_filters('workreap_system_access','job_base') === true ){
 	$tax_query_args  = array();
 	$meta_query_args = array();
 
+	if ( is_tax('project_cat') ) {
+		global $wp_query;
+		$sub_cat = $wp_query->get_queried_object();
+		if ( !empty( $sub_cat->slug ) ) {
+			$categories = array($sub_cat->slug);
+		}
+	}
+
 	if ( !empty($languages[0]) && is_array($languages) ) {   
 		$query_relation = array('relation' => 'OR',);
 		$lang_args  	= array();
@@ -424,7 +432,7 @@ if( apply_filters('workreap_system_access','job_base') === true ){
 										<a class="wt-mobile-close" href="javascript:;"><i class="lnr lnr-cross"></i></a>
 										<form method="get" name="serach-projects" action="#">
 											<h2 class="filter-byhead"><?php esc_html_e('Filter Project By', 'workreap'); ?></h2>
-											<?php do_action('workreap_geoloacation_search'); ?>
+											<?php // do_action('workreap_geoloacation_search'); ?>
 											<?php do_action('workreap_keyword_search'); ?>
 											<?php 
 												if(!empty($job_option_type) && $job_option_type === 'enable' ){
@@ -526,14 +534,16 @@ if( apply_filters('workreap_system_access','job_base') === true ){
 												</div>
 												<?php do_action( 'workreap_print_skills_html', $post->ID );?>										
 											</div>
-											<div class="wt-viewjobholder">
+											<div class="wt-viewjobholder relative-viewjobholder">
 												<ul>
-													<?php do_action('workreap_project_print_project_level', $post->ID); ?>
-													<?php do_action('workreap_print_project_duration_html', $post->ID);?>
-													<?php if(!empty($job_option_type) && $job_option_type === 'enable' ){do_action('workreap_print_project_option_type', $post->ID); }?>
-													<?php do_action('workreap_print_project_type', $post->ID); ?>
+													<?php // do_action('workreap_project_print_project_level', $post->ID); ?>
+													<?php // do_action('workreap_print_project_duration_html', $post->ID);?>
+													<?php if(!empty($job_option_type) && $job_option_type === 'enable' ){
+														//do_action('workreap_print_project_option_type', $post->ID); 
+													}?>
+													<?php // do_action('workreap_print_project_type', $post->ID); ?>
 													<?php do_action('workreap_print_project_date', $post->ID);?>
-													<?php do_action('workreap_print_location', $post->ID); ?>
+													<?php // do_action('workreap_print_location', $post->ID); ?>
 													<li><?php  do_action('workreap_save_project_html', $post->ID, 'v2'); ?></li>
 													<li class="wt-btnarea"><a href="<?php echo esc_url( get_the_permalink() ); ?>" class="wt-btn"><?php esc_html_e( 'View Job', 'workreap' ) ?></a></li>
 												</ul>

@@ -248,12 +248,12 @@ if( !class_exists('Workreap_Home_Slider_V5') ){
 																</select>
 															</span>
 														</div>
-														<div class="form-group">
-															<?php do_action('worktic_get_locations_list','location[]',''); ?>
-														</div>
-														<div class="form-group wt-pricerange-group">
-															<?php do_action('workreap_print_price_range', '', 'top', 'disable', esc_html__('more than 2500 listings available','workreap_core'), esc_html__('Price Range:','workreap_core')); ?>
-														</div>
+														<!-- <div class="form-group"> -->
+															<?php // do_action('worktic_get_locations_list','location[]',''); ?>
+														<!-- </div> -->
+														<!-- <div class="form-group wt-pricerange-group"> -->
+															<?php // do_action('workreap_print_price_range', '', 'top', 'disable', esc_html__('more than 2500 listings available','workreap_core'), esc_html__('Price Range:','workreap_core')); ?>
+														<!-- </div> -->
 													</fieldset>
 												</form>
 												<div class="wt-bannerthreeform-footer">

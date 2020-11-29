@@ -57,8 +57,8 @@ $offline_package		= !empty($offline_package['type']) ? $offline_package['type'] 
 							</div>
 							<ul class="wt-saveitem-breadcrumb wt-userlisting-breadcrumb">
 								<?php do_action('workreap_project_print_project_level', $edit_id); ?>
-								<?php do_action('workreap_print_location', $edit_id); ?>
-								<?php do_action('workreap_print_project_type', $edit_id); ?>
+								<?php // do_action('workreap_print_location', $edit_id); ?>
+								<?php // do_action('workreap_print_project_type', $edit_id); ?>
 							</ul>
 						</div>
 						<div class="wt-rightarea">

@@ -1235,6 +1235,10 @@ if ( ! function_exists( 'workreap_get_dashboard_menu' ) ) {
 				'title' => esc_html__('Dashboard','workreap'),
 				'type'	=> 'none'
 			),
+			'add-job'	=> array(
+				'title' => esc_html__('Post A Job','workreap'),
+				'type'	=> 'employer'
+			),
 			'chat'	=> array(
 				'title' => esc_html__('Inbox','workreap'),
 				'type'	=> 'none'

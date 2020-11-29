@@ -52,7 +52,7 @@ $count_post 	= $query->found_posts;
 					<thead>
 						<tr>
 							<th><?php esc_html_e('Subject','workreap');?></th>
-							<th><?php esc_html_e('Project/Service','workreap');?></th>
+							<th><?php esc_html_e('Project','workreap');?></th>
 							<th><?php esc_html_e('Status','workreap');?></th>
 							<th><?php esc_html_e('Action','workreap');?></th>
 						</tr>

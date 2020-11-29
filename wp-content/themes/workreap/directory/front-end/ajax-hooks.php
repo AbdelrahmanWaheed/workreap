@@ -100,7 +100,7 @@ if (!function_exists('workreap_submit_dispute')) {
 		}; //if demo site then prevent
 		
 		$fields	= array(
-			'project' 		=> esc_html__('No project/service is selected','workreap'),
+			'project' 		=> esc_html__('No project is selected','workreap'),
 			'reason' 		=> esc_html__('Please select the reason','workreap'),
 			'description' 	=> esc_html__('Please add dispute description','workreap'),
 		);
@@ -2820,7 +2820,7 @@ if ( !function_exists( 'workreap_post_job' ) ) {
 				'title'   			=> esc_html__('Job title is required', 'workreap'),
 				'description'       => esc_html__('Job Details are required', 'workreap'),
 				// 'project_cost'      => esc_html__('Project cost is required', 'workreap'),
-				'skills'            => esc_html__('Project skills are required', 'workreap'),
+				// 'skills'            => esc_html__('Project skills are required', 'workreap'),
 				// 'project_level'  	=> esc_html__('Project level is required', 'workreap'),
 				// 'project_duration'  => esc_html__('Project duration is required', 'workreap'),
 				// 'english_level'   	=> esc_html__('English level is required', 'workreap'),
@@ -2836,7 +2836,7 @@ if ( !function_exists( 'workreap_post_job' ) ) {
 				'title'   			=> esc_html__('Job title is required', 'workreap'),
 				'description'       => esc_html__('Job Details are required', 'workreap'),
 				// 'project_cost'      => esc_html__('Project cost is required', 'workreap'),
-				'skills'            => esc_html__('Project skills are required', 'workreap'),
+				// 'skills'            => esc_html__('Project skills are required', 'workreap'),
 				// 'project_level'  	=> esc_html__('Project level is required', 'workreap'),
 				// 'project_duration'  => esc_html__('Project duration is required', 'workreap'),
 				// 'english_level'   	=> esc_html__('English level is required', 'workreap'),
@@ -3059,7 +3059,7 @@ if ( !function_exists( 'workreap_post_job' ) ) {
 			
 			// $languages               = !empty( $_POST['job']['languages'] ) ? $_POST['job']['languages'] : array();
 			// $categories              = !empty( $_POST['job']['categories'] ) ? $_POST['job']['categories'] : array();
-			$skills              	 = !empty( $_POST['job']['skills'] ) ? $_POST['job']['skills'] : array();
+			// $skills              	 = !empty( $_POST['job']['skills'] ) ? $_POST['job']['skills'] : array();
 			// $expiry_date             = !empty( $_POST['job']['expiry_date'] ) ? $_POST['job']['expiry_date'] : '';
 			// $deadline             	 = !empty( $_POST['job']['deadline'] ) ? $_POST['job']['deadline'] : '';
 			
@@ -3098,7 +3098,7 @@ if ( !function_exists( 'workreap_post_job' ) ) {
 			// wp_set_post_terms( $post_id, $languages, 'languages' );
 			
 			//update skills
-			wp_set_post_terms( $post_id, $skills, 'skills' );
+			// wp_set_post_terms( $post_id, $skills, 'skills' );
 
 			// update projec expriences
 			if(!empty($job_experience_single['gadget']) && $job_experience_single['gadget'] === 'enable' ){
@@ -6267,7 +6267,7 @@ if ( !function_exists( 'workreap_more_rating_service' ) ) {
 									<?php } ?>
 								</div>
 								<ul class="wt-userlisting-breadcrumb">
-									<?php do_action('workreap_print_location', $linked_profile); ?>
+									<?php // do_action('workreap_print_location', $linked_profile); ?>
 									<li><?php do_action('workreap_freelancer_single_service_rating', $service_ratings ); ?></li>
 								</ul>
 							</div>

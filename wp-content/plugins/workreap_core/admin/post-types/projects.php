@@ -97,7 +97,7 @@ if (!class_exists('Workreap_Projects')) {
                 'show_admin_column' => false,
                 'query_var' 		=> true,
                 'show_in_nav_menus' => true,
-                'rewrite' 			=> array('slug' => 'project_cat', 'with_front' => true),
+                'rewrite' 			=> array('slug' => 'project-category', 'with_front' => true),
             );
 			
 			if( apply_filters('workreap_system_access','job_base') === true ){

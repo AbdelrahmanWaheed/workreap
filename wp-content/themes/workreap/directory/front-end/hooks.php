@@ -1989,7 +1989,7 @@ if( !function_exists(  'workreap_freelancer_breadcrumbs' ) ) {
 			<?php if( !empty($perhour_rate) && apply_filters('workreap_user_perhour_rate_settings',$user_id) === true ){?>
 				<li><span><i class="fa fa-money"></i><?php echo esc_html($freelancer_rate);?>&nbsp;/&nbsp;<?php esc_html_e('hr','workreap');?></span></li>
 			<?php }?>
-			<?php do_action('workreap_print_location',$user_id);?>
+			<?php // do_action('workreap_print_location',$user_id);?>
 			<li><?php do_action('workreap_save_freelancer_html', $user_id);?></li>
 		</ul>
 		<?php
@@ -2624,6 +2624,7 @@ if( !function_exists( 'workreap_print_categories' ) ){
 		}
 
 		$count = !empty($categories_list) && is_array($categories_list) ? count($categories_list) : 0;
+		$active_class = !empty($count) ? 'wt-displayfilter' : '';
 
 		$categories = get_terms( 
 			array(
@@ -2635,7 +2636,7 @@ if( !function_exists( 'workreap_print_categories' ) ){
 		if( !empty( $categories ) ){
 		ob_start(); 
         ?>
-        <div class="wt-widget wt-effectiveholder">
+        <div class="wt-widget wt-effectiveholder <?php echo $active_class; ?>">
             <div class="wt-widgettitle">
                 <h2><?php esc_html_e('Categories', 'workreap'); ?>:<span>( <em><?php echo esc_html($count); ?></em> <?php esc_html_e('selected', 'workreap'); ?> )</h2>
             </div>
@@ -3920,7 +3921,17 @@ if( !function_exists( 'workreap_print_project_date' ) ){
 				}
 				?>
                 <li data-tipso="<?php esc_attr_e('Project deadline','workreap');?>" class="tipso_style wt-tipso"><span><img class="wt-job-icon"  src="<?php echo esc_url(get_template_directory_uri());?>/images/job-expiry.png" alt="<?php esc_html_e('Project deadline', 'workreap'); ?>"><?php echo esc_html( $status ); ?></span></li>
-            <?php }
+            <?php } else {
+            	?>
+                <li data-tipso="<?php esc_attr_e('Open For Proposals','workreap');?>" class="tipso_style wt-tipso">
+                	<span>
+                		<img class="wt-job-icon" src="<?php echo esc_url(get_template_directory_uri());?>/images/job-expiry.png" 
+                			alt="<?php esc_html_e('Open', 'workreap'); ?>">
+                		<?php esc_html_e('Open For Proposals', 'workreap'); ?>
+                	</span>
+                </li>
+            	<?php
+            }
         }
     }
     add_action('workreap_print_project_date', 'workreap_print_project_date', 10, 1);
@@ -3945,7 +3956,7 @@ if( !function_exists( 'workreap_display_categories_html' ) ){
 				<div class="wt-skillsrequired">
 					<?php if($show_title === 'true') { ?>
 						<div class="wt-title">
-							<h3><?php esc_html_e('Industry Categories', 'workreap'); ?></h3>
+							<h3><?php esc_html_e('Category', 'workreap'); ?></h3>
 						</div>
 					<?php } ?>
 					<?php if( !empty( $terms ) ){ ?>
@@ -4057,8 +4068,8 @@ if( !function_exists( 'workreap_print_skills_html' ) ){
     function workreap_print_skills_html( $post_id = '', $title = '',$view = 4){
         if( !empty( $post_id ) ){ 
             $args 	= array();
-			if( taxonomy_exists('skills') ) {
-				$terms 	= wp_get_post_terms( $post_id, 'skills', $args );
+			if( taxonomy_exists('project_cat') ) {
+				$terms 	= wp_get_post_terms( $post_id, 'project_cat', $args );
 				$view	= intval($view);
 				$total_skills	= count($terms);
 				if( !empty( $terms[0] ) ){
@@ -4073,10 +4084,10 @@ if( !function_exists( 'workreap_print_skills_html' ) ){
 							$count_skills	= 0;
 							foreach ( $terms as $key => $term ) {
 								$count_skills++;
-								$term_link = get_term_link( $term->term_id, 'skills' );
+								$term_link = get_term_link( $term->term_id, 'project_cat' );
 								$search_page  = workreap_get_search_page_uri('jobs');
 								
-								$search_page	= !empty( $search_page ) ? $search_page.'?skills[]='.$term->slug : $term_link;
+								$search_page	= !empty( $search_page ) ? $search_page.'?category[]='.$term->slug : $term_link;
 								$style	= '';	
 
 								if( !empty( $view ) && $total_skills > 4 ) {
@@ -4243,7 +4254,7 @@ if( !function_exists( 'workreap_display_project_bundle_html' ) ){
 					</div>
 				<?php } ?>
 				<div class="wt-tag wt-widgettag">
-					<a href="#"><?php echo esc_html( $designs ); ?> Designs</a>
+					<a href="javascript:;"><?php echo esc_html( $designs ); ?> Designs</a>
 				</div>
 			</div>
 		<?php }
@@ -4429,7 +4440,7 @@ if( !function_exists( 'workreap_save_project_html') ){
 		}
 		echo ob_get_clean();
     }
-    // add_action('workreap_geoloacation_search', 'workreap_geoloacation_search', 10, 1);
+    add_action('workreap_geoloacation_search', 'workreap_geoloacation_search', 10, 1);
  }
 
 /**

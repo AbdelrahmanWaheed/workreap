@@ -112,7 +112,7 @@ $freelancers = get_posts($args);
 												<?php if( !empty($perhour_rate) ){?>
 													<li><span><i class="fa fa-money"></i><?php do_action('workreap_price_format',$perhour_rate);?>&nbsp;/&nbsp;<?php esc_html_e('hr','workreap');?></span></li>
 												<?php }?>
-												<?php do_action('workreap_print_location',$freelancer->ID);?>
+												<?php // do_action('workreap_print_location',$freelancer->ID);?>
 												<li><?php do_action('workreap_save_freelancer_html',$freelancer->ID);?></li>
 												<li>
 													<a href="javascript:;" class="wt-freestars">

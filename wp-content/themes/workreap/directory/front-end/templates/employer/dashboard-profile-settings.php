@@ -35,9 +35,11 @@ $socialmediaurl 		= !empty($socialmediaurls) ? $socialmediaurls['gadget'] : '';
 							<a data-toggle="tab" href="#wt-socials-profile"><?php esc_html_e('Social profile', 'workreap'); ?></a>
 						</li>
 					<?php } ?>
+					<!--
 					<li class="nav-item">
-						<a data-toggle="tab" href="#wt-brochures"><?php esc_html_e('Brochures', 'workreap'); ?></a>
+						<a data-toggle="tab" href="#wt-brochures"><?php // esc_html_e('Brochures', 'workreap'); ?></a>
 					</li>
+					-->
 				</ul>
 			</div>
 			<div class="wt-tabscontent tab-content">
@@ -53,9 +55,11 @@ $socialmediaurl 		= !empty($socialmediaurls) ? $socialmediaurls['gadget'] : '';
 					<?php get_template_part('directory/front-end/templates/dashboard', 'social-profile'); ?>
 					</div>
 				<?php } ?>
+				<!--
 				<div class="wt-personalskillshold wt-brochures tab-pane fade" id="wt-brochures">
-					<?php get_template_part('directory/front-end/templates/employer/dashboard', 'brochures'); ?>
+					<?php // get_template_part('directory/front-end/templates/employer/dashboard', 'brochures'); ?>
 				</div>
+				-->
 			</div>
 		</div>
 		<div class="wt-updatall">

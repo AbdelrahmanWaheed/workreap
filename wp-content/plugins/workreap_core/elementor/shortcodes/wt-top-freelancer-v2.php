@@ -240,7 +240,7 @@ if( !class_exists('Workreap_Top_Freelancers_V2') ){
 											</div>
 										</div>
 										<ul class="wt-freelancer-footer">
-											<?php do_action('workreap_print_location', $freelancer->ID);?>
+											<?php // do_action('workreap_print_location', $freelancer->ID);?>
 											<li><?php do_action('workreap_save_freelancer_html', $freelancer->ID, 'v2');?></li>
 										</ul>
 									</div>

@@ -85,8 +85,8 @@ if( $query->have_posts() ){
 										</div>
 										<ul class="wt-saveitem-breadcrumb wt-userlisting-breadcrumb">
 											<?php do_action('workreap_project_print_project_level', $post->ID); ?>
-											<?php do_action('workreap_print_location', $post->ID); ?>
-											<?php do_action('workreap_print_project_type', $post->ID); ?>
+											<?php // do_action('workreap_print_location', $post->ID); ?>
+											<?php // do_action('workreap_print_project_type', $post->ID); ?>
 										</ul>
 									</div>
 									<div class="wt-rightarea">

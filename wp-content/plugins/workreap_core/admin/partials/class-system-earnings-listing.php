@@ -182,7 +182,7 @@ if( !class_exists('Earnings_List') ){
 		function get_columns() {
 			$columns = array(
 				'user_id' 				=> esc_html__( 'User Name', 'workreap_core' ),
-				'project_id'   			=> esc_html__( 'Project/Service', 'workreap_core' ),
+				'project_id'   			=> esc_html__( 'Project', 'workreap_core' ),
 				'order_id'   			=> esc_html__( 'Order', 'workreap_core' ),
 				'amount'    			=> esc_html__( 'Amount', 'workreap_core' ),
 				'freelancer_amount'    	=> esc_html__( 'Freelancer / Employer Share', 'workreap_core' ),

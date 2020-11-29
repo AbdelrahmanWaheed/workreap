@@ -57,6 +57,7 @@ $english_level   	= worktic_english_level_list();
 $db_english_level	= get_post_meta($linked_profile, '_english_level', true);
 $db_freelancer_type = get_post_meta($linked_profile, '_freelancer_type', true);
 $freelancer_level   = worktic_freelancer_level_list();    
+$show_freelancer_type = false;
 
 //multiselect
 $multiselect	= '';
@@ -157,30 +158,33 @@ if(!empty($freelancertype) && $freelancertype === 'enable' ){
 			</div>
 		</div>
 	</div>
-	<div class="wt-tabscontenttitle">
-		<h2><?php esc_html_e('Freelancer Type', 'workreap'); ?></h2>
-	</div>
-	<div class="wt-settingscontent">
-		<div class="wt-formtheme wt-userform">
-			<div class="form-group">
-				<select data-placeholder="<?php esc_attr_e('Freelancer Type', 'workreap'); ?>" name="<?php echo esc_html($typename);?>"  class="chosen-select" <?php echo esc_html($multiselect);?>>
-					<?php if( !empty( $freelancer_level ) ){
-						$db_key	= '';
-						foreach( $freelancer_level as $key => $item ){
-							if(!empty($freelancertype) && $freelancertype === 'enable' ){
-								if(is_array($db_freelancer_type) && in_array($key,$db_freelancer_type)){
-									$db_key	= $key;
-								}else if(!empty($db_freelancer_type) && $db_freelancer_type === $key) {
-									$db_key	= $key;
+
+	<?php if( $show_freelancer_type ) : ?>
+		<div class="wt-tabscontenttitle">
+			<h2><?php esc_html_e('Freelancer Type', 'workreap'); ?></h2>
+		</div>
+		<div class="wt-settingscontent">
+			<div class="wt-formtheme wt-userform">
+				<div class="form-group">
+					<select data-placeholder="<?php esc_attr_e('Freelancer Type', 'workreap'); ?>" name="<?php echo esc_html($typename);?>"  class="chosen-select" <?php echo esc_html($multiselect);?>>
+						<?php if( !empty( $freelancer_level ) ){
+							$db_key	= '';
+							foreach( $freelancer_level as $key => $item ){
+								if(!empty($freelancertype) && $freelancertype === 'enable' ){
+									if(is_array($db_freelancer_type) && in_array($key,$db_freelancer_type)){
+										$db_key	= $key;
+									}else if(!empty($db_freelancer_type) && $db_freelancer_type === $key) {
+										$db_key	= $key;
+									}
+								}else{
+									$db_key	= $db_freelancer_type;
 								}
-							}else{
-								$db_key	= $db_freelancer_type;
-							}
-					?>
-					<option <?php selected( $db_key, $key ); ?> value="<?php echo esc_attr( $key );?>"><?php echo esc_html( $item );?></option>
-					<?php }}?>
-				</select>
+						?>
+						<option <?php selected( $db_key, $key ); ?> value="<?php echo esc_attr( $key );?>"><?php echo esc_html( $item );?></option>
+						<?php }}?>
+					</select>
+				</div>
 			</div>
 		</div>
-	</div>
+	<?php endif; ?>
 </div>

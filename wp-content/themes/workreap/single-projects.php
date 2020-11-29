@@ -81,7 +81,7 @@ if( apply_filters('workreap_system_access','job_base') === true ){
 								</div>
 							<?php }?>
 							<?php do_action( 'workreap_display_project_bundle_html', $post->ID, esc_html__('Bundle', 'workreap') ); ?>
-							<?php do_action( 'workreap_print_skills_html', $post->ID, esc_html__('Skills Required', 'workreap'),5000 ); ?>	
+							<?php // do_action( 'workreap_print_skills_html', $post->ID, esc_html__('Skills Required', 'workreap'),5000 ); ?>	
 							<?php do_action( 'workreap_display_categories_html', $post->ID); ?>
 							<?php do_action( 'workreap_display_langauges_html', $post->ID); ?>
 							<?php do_action( 'workreap_display_required_freelancer_html', $post->ID); ?>
@@ -108,7 +108,7 @@ if( apply_filters('workreap_system_access','job_base') === true ){
 										<span><?php  echo do_shortcode($price_text); ?><?php if( !empty( $job_type_text ) ) echo do_shortcode($job_type_text);?></span>
 									</div>
 								</div>
-								<?php if( !empty( $expiry_date ) ){
+								<?php if( !empty( $expiry_date ) && strtotime($expiry_date) > 0 ){
 										if( current_time( 'timestamp' ) > strtotime($expiry_date) ){
 											$status	=  esc_html__('Expired','workreap');
 										} else{

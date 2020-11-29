@@ -75,12 +75,12 @@ if( !empty($dispute_query) && !empty( $dispute_service_query ) ){
 				<form class="wt-formtheme wt-disputeform wt-formfeedback">
 					<fieldset>
 						<div class="form-group">
-							<p><?php esc_html_e('You can only create a dispute against the cancelled projects/services.','workreap');?></p>
+							<p><?php esc_html_e('You can only create a dispute against the cancelled projects.','workreap');?></p>
 						</div>
 						<div class="form-group">
 							<span class="wt-select">
 								<select name="dispute[project]">
-									<option value=""><?php esc_html_e('Select project/service', 'workreap'); ?></option>
+									<option value=""><?php esc_html_e('Select project', 'workreap'); ?></option>
 									<?php 
 									if( !empty( $dispute_query ) ){
 										foreach ($dispute_query as $key => $item) { ?>

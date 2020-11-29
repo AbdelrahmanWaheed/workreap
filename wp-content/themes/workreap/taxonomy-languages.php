@@ -53,14 +53,16 @@ if( function_exists('fw_get_db_settings_option')  ){
 												</div>
 												<?php do_action( 'workreap_print_skills_html', $post->ID );?>										
 											</div>
-											<div class="wt-viewjobholder">
+											<div class="wt-viewjobholder relative-viewjobholder">
 												<ul>
 													<?php do_action('workreap_project_print_project_level', $post->ID); ?>
 													<?php do_action('workreap_print_project_duration_html', $post->ID);?>
-													<?php if(!empty($job_option_type) && $job_option_type === 'enable' ){ do_action('workreap_print_project_option_type', $post->ID); }?>
-													<?php do_action('workreap_print_project_type', $post->ID); ?>
+													<?php if(!empty($job_option_type) && $job_option_type === 'enable' ){ 
+														// do_action('workreap_print_project_option_type', $post->ID); 
+													}?>
+													<?php // do_action('workreap_print_project_type', $post->ID); ?>
 													<?php do_action('workreap_print_project_date', $post->ID);?>
-													<?php do_action('workreap_print_location', $post->ID); ?>
+													<?php // do_action('workreap_print_location', $post->ID); ?>
 													<li><?php  do_action('workreap_save_project_html', $post->ID, 'v2'); ?></li>
 													<li class="wt-btnarea"><a href="<?php echo esc_url( get_the_permalink() ); ?>" class="wt-btn"><?php esc_html_e( 'View Job', 'workreap' ) ?></a></li>
 												</ul>

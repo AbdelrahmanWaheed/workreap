@@ -79,7 +79,7 @@ $count_post 		= $query->found_posts;
 									<?php } ?>
 								</div>
 								<ul class="wt-userlisting-breadcrumb">
-									<?php do_action('workreap_print_location', $linked_profile); ?>
+									<?php // do_action('workreap_print_location', $linked_profile); ?>
 									<li class="wt-overallratingarea"><?php do_action('workreap_freelancer_single_service_rating', $service_ratings,$post->ID ); ?></li>
 								</ul>
 							</div>

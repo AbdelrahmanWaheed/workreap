@@ -439,55 +439,57 @@ $post_author = get_post_field('post_author', $edit_id);
 								</fieldset>
 							</div>
 						</div>	
-						<div class="wt-jobskills wt-tabsinfo">
-							<div class="wt-tabscontenttitle">
-								<h2><?php esc_html_e('Skills Required','workreap');?></h2>
-							</div>
-							<div class="wt-divtheme wt-userform wt-userformvtwo">
-								<div class="form-group">
-									<select data-placeholder="<?php esc_attr_e('Skills','workreap');?>" name="skills"  class="chosen-select skill-dynamic-field">
-										<?php 
-											if( !empty( $all_skills ) ){							
-												foreach ($all_skills as $key => $value) {
-													$term_data = get_term_by( 'slug', $value['slug'], 'skills' );
-													$term_id   = $term_data->term_id;									
+						<?php if(!$hide) : ?>
+							<div class="wt-jobskills wt-tabsinfo">
+								<div class="wt-tabscontenttitle">
+									<h2><?php esc_html_e('Skills Required','workreap');?></h2>
+								</div>
+								<div class="wt-divtheme wt-userform wt-userformvtwo">
+									<div class="form-group">
+										<select data-placeholder="<?php esc_attr_e('Skills','workreap');?>" name="skills"  class="chosen-select skill-dynamic-field">
+											<?php 
+												if( !empty( $all_skills ) ){							
+													foreach ($all_skills as $key => $value) {
+														$term_data = get_term_by( 'slug', $value['slug'], 'skills' );
+														$term_id   = $term_data->term_id;									
+														?>
+														<option value="<?php echo esc_attr( $term_id ); ?>"><?php echo esc_html( $value['name'] ); ?></option>
+														<?php 
+													}
+												}
+											?>		
+										</select>
+									</div>
+									<div class="form-group wt-btnarea">
+										<a href="javascript:;" class="wt-btn add-job-skills"><?php esc_html_e('Add Skills','workreap');?></a>
+									</div>
+									<div class="form-group wt-myskills">
+										<ul class="jobskills-wrap wt-haslayout">
+											<?php 
+												if( !empty( $db_skills ) ){
+													foreach( $db_skills as $key => $skill ){
 													?>
-													<option value="<?php echo esc_attr( $term_id ); ?>"><?php echo esc_html( $value['name'] ); ?></option>
-													<?php 
+													<li class="wt-skill-list">
+														<div class="wt-dragdroptool">
+															<a href="javascript:" class="lnr lnr-menu"></a>
+														</div>
+														<span class="skill-dynamic-html"><?php echo esc_html( $skill->name );?></span>
+														<span class="skill-dynamic-field">
+															<input type="text" name="job[skills][]" value="<?php echo esc_attr( $skill->term_id );?>">
+														</span>
+														<div class="wt-rightarea">
+															<a href="javascript:;" class="wt-deleteinfo wt-delete-skill"><i class="lnr lnr-trash"></i></a>
+														</div>
+													</li>
+													<?php
+													}
 												}
-											}
-										?>		
-									</select>
-								</div>
-								<div class="form-group wt-btnarea">
-									<a href="javascript:;" class="wt-btn add-job-skills"><?php esc_html_e('Add Skills','workreap');?></a>
-								</div>
-								<div class="form-group wt-myskills">
-									<ul class="jobskills-wrap wt-haslayout">
-										<?php 
-											if( !empty( $db_skills ) ){
-												foreach( $db_skills as $key => $skill ){
-												?>
-												<li class="wt-skill-list">
-													<div class="wt-dragdroptool">
-														<a href="javascript:" class="lnr lnr-menu"></a>
-													</div>
-													<span class="skill-dynamic-html"><?php echo esc_html( $skill->name );?></span>
-													<span class="skill-dynamic-field">
-														<input type="text" name="job[skills][]" value="<?php echo esc_attr( $skill->term_id );?>">
-													</span>
-													<div class="wt-rightarea">
-														<a href="javascript:;" class="wt-deleteinfo wt-delete-skill"><i class="lnr lnr-trash"></i></a>
-													</div>
-												</li>
-												<?php
-												}
-											}
-										?>
-									</ul>
+											?>
+										</ul>
+									</div>
 								</div>
 							</div>
-						</div>
+						<?php endif; ?>
 						<div class="wt-attachmentsholder">
 							<div class="wt-tabscontenttitle">
 								<h2><?php esc_html_e('Upload Relevant Project Files','workreap');?></h2>

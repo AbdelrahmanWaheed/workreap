@@ -269,7 +269,7 @@ if( !class_exists('Workreap_Latest_Posted_jobs') ){
 													<?php do_action('workreap_print_skills_html', $post->ID, '', '8');?>
 													<div class="wt-btnarea">
 														<?php  do_action('workreap_save_project_html', $post->ID, 'v3'); ?>
-														<a href="<?php echo esc_url( get_the_permalink() ); ?>" class="wt-btntwo"><?php esc_html_e('Apply now', 'workreap_core'); ?></a>
+														<a href="<?php echo esc_url( get_the_permalink() ); ?>" class="wt-btntwo"><?php esc_html_e('View Job', 'workreap_core'); ?></a>
 													</div>
 												</div>
 											</div>

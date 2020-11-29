@@ -209,14 +209,14 @@ if( !empty( $project_id ) && get_post_type( $project_id ) == 'projects' ){
 						<div class="wt-jobalertsholder">
 							<?php 
 								if ( $user_type === 'freelancer' ) {
-									if(  empty( $skills_matched ) ) {
-										$message	= esc_html__('You’ve no skills of','workreap');
-										$skills     = esc_html( $skills_string ); 
-										$message_v2	= esc_html__('but still you can apply for this project.', 'workreap');
-										$final 		= $message.' '.$skills.' '.$message_v2;
-										$title		= esc_html__('Info','workreap');
-										Workreap_Prepare_Notification::workreap_warning($title, $final, '', '');								
-									} 
+									// if(  empty( $skills_matched ) ) {
+									// 	$message	= esc_html__('You’ve no skills of','workreap');
+									// 	$skills     = esc_html( $skills_string ); 
+									// 	$message_v2	= esc_html__('but still you can apply for this project.', 'workreap');
+									// 	$final 		= $message.' '.$skills.' '.$message_v2;
+									// 	$title		= esc_html__('Info','workreap');
+									// 	Workreap_Prepare_Notification::workreap_warning($title, $final, '', '');								
+									// } 
 	
 									if( apply_filters('workreap_feature_connects', $current_user->ID) === false ){
 										$link		= Workreap_Profile_Menu::workreap_profile_menu_link('package', $current_user->ID,true);

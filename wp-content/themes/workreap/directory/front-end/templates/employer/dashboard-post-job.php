@@ -298,34 +298,36 @@ $hide = true;
 							</fieldset>
 						</div>
 					</div>
-					<div class="wt-jobskills wt-tabsinfo">
-						<div class="wt-tabscontenttitle">
-							<h2><?php esc_html_e('Skills Required','workreap');?></h2>
-						</div>
-						<div class="wt-divtheme wt-userform wt-userformvtwo">
-							<div class="form-group">
-								<select data-placeholder="<?php esc_attr_e('Skills','workreap');?>" name="skills"  class="chosen-select skill-dynamic-field">
-									<?php 
-										if( !empty( $all_skills ) ){							
-											foreach ($all_skills as $key => $value) {
-												$term_data = get_term_by( 'slug', $value['slug'], 'skills' );
-												$term_id   = $term_data->term_id;									
-												?>
-												<option value="<?php echo esc_attr( $term_id ); ?>"><?php echo esc_html( $value['name'] ); ?></option>
-												<?php 
+					<?php if(!$hide) : ?>
+						<div class="wt-jobskills wt-tabsinfo">
+							<div class="wt-tabscontenttitle">
+								<h2><?php esc_html_e('Skills Required','workreap');?></h2>
+							</div>
+							<div class="wt-divtheme wt-userform wt-userformvtwo">
+								<div class="form-group">
+									<select data-placeholder="<?php esc_attr_e('Skills','workreap');?>" name="skills"  class="chosen-select skill-dynamic-field">
+										<?php 
+											if( !empty( $all_skills ) ){							
+												foreach ($all_skills as $key => $value) {
+													$term_data = get_term_by( 'slug', $value['slug'], 'skills' );
+													$term_id   = $term_data->term_id;									
+													?>
+													<option value="<?php echo esc_attr( $term_id ); ?>"><?php echo esc_html( $value['name'] ); ?></option>
+													<?php 
+												}
 											}
-										}
-									?>	
-								</select>
-							</div>
-							<div class="form-group wt-btnarea">
-								<a href="javascript:;" class="wt-btn add-job-skills"><?php esc_html_e('Add Skills','workreap');?></a>
-							</div>
-							<div class="form-group wt-myskills">
-								<ul class="jobskills-wrap wt-haslayout"></ul>
+										?>	
+									</select>
+								</div>
+								<div class="form-group wt-btnarea">
+									<a href="javascript:;" class="wt-btn add-job-skills"><?php esc_html_e('Add Skills','workreap');?></a>
+								</div>
+								<div class="form-group wt-myskills">
+									<ul class="jobskills-wrap wt-haslayout"></ul>
+								</div>
 							</div>
 						</div>
-					</div>
+					<?php endif; ?>
 					<div class="wt-attachmentsholder">
 						<div class="wt-tabscontenttitle">
 							<h2><?php esc_html_e('Upload Relevant Project Files','workreap');?></h2>
