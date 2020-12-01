@@ -1638,6 +1638,68 @@ if ( !function_exists( 'worrketic_proposal_attachments' ) ) {
 }
 
 /**
+ * Project attahments
+ *
+ * @throws error
+ * @author Amentotech <theamentotech@gmail.com>
+ * @return 
+ */
+if ( !function_exists( 'worrketic_proposal_view_attachments' ) ) {
+	add_action( 'worrketic_proposal_view_attachments', 'worrketic_proposal_view_attachments',10,1 );
+	function worrketic_proposal_view_attachments($job_id) {
+		if( empty($job_id) ){return;}
+
+		if (function_exists('fw_get_db_post_option')) {
+			$proposal_docs = fw_get_db_post_option($job_id, 'proposal_docs');
+		}
+
+		$images = array();
+		if( !empty($proposal_docs) ) {
+			foreach($proposal_docs as $file) {
+				if(getimagesize($file['url'])) {
+					$images[] = $file['url'];
+				}
+			}
+		}
+
+		$images_count = !empty($images) ? count($images) : 0;
+		?>
+		<div class="wt-hireduserstatus">
+			<a href="javascrript:;" class="show-project-<?php echo $job_id; ?>-attachments">
+				<i class="fa fa-image"></i>
+				<span><?php echo intval( $images_count );?>&nbsp;<?php esc_html_e('images','workreap');?></span>
+			</a>
+			<div class="attahments-container-<?php echo $job_id; ?>">
+				<?php if(!empty($images)) { ?>
+					<?php foreach ($images as $image) { ?>
+						<a href="<?php echo $image; ?>"></a>
+					<?php } ?>
+				<?php } ?>
+			</div>
+		</div>
+
+		<?php
+		$script = "jQuery(function () {" .
+			"jQuery('.attahments-container-{$job_id}').magnificPopup({" .
+			"	delegate: 'a'," .
+			"	type: 'image'," .
+			"	gallery: {" .
+			"		enabled: true" .
+			"	}," .
+			"});" .
+			"jQuery('a.show-project-{$job_id}-attachments').click(function(e){" .
+			"	if(jQuery('.attahments-container-{$job_id}').children().length == 0) {" .
+			"		jQuery.sticky('No image attached', {classList: 'important', speed: 200, autoclose: 5000});" .
+			"	} else { " .
+			"		jQuery('.attahments-container-{$job_id}').magnificPopup('open');" .
+			"	}".
+			"});" .
+		"});";
+		wp_add_inline_script('magnific-popup', $script, 'after');
+	}
+}
+
+/**
  * Project duration and amount
  *
  * @throws error

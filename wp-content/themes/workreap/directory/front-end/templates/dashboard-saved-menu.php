@@ -34,7 +34,7 @@ $mode 			 		= !empty($_GET['mode']) ? esc_html( $_GET['mode'] ) : 'jobs';
 		<?php } ?>
 		<li class="nav-item">
 			<a class="<?php echo !empty( $mode ) && $mode === 'employer' ? 'active' : '';?>" href="<?php echo esc_url( $saved_compaines_url );?>">
-				<?php esc_html_e('Followed Companies', 'workreap'); ?>
+				<?php esc_html_e('Followed Employers', 'workreap'); ?>
 			</a>
 		</li>
 		<li class="nav-item">

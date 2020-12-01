@@ -188,6 +188,7 @@ $submit_proposal  = !empty( $proposal_page_id ) ? get_the_permalink( $proposal_p
 											</div>											
 											<?php // do_action('worrketic_proposal_duration_and_amount',$post->ID);?>
 											<?php do_action('worrketic_proposal_cover',$post->ID);?>
+											<?php do_action('worrketic_proposal_view_attachments',$post->ID);?>
 											<?php do_action('worrketic_proposal_attachments',$post->ID);?>													
 										</div>
 									</div>		

@@ -47,7 +47,7 @@ if ( function_exists( 'fw_get_db_settings_option' ) ) {
 			
 			<div class="wt-title">
 				<h3><?php echo intval($total_job);?></h3>
-				<span><?php esc_html_e('Jobs you saved','workreap');?></span>
+				<span>Jobs <br />you saved</span>
 			</div>
 		</div> 
 	</div>
@@ -60,7 +60,7 @@ if ( function_exists( 'fw_get_db_settings_option' ) ) {
 			<?php }?>
 			<div class="wt-title">
 				<h3><?php echo intval($total_compnies);?></h3>
-				<span><?php esc_html_e('Companies you followed','workreap');?></span>
+				<span>Employers <br /> you followed</span>
 			</div>
 		</div> 
 	</div>								
@@ -73,7 +73,7 @@ if ( function_exists( 'fw_get_db_settings_option' ) ) {
 			<?php }?>
 			<div class="wt-title">
 				<h3><?php echo intval($total_freelancers);?></h3>
-				<span><?php esc_html_e('Freelancers you liked','workreap');?></span>
+				<span>Freelancers <br /> you liked</span>
 			</div>
 		</div> 
 	</div>

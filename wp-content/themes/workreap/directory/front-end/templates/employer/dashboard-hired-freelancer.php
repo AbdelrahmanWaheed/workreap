@@ -45,6 +45,7 @@ if( !empty($hired_freelance_id) ) {?>
 				</div>
 				<?php do_action('worrketic_proposal_duration_and_amount',$proposal_id);?>
 				<?php do_action('worrketic_proposal_cover',$proposal_id);?>
+				<?php do_action('worrketic_proposal_view_attachments',$proposal_id);?>
 				<?php do_action('worrketic_proposal_attachments',$proposal_id);?>
 			</div>
 		</div>

@@ -196,6 +196,17 @@ if (!function_exists('workreap_payment_complete')) {
 						wp_update_post( $project_post_data );
 						update_post_meta( $project_id, '_order_id', $order_id );
 
+						// apply bundle features
+						$bundle_id 		= get_post_meta($project_id, '_bundle_id', true);
+						$featured 		= fw_get_db_post_option($bundle_id, 'featured');
+						$highlighted 	= fw_get_db_post_option($bundle_id, 'highlighted');
+						if( $featured === 'enabled' ) {
+							update_post_meta( $project_id, '_featured_job_string', 1 );
+						}
+						if( $highlighted === 'enabled' ) {
+							update_post_meta( $project_id, '_highlighted_job_string', 1 );
+						}
+
 						// Send email to users that the job is posted
 						if (class_exists('Workreap_Email_helper')) {
 							if (class_exists('WorkreapJobPost')) {

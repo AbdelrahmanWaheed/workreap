@@ -35,11 +35,13 @@ if (!function_exists('workreap_scripts')) {
         wp_register_style('workreap-responsive', get_template_directory_uri() . '/css/responsive.css', array(), $theme_version->get('Version')); 
         wp_register_style('workreap-dbresponsive', get_template_directory_uri() . '/css/dbresponsive.css', array(), $theme_version->get('Version'));
 		wp_register_style('emojionearea', get_template_directory_uri() . '/css/emoji/emojionearea.min.css', array(), $theme_version->get('Version'));      
+		wp_register_style('magnific-popup', get_template_directory_uri() . '/css/magnific-popup.css', array(), $theme_version->get('Version'));      
         $custom_css = workreap_add_dynamic_styles();
 
         wp_enqueue_style('bootstrap');
 		if (is_page_template('directory/dashboard.php')) {  
 			wp_enqueue_style('workreap-select2', get_template_directory_uri() . '/css/select2.min.css', array(), $theme_version->get('Version'));
+			wp_enqueue_style('magnific-popup');
 		}
 		
         wp_enqueue_style('workreap-min');
@@ -64,6 +66,7 @@ if (!function_exists('workreap_scripts')) {
 		wp_register_script('prettyPhoto', get_template_directory_uri() . '/js/prettyPhoto.js', array(), $theme_version->get('Version'), true);
 		wp_register_script('socket.io', get_template_directory_uri() . '/node_modules/socket.io-client/dist/socket.io.js', array(), $theme_version->get('Version'), true);
 		wp_register_script('socket.iofu', get_template_directory_uri() . '/node_modules/socketio-file-upload/client.js', array(), $theme_version->get('Version'), true);
+		wp_register_script('magnific-popup', get_template_directory_uri() . '/js/jquery.magnific-popup.min.js', array('jquery'), $theme_version->get('Version'), true);
 
 		wp_register_script('workreap-all', get_template_directory_uri() . '/js/main.js', array(), $theme_version->get('Version'), true);
 		wp_register_script('jRate', get_template_directory_uri() . '/js/jRate.js', array(), $theme_version->get('Version'), true);
@@ -199,6 +202,7 @@ if (!function_exists('workreap_scripts')) {
 			wp_enqueue_style('workreap-dbresponsive');
             wp_enqueue_script('workreap-user-dashboard'); 
 			wp_enqueue_script('sortable');
+			wp_enqueue_script('magnific-popup');
 
 			wp_enqueue_script('workreap-select2', get_template_directory_uri() . '/js/select2.min.js', array(), $theme_version->get('Version'), true);
         }

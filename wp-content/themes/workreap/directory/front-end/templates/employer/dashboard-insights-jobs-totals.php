@@ -33,16 +33,16 @@ if ( function_exists( 'fw_get_db_settings_option' ) ) {
 }
 
 $completed_jobs				= workreap_count_posts_by_meta( 'projects' ,$user_identity, '', '', 'completed');
-$total_completed_jobs		= !empty($completed_jobs) && intval($completed_jobs) > 0 ? sprintf('%02d', intval($completed_jobs)) : 0;
+$total_completed_jobs		= !empty($completed_jobs) ? intval($completed_jobs) : 0;
 
 $ongoing_jobs				= workreap_count_posts_by_meta( 'projects' ,$user_identity, '', '', 'hired');
-$total_ongoing_jobs			= !empty($ongoing_jobs) && intval($ongoing_jobs) > 0 ? sprintf('%02d', intval($ongoing_jobs)) : 0;
+$total_ongoing_jobs			= !empty($ongoing_jobs) ? intval($ongoing_jobs) : 0;
 
 $cancelled_jobs				= workreap_count_posts_by_meta( 'projects' ,$user_identity, '', '', 'cancelled');
-$total_cancelled_jobs		= !empty($cancelled_jobs) && intval($cancelled_jobs) > 0 ? sprintf('%02d', intval($cancelled_jobs)) : 0;
+$total_cancelled_jobs		= !empty($cancelled_jobs) ? intval($cancelled_jobs) : 0;
 
 $total_posted_jobs			= $total_completed_jobs + $total_ongoing_jobs + $total_cancelled_jobs;
-$total_posted_jobs			= !empty($total_posted_jobs) && intval($total_posted_jobs) > 0 ? sprintf('%02d', intval($total_posted_jobs)) : 0;
+$total_posted_jobs			= !empty($total_posted_jobs) ? intval($total_posted_jobs) : 0;
 ?>
 <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
 	<div class="wt-insightsitem wt-dashboardbox">

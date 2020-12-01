@@ -35,9 +35,9 @@ body.wt-openmenu .wt-sidebarwrapper,
 }@media(max-width:1536px){.wt-userlistingvtwo .wt-contenthead{max-width: 420px;}.wt-dashboradsaveditems .wt-saveitem-breadcrumb li{margin:5px 0}
 .wt-proposalsrcontent{padding:30px}
 .wt-dashboardsave .wt-proposalsr{margin:0;text-align:center}
-.wt-dashboardsave .wt-proposalsr .wt-proposalsrcontent{padding:30px 30px 0}
+/*.wt-dashboardsave .wt-proposalsr .wt-proposalsrcontent{padding:30px 30px 0}*/
 .wt-dashboardsave .wt-proposalsr:last-child .wt-proposalsrcontent{padding-bottom:30px}
-.wt-dashboardsave .wt-proposalsr .wt-proposalsrcontent .wt-title{padding:0;width:100%}
+/*.wt-dashboardsave .wt-proposalsr .wt-proposalsrcontent .wt-title{padding:0;width:100%}*/
 }@media(max-width:1440px){.wt-headervfour{z-index:10}
 .wt-fixednav .wt-btnmenutoggle{top:10%}
 .wt-height-increased-100 .wt-btnmenutoggle{top:120px}
@@ -397,7 +397,7 @@ table.bt tfoot td .bt-content,table.bt tbody td .bt-content{word-break:break-all
 .wt-tabscontent{padding:30px 10px}
 .wt-projecttitle h3{float:left;width:100%}
 .wt-dashboardsave .wt-proposalsr .wt-proposalsrcontent figure{border:0;padding:0 0 20px 0;border-bottom:1px solid #ddd}
-.wt-dashboardsave .wt-proposalsr .wt-proposalsrcontent .wt-title{width:100%;padding:10px 0 0}
+/*.wt-dashboardsave .wt-proposalsr .wt-proposalsrcontent .wt-title{width:100%;padding:10px 0 0}*/
 .wt-dashboradsaveditems .wt-saveitem-breadcrumb li{width:100%}
 .wt-dashboradsaveditems .wt-saveitem-breadcrumb li:first-child{margin-top:0}
 .wt-dashboradsaveditems .wt-saveitem-breadcrumb li:last-child{margin-bottom:0}

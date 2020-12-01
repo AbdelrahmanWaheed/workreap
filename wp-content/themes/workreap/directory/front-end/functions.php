@@ -2951,12 +2951,12 @@ if ( ! function_exists( 'workreap_foldersize' ) ) {
 if (!function_exists('workreap_show_freelancers_list')) {
 	function workreap_show_freelancers_list($field_name) {
 		$roles	= array('freelancers');
-		wp_dropdown_users( array(
+		wp_custom_dropdown_users( array(
 			'role__in' 	=> $roles,
 			'name' 		=> $field_name,
 			'id'		=> 'users_multiselect',
 			'class'		=> 'chosen-select',
-			'show' 		=> 'display_name_with_login',
+			'show' 		=> 'display_name_with_rating',
 			'include_selected' => true,
 		));
 	}
@@ -2970,10 +2970,153 @@ if (!function_exists('workreap_show_freelancers_list')) {
  * @return 
  */
 if( !function_exists( 'workreap_apply_multiple_users_select_dropdown' ) ) {
-	add_filter('wp_dropdown_users','workreap_apply_multiple_users_select_dropdown', 10, 1);
+	add_filter('wp_custom_dropdown_users','workreap_apply_multiple_users_select_dropdown', 10, 1);
 	function workreap_apply_multiple_users_select_dropdown($output){
 		$output = str_replace("id='users_multiselect'","id='users_multiselect' multiple data-placeholder='" . 
 			esc_html__('Select Freelancers', 'workreap') . "'", $output);
 		return trim( $output );
 	}
+}
+
+/**
+ * wp display users custom list
+ *
+ * @throws error
+ * @author Amentotech <theamentotech@gmail.com>
+ * @return 
+ */
+function wp_custom_dropdown_users( $args = '' ) {
+    $defaults = array(
+        'show_option_all'         => '',
+        'show_option_none'        => '',
+        'hide_if_only_one_author' => '',
+        'orderby'                 => 'display_name',
+        'order'                   => 'ASC',
+        'include'                 => '',
+        'exclude'                 => '',
+        'multi'                   => 0,
+        'show'                    => 'display_name',
+        'echo'                    => 1,
+        'selected'                => 0,
+        'name'                    => 'user',
+        'class'                   => '',
+        'id'                      => '',
+        'blog_id'                 => get_current_blog_id(),
+        'who'                     => '',
+        'include_selected'        => false,
+        'option_none_value'       => -1,
+        'role'                    => '',
+        'role__in'                => array(),
+        'role__not_in'            => array(),
+    );
+ 
+    $defaults['selected'] = is_author() ? get_query_var( 'author' ) : 0;
+ 
+    $parsed_args = wp_parse_args( $args, $defaults );
+ 
+    $query_args = wp_array_slice_assoc( $parsed_args, array( 'blog_id', 'include', 'exclude', 'orderby', 'order', 'who', 'role', 'role__in', 'role__not_in' ) );
+ 
+    $fields = array( 'ID', 'user_login' );
+ 
+    $show = ! empty( $parsed_args['show'] ) ? $parsed_args['show'] : 'display_name';
+    if ( 'display_name_with_login' === $show || 'display_name_with_rating' === $show ) {
+        $fields[] = 'display_name';
+    } else {
+        $fields[] = $show;
+    }
+ 
+    $query_args['fields'] = $fields;
+ 
+    $show_option_all   = $parsed_args['show_option_all'];
+    $show_option_none  = $parsed_args['show_option_none'];
+    $option_none_value = $parsed_args['option_none_value'];
+ 
+    /**
+     * Filters the query arguments for the list of users in the dropdown.
+     *
+     * @since 4.4.0
+     *
+     * @param array $query_args  The query arguments for get_users().
+     * @param array $parsed_args The arguments passed to wp_dropdown_users() combined with the defaults.
+     */
+    $query_args = apply_filters( 'wp_dropdown_users_args', $query_args, $parsed_args );
+ 
+    $users = get_users( $query_args );
+ 
+    $output = '';
+    if ( ! empty( $users ) && ( empty( $parsed_args['hide_if_only_one_author'] ) || count( $users ) > 1 ) ) {
+        $name = esc_attr( $parsed_args['name'] );
+        if ( $parsed_args['multi'] && ! $parsed_args['id'] ) {
+            $id = '';
+        } else {
+            $id = $parsed_args['id'] ? " id='" . esc_attr( $parsed_args['id'] ) . "'" : " id='$name'";
+        }
+        $output = "<select name='{$name}'{$id} class='" . $parsed_args['class'] . "'>\n";
+ 
+        if ( $show_option_all ) {
+            $output .= "\t<option value='0'>$show_option_all</option>\n";
+        }
+ 
+        if ( $show_option_none ) {
+            $_selected = selected( $option_none_value, $parsed_args['selected'], false );
+            $output   .= "\t<option value='" . esc_attr( $option_none_value ) . "'$_selected>$show_option_none</option>\n";
+        }
+ 
+        if ( $parsed_args['include_selected'] && ( $parsed_args['selected'] > 0 ) ) {
+            $found_selected          = false;
+            $parsed_args['selected'] = (int) $parsed_args['selected'];
+            foreach ( (array) $users as $user ) {
+                $user->ID = (int) $user->ID;
+                if ( $user->ID === $parsed_args['selected'] ) {
+                    $found_selected = true;
+                }
+            }
+ 
+            if ( ! $found_selected ) {
+                $users[] = get_userdata( $parsed_args['selected'] );
+            }
+        }
+ 
+        // sort by rating
+        if('display_name_with_rating' === $show) {
+            foreach ( (array) $users as $user ) {
+                $linked_profile = workreap_get_linked_profile_id($user->ID);
+                $rating = get_post_meta($linked_profile, 'rating_filter', true);
+                $user->rating = $rating;
+            }
+            usort($users, function($a, $b) { return intval($a->rating) >= intval($b->rating) ? -1 : 1; });
+        }
+
+        foreach ( (array) $users as $user ) {
+            if ( 'display_name_with_login' === $show ) {
+                /* translators: 1: User's display name, 2: User login. */
+                $display = sprintf( _x( '%1$s (%2$s)', 'user dropdown' ), $user->display_name, $user->user_login );
+            } elseif ( 'display_name_with_rating' === $show ) {
+                $display = sprintf( _x( '%1$s (rate: %2$0.1f)', 'workreap' ), $user->display_name, $user->rating );
+            } elseif ( ! empty( $user->$show ) ) {
+                $display = $user->$show;
+            } else {
+                $display = '(' . $user->user_login . ')';
+            }
+ 
+            $_selected = selected( $user->ID, $parsed_args['selected'], false );
+            $output   .= "\t<option value='$user->ID'$_selected>" . esc_html( $display ) . "</option>\n";
+        }
+ 
+        $output .= '</select>';
+    }
+ 
+    /**
+     * Filters the wp_dropdown_users() HTML output.
+     *
+     * @since 2.3.0
+     *
+     * @param string $output HTML output generated by wp_dropdown_users().
+     */
+    $html = apply_filters( 'wp_custom_dropdown_users', $output );
+ 
+    if ( $parsed_args['echo'] ) {
+        echo $html;
+    }
+    return $html;
 }

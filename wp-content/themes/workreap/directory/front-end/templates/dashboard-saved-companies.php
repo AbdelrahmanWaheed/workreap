@@ -42,7 +42,7 @@ if( $query->have_posts() ){
 ?>
 <div class="wt-userexperience wt-followcompomy">
 	<div class="wt-tabscontenttitle wt-addnew">
-		<h2><?php esc_html_e('Followed Companies','workreap');?></h2>
+		<h2><?php esc_html_e('Followed Employers','workreap');?></h2>
 		<?php if( $query->have_posts() ) { ?>
 			<a href="javascript:;" data-post-id="<?php echo intval($post_id);?>" data-itme-type="_following_employers" class="wt-clicksave wt-clickremoveall">
 				<i class="lnr lnr-cross"></i>

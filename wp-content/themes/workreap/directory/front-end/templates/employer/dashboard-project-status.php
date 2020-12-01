@@ -123,6 +123,7 @@ $job_status			= get_post_status( $edit_id );
 								<?php } ?>											
 								<?php do_action('worrketic_proposal_duration_and_amount',$post->ID);?>
 								<?php do_action('worrketic_proposal_cover',$post->ID);?>
+								<?php do_action('worrketic_proposal_view_attachments',$post->ID);?>
 								<?php do_action('worrketic_proposal_attachments',$post->ID);?>													
 							</div>
 						</div>		

@@ -33,10 +33,10 @@ if ( function_exists( 'fw_get_db_settings_option' ) ) {
 }
 
 $completed_jobs				= workreap_count_posts_by_meta( 'projects' ,'', '_freelancer_id', $linked_profile, 'completed');
-$total_completed_jobs		= !empty($completed_jobs) && intval($completed_jobs) > 0 ? sprintf('%02d', intval($completed_jobs)) : 0;
+$total_completed_jobs		= !empty($completed_jobs) ? intval($completed_jobs) : 0;
 
 $ongoing_jobs				= workreap_count_posts_by_meta( 'projects' ,'', '_freelancer_id', $linked_profile, 'hired');
-$total_ongoing_jobs		= !empty($ongoing_jobs) && intval($ongoing_jobs) > 0? sprintf('%02d', intval($ongoing_jobs)) : 0;
+$total_ongoing_jobs		= !empty($ongoing_jobs) ? intval($ongoing_jobs) : 0;
 
 $cancelled_jobs				= workreap_count_posts_by_meta( 'proposals' ,$user_identity, '', '', 'cancelled');
 $total_cancelled_jobs		= !empty($cancelled_jobs) ? $cancelled_jobs : 0;
