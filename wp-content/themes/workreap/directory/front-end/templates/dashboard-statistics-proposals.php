@@ -41,5 +41,6 @@ if ( function_exists( 'fw_get_db_settings_option' ) ) {
 				<a href="<?php echo esc_url($proposal_url); ?>"><?php esc_html_e('Click To View', 'workreap'); ?></a>
 			</div>													
 		</div>	
+		<?php do_action('workreap_latest_proposals_count', $user_identity, $user_type); ?>
 	</div>
 </div>	

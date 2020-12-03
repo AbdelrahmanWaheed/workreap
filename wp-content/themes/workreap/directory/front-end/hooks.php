@@ -6182,3 +6182,31 @@ if( !function_exists( 'allow_freelancer_to_view_private_project_invited_to_him' 
 
 	add_filter('user_has_cap', 'allow_freelancer_to_view_private_project_invited_to_him', 100, 3);
 }
+
+/**
+ * Display dashboard latest proposals count for both employers and freelancers
+ *
+ * @throws error
+ * @author Amentotech <theamentotech@gmail.com>
+ * @return 
+ */
+if( !function_exists( 'workreap_latest_proposals_count' ) ) {
+	function workreap_latest_proposals_count( $user_id, $user_type ) {
+		$count = 0;
+		$tooltip = '';
+		if( !empty($user_id) && !empty($user_type) ) {
+			if($user_type == 'employer') {
+				$count = workreap_count_employer_projects_new_proposals( $user_id );
+				$tooltip = esc_html__('New Proposals', 'workreap');
+			} else if($user_type == 'freelancer') {
+				$count = workreap_count_freelancer_proposals_new_feedbacks( $user_id );
+				$tooltip = esc_html__('New Feedbacks', 'workreap');
+			}
+		}
+		?>
+		<em class="wtunread-count wt-tipso tipso_style" data-tipso="<?php echo $tooltip; ?>"><?php echo $count; ?></em>
+		<?php
+	}
+
+	add_action('workreap_latest_proposals_count', 'workreap_latest_proposals_count', 10, 2);
+}

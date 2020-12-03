@@ -3120,3 +3120,102 @@ function wp_custom_dropdown_users( $args = '' ) {
     }
     return $html;
 }
+
+/**
+ * Count new feedbacks sent to freelancr proposals 
+ */
+if ( !function_exists( 'workreap_count_freelancer_proposals_new_feedbacks' ) ) {
+    function workreap_count_freelancer_proposals_new_feedbacks($user_id = 0) {
+        if( empty($user_id) || intval($user_id) == 0 ) {
+            $user_id = get_current_user_id();
+        }
+
+        global $wpdb;
+        $count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `{$wpdb->postmeta}` WHERE `meta_key` = %s AND `meta_value` = %d 
+            AND `post_id` IN (
+                SELECT `id` FROM `{$wpdb->posts}` WHERE `post_author` = %d AND `post_status` = %s AND `post_type` = %s
+            )",
+            '_feedback_seen', 0, intval($user_id), 'publish', 'proposals') );
+        return $count;
+    }
+}
+
+/**
+ * Count new project proposals
+ *
+ * @throws error
+ * @author Amentotech <theamentotech@gmail.com>
+ * @return 
+ */
+if (!function_exists('workreap_count_new_project_proposals')) {
+    function workreap_count_new_project_proposals($project_id) {
+        if( empty($project_id) || intval($project_id) == 0 ) {
+            return;
+        }
+
+        global $wpdb;
+        $count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `{$wpdb->postmeta}` WHERE `meta_key` = %s AND `meta_value` = %d 
+            AND `post_id` IN (
+                SELECT `post_id` FROM `{$wpdb->postmeta}` WHERE `meta_key` = %s AND `meta_value` = %d
+            )",
+            '_new_proposal', 1, '_project_id', intval($project_id)) );
+        return $count;
+    }
+}
+
+/**
+ * Count all new proposals for all employer projects
+ *
+ * @throws error
+ * @author Amentotech <theamentotech@gmail.com>
+ * @return 
+ */
+if (!function_exists('workreap_count_employer_projects_new_proposals')) {
+    function workreap_count_employer_projects_new_proposals( $user_id ) {
+        if( empty($user_id) || intval($user_id) == 0 ) {
+        	return 0;
+        }
+
+        global $wpdb;
+        $count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `{$wpdb->postmeta}` WHERE `meta_key` = %s AND `meta_value` = %d 
+            AND `post_id` IN (
+                SELECT `post_id` FROM `{$wpdb->postmeta}` WHERE `meta_key` = %s AND `meta_value` IN (
+                    SELECT `id` FROM `{$wpdb->posts}` WHERE `post_author` = %d AND `post_status` = %s AND `post_type` = %s
+                )
+            )",
+            '_new_proposal', 1, '_project_id', intval($user_id), 'publish', 'projects') );
+        return $count;
+    }
+}
+
+/**
+ * Mark project proposals as seen
+ *
+ * @throws error
+ * @author Amentotech <theamentotech@gmail.com>
+ * @return 
+ */
+if (!function_exists('workreap_mark_project_proposals')) {
+    function workreap_mark_project_proposals($project_id) {
+        if( empty($project_id) || intval($project_id) == 0 ) {
+            return;
+        }
+
+        global $wpdb;
+
+        $proposals = $wpdb->get_results( $wpdb->prepare( "SELECT `post_id` FROM `{$wpdb->postmeta}` WHERE `meta_key` = %s AND `meta_value` = %d", 
+            '_project_id', intval($project_id) ) );
+
+        if( !empty($proposals) ) {
+            $proposals = wp_list_pluck($proposals, 'post_id');
+            foreach ($proposals as $proposal_id) {
+                $update = array('meta_value' => 0);
+                $where  = array(
+                    'meta_key'  => '_new_proposal',
+                    'post_id'   => $proposal_id,
+                );
+                $wpdb->update($wpdb->postmeta, $update, $where);
+            }
+        }
+    }
+}

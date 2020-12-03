@@ -678,6 +678,7 @@ if( !function_exists( 'workreap_process_project_proposal' ) ){
             update_post_meta( $proposal_id, '_status', 'pending');
             update_post_meta( $proposal_id, '_admin_amount', $admin_amount);
             update_post_meta( $proposal_id, '_freelancer_amount', $freelancer_amount);
+            update_post_meta( $proposal_id, '_new_proposal', 1);
 			
 			//update connects
 			if ( function_exists( 'fw_get_db_settings_option' ) ) {

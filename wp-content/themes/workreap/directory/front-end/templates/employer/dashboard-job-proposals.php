@@ -125,12 +125,14 @@ $offline_package		= !empty($offline_package['type']) ? $offline_package['type'] 
 									}
 								}
 
-								$feedback = get_post_meta( $post->ID, '_feedback', true );
-								$feedback_rating = get_post_meta( $post->ID, '_feedback_rating', true );
+								$feedback 			= get_post_meta( $post->ID, '_feedback', true );
+								$new_proposal 		= get_post_meta( $post->ID, '_new_proposal', true );
+								$feedback_rating 	= get_post_meta( $post->ID, '_feedback_rating', true );
 								
 								?>
 
-								<div class="wt-userlistinghold wt-featured wt-proposalitem wt-userlistingcontentvtwo" data-id="<?php echo esc_attr($post->ID);?>">
+								<div class="wt-userlistinghold wt-featured wt-proposalitem wt-userlistingcontentvtwo <?php echo $new_proposal ? 'wt-newitem' : '' ?>" 
+									data-id="<?php echo esc_attr($post->ID);?>">
 									<?php do_action('workreap_featured_freelancer_tag', $author_id); ?>
 									<figure class="wt-userlistingimg">
 										<img src="<?php echo esc_url( $freelancer_avatar );?>" alt="<?php esc_attr_e('freelancer','workreap');?>" class="template-content">
@@ -308,5 +310,9 @@ $offline_package		= !empty($offline_package['type']) ? $offline_package['type'] 
 		</div>
 	</div>
 </div>
-<?php get_template_part('directory/front-end/templates/dashboard', 'underscore');?>
-<?php get_template_part('directory/front-end/templates/dashboard', 'cover-letter');?>
+
+<!-- Mark all feedbacks as seen -->
+<?php workreap_mark_project_proposals( $edit_id ); ?>
+
+<?php get_template_part('directory/front-end/templates/dashboard', 'underscore'); ?>
+<?php get_template_part('directory/front-end/templates/dashboard', 'cover-letter'); ?>

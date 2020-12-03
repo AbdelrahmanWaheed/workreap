@@ -78,7 +78,16 @@ if( $query->have_posts() ){
 									<div class="wt-rightarea">
 										<div class="wt-btnarea">
 											<?php if( get_post_status( $post->ID ) !== 'pending' && get_post_status( $post->ID ) !== 'draft' ){?>
-												<a href="<?php Workreap_Profile_Menu::workreap_profile_menu_link('jobs', $user_identity, '','proposals',$post->ID); ?>" class="wt-btn"><?php esc_html_e('View Proposals','workreap');?></a>
+												<a href="<?php Workreap_Profile_Menu::workreap_profile_menu_link('jobs', $user_identity, '','proposals',$post->ID); ?>" class="wt-btn show-feedback">
+													<?php esc_html_e('View Proposals','workreap');?>
+													
+													<?php $count = workreap_count_new_project_proposals( $post->ID ); ?>
+													<?php if( $count > 0 ) : ?>
+														<span class="badge badge-light badge-pill">
+															<?php echo $count; ?> &nbsp; New
+														</span>
+													<?php endif; ?>
+												</a>
 											<?php }?>
 											<a href="<?php Workreap_Profile_Menu::workreap_profile_menu_link('jobs', $user_identity, '','edit',$post->ID); ?>" class="wt-btn"><?php esc_html_e('Edit Job','workreap');?></a>
 										</div>

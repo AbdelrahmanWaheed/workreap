@@ -2020,8 +2020,9 @@ blockquote:not(.blockquote-link){padding:20px;background:#f7f7f7;padding-left:15
 .wt-bannercontent .wt-formbanner .wt-radioholder{z-index:2}
 .woocommerce-billing-fields > h3 {font-size:20px;margin-bottom:25px;padding-bottom:10px;border-bottom:1px solid #bbb;}
 .fw-alert.woocommerce-notice{margin-bottom:25px;}i.fa-fw{margin-right:10px;}.wt-btn.show-feedback.new-feedback{background: transparent;border: 2px solid var(--primthemecolor);color: var(--primthemecolor);line-height: 32px !important;}
+.wt-btn .badge{margin-left:10px;font-size:92%}.wt-btn .badge.badge-light{color: var(--primthemecolor);background: #fff}
 .show-feedback .badge{margin-left:10px;font-size:92%}.show-feedback .badge-dark{background: var(--primthemecolor);}
-.wt-userlistinghold .wt-skillsrequired{margin-bottom: 0px;}
+.wt-userlistinghold .wt-skillsrequired{margin-bottom: 0px;}.wt-rcvproposalholder .wt-proposalitem.wt-newitem{border-left-color: var(--primthemecolor);border-left-width: 3px;}
 @media(max-width:1199px){body.post-template-full-single-post .wt-articlesingle-holder .wt-articlesingle-content{padding:30px}
 }@media(max-width:991px){.has-4-columns .wp-block-column{margin:0 10px}
 .has-6-columns .wp-block-column{margin:0 10px}
