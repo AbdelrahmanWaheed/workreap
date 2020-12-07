@@ -182,6 +182,8 @@ if (is_user_logged_in() && ( $user_type === 'employer' || $user_type === 'freela
 						get_template_part('directory/front-end/templates/dashboard', 'account-settings');
 					} else if (isset($_GET['ref']) && $_GET['ref'] === 'invoices' && $url_identity == $user_identity) {
 						get_template_part('directory/front-end/templates/dashboard', 'invoices');
+					} else if (isset($_GET['ref']) && $_GET['ref'] === 'notifications' && $url_identity == $user_identity) {
+						get_template_part('directory/front-end/templates/dashboard', 'notifications');
 					} else if (isset($_GET['ref']) && $_GET['ref'] === 'earnings' && $url_identity == $user_identity) {
 						if( 'freelancer' == apply_filters('workreap_get_user_type', $user_identity ) ){
 							get_template_part('directory/front-end/templates/freelancer/dashboard-total', 'earning');

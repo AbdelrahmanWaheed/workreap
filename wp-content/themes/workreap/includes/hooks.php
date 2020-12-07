@@ -616,3 +616,87 @@ if( !function_exists(  'workreap_mailchimp_array' ) ) {
 	add_action('workreap_mailchimp_array', 'workreap_mailchimp_array');
 	add_action('wp_ajax_workreap_mailchimp_array', 'workreap_mailchimp_array');	
 }
+
+/**
+ * Apply shortcuts values in the job invitation message
+ *
+ * @return
+ */
+if( !function_exists( 'workreap_job_invitation_message' ) ) {    
+
+    function workreap_job_invitation_message( $project_id, $freelancer ) {
+        $message = fw_get_db_settings_option('job_invitation_message');
+        if( !empty( $message ) ) {
+            $message = str_replace('[FREELANCER]', workreap_get_username($freelancer), $message);
+            $message = str_replace('[PROJECT_LINK]', get_permalink($project_id), $message);
+        }
+        return apply_filters( 'workreap_job_invitation_notice_message', $message );
+    }
+
+    add_filter('workreap_job_invitation_message', 'workreap_job_invitation_message', 10, 2);
+}
+
+/**
+ * Apply shortcuts values in the jon invitation cancellation message (for employer)
+ *
+ * @return
+ */
+if( !function_exists( 'workreap_job_invitation_cancellation_message' ) ) {    
+
+    function workreap_job_invitation_cancellation_message( $project_id, $freelancer_id ) {
+        $message = fw_get_db_settings_option('job_invitation_cancellation_employer_message');
+        if( !empty( $message ) ) {
+            $freelancers_search_page = workreap_get_search_page_uri('freelancer');
+            $message = str_replace('[PROJECT_NAME]', get_the_title($project_id), $message);
+            $message = str_replace('[FREELANCER]', workreap_get_username($freelancer_id), $message);
+            $message = str_replace('[VIEW_FREELANCERS_LINK]', esc_url($freelancers_search_page), $message);
+        }
+        return $message;
+    }
+
+    add_filter('workreap_job_invitation_cancellation_message', 'workreap_job_invitation_cancellation_message', 10, 2);
+}
+
+/**
+ * Apply shortcuts values in the jon invitation notice message
+ *
+ * @return
+ */
+if( !function_exists( 'workreap_job_invitation_notice_message' ) ) {    
+
+    function workreap_job_invitation_notice_message( $message ) {
+        $notice_message         = fw_get_db_settings_option('job_invitation_notice_priod_message');
+        $job_cancellation_priod = fw_get_db_settings_option('job_invitation_cancellation_priod_hours');
+        if( !empty( $notice_message ) ) {
+            $notice_period  = sprintf( _n('one hour', '%d hours', $job_cancellation_priod, 'workreap'), $job_cancellation_priod );
+            $notice_message = str_replace('[INVITATION_CANCELLATION_PERIOD]', $notice_period, $notice_message);
+        }
+        if( !empty($notice_message) ) {
+            $message .= "\n\n" . $notice_message;
+        }
+        return $message;
+    }
+
+    add_filter('workreap_job_invitation_notice_message', 'workreap_job_invitation_notice_message', 10, 1);
+}
+
+/**
+ * Apply shortcuts values in the jon invitation cancellation message (for freelancer)
+ *
+ * @return
+ */
+if( !function_exists( 'workreap_job_invitation_auto_cancellation_message' ) ) {    
+
+    function workreap_job_invitation_auto_cancellation_message( $project_id ) {
+        $message = fw_get_db_settings_option('job_invitation_cancellation_freelancer_message');
+        $job_cancellation_priod = fw_get_db_settings_option('job_invitation_cancellation_priod_hours');
+        if( !empty( $message ) ) {
+            $message = str_replace('[PROJECT_NAME]', get_the_title($project_id), $message);
+            $notice_period  = sprintf( _n('one hour', '%d hours', $job_cancellation_priod, 'workreap'), $job_cancellation_priod );
+            $message = str_replace('[NOTICE_PERIOD]', $notice_period, $message);
+        }
+        return $message;
+    }
+
+    add_filter('workreap_job_invitation_auto_cancellation_message', 'workreap_job_invitation_auto_cancellation_message', 10, 1);
+}

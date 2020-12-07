@@ -476,7 +476,7 @@ if( !function_exists( 'workreap_process_project_proposal' ) ){
 			$json['type'] = 'error';
             $json['message'] = esc_html__('This project has been completed, so you can\'t send proposals', 'workreap');
             wp_send_json( $json );
-		}else if( get_post_status( $project_id ) === 'completed' ){
+		}else if( get_post_status( $project_id ) === 'cancelled' ){
 			$json['type'] = 'error';
             $json['message'] = esc_html__('This project has been cancelled, when employer will re-open this project then you would be able to send proposal.', 'workreap');
             wp_send_json( $json );
@@ -484,6 +484,13 @@ if( !function_exists( 'workreap_process_project_proposal' ) ){
 			$json['type'] = 'error';
             $json['message'] = esc_html__('This project is under review. You can\'t send proposals.', 'workreap');
             wp_send_json( $json );
+        }else if( get_post_status( $project_id ) === 'private' ){
+            $invited_freelancers = get_post_meta( $project_id, 'suggested_freelancers' );
+            if( empty( $invited_freelancers ) || ! in_array( $current_user->ID, $invited_freelancers ) ) {
+                $json['type'] = 'error';
+                $json['message'] = esc_html__('You are not allowed to send proposals to this project.', 'workreap');
+                wp_send_json( $json );
+            }
 		}
 		
 		//Check user role
@@ -680,6 +687,12 @@ if( !function_exists( 'workreap_process_project_proposal' ) ){
             update_post_meta( $proposal_id, '_freelancer_amount', $freelancer_amount);
             update_post_meta( $proposal_id, '_new_proposal', 1);
 			
+            // remove meta data for one to one (private) project
+            if( $project_status == 'private' ) {
+                // delete_post_meta( $project_id, 'suggested_freelancers' );
+                delete_post_meta( $project_id, 'invitation_time' );
+            }
+
 			//update connects
 			if ( function_exists( 'fw_get_db_settings_option' ) ) {
 				$proposal_connects 	= fw_get_db_settings_option( 'proposal_connects', $default_value = null );
@@ -759,7 +772,7 @@ if( !function_exists( 'workreap_process_project_proposal' ) ){
 
 			$json['return']  = esc_url( get_the_permalink( $project_id ));
             $json['type']    = 'success';
-            $json['message'] = esc_html__('Your proposal has sent Successfully', 'workreap');
+            $json['message'] = esc_html__('Successfully! your proposal has been sent', 'workreap');
             wp_send_json( $json );
 			
         } else {
@@ -2927,7 +2940,22 @@ if ( !function_exists( 'workreap_post_job' ) ) {
 				);
 
 				wp_update_post($article_post);
-			} else{
+
+                //Upload files from temp folder to uploads
+                $files              = !empty( $_POST['job']['project_documents'] ) ? $_POST['job']['project_documents'] : array();
+                $job_files          = array();
+                if( !empty( $files ) ) {
+                    foreach ( $files as $key => $value ) {
+                        if( !empty( $value['attachment_id'] ) ){
+                            $job_files[] = $value;
+                        } else{
+                            $job_files[] = workreap_temp_upload_to_media($value, $post_id);
+                        }   
+                    }
+                }
+                fw_set_db_post_option($post_id, 'project_documents', $job_files);
+
+			} else {
 				$json['type'] = 'error';
 				$json['message'] = esc_html__('Some error occur, please try again later', 'workreap');
 				wp_send_json( $json );
@@ -2977,6 +3005,7 @@ if ( !function_exists( 'workreap_post_job' ) ) {
             if($type == 'one-to-one') {
                 foreach($freelancers as $freelancer) {
                     add_post_meta($post_id, 'suggested_freelancers', $freelancer);
+                    add_post_meta($post_id, 'invitation_time', current_time('timestamp'));
                     add_user_meta($freelancer, 'allowed_jobs', $post_id);
                 }
             }
@@ -3025,6 +3054,19 @@ if ( !function_exists( 'workreap_post_job' ) ) {
 
             update_post_meta($post_id, '_freelancer_level', $freelancer_level);
             
+            //Upload files from temp folder to uploads
+            $files              = !empty( $_POST['job']['project_documents'] ) ? $_POST['job']['project_documents'] : array();
+            $job_files          = array();
+            if( !empty( $files ) ) {
+                foreach ( $files as $key => $value ) {
+                    if( !empty( $value['attachment_id'] ) ){
+                        $job_files[] = $value;
+                    } else{
+                        $job_files[] = workreap_temp_upload_to_media($value, $post_id);
+                    }   
+                }
+            }
+
             // $fw_options['expiry_date']           = $expiry_date;
             // $fw_options['deadline']              = $deadline;
             $fw_options['project_level']         = $project_level;
@@ -3038,26 +3080,11 @@ if ( !function_exists( 'workreap_post_job' ) ) {
             // $fw_options['latitude']              = $latitude;
             // $fw_options['country']               = $location;
 
-
             //Update User Profile
             fw_set_db_post_option($post_id, null, $fw_options);
 		}
 		
 		if( $post_id ){
-			//Upload files from temp folder to uploads
-			$files              = !empty( $_POST['job']['project_documents'] ) ? $_POST['job']['project_documents'] : array();
-			$job_files			= array();
-			if( !empty( $files ) ) {
-				foreach ( $files as $key => $value ) {
-					if( !empty( $value['attachment_id'] ) ){
-						$job_files[] = $value;
-					} else{
-						$job_files[] = workreap_temp_upload_to_media($value, $post_id);
-					} 	
-				}                
-			}
-
-			
 			// $languages               = !empty( $_POST['job']['languages'] ) ? $_POST['job']['languages'] : array();
 			// $categories              = !empty( $_POST['job']['categories'] ) ? $_POST['job']['categories'] : array();
 			// $skills              	 = !empty( $_POST['job']['skills'] ) ? $_POST['job']['skills'] : array();
@@ -3131,15 +3158,15 @@ if ( !function_exists( 'workreap_post_job' ) ) {
 			
 
 			//Set country for unyson
-			$locations = get_term_by( 'slug', $country, 'locations' );
-			$location = array();
-			if( !empty( $locations ) ){
-				$location[0] = $locations->term_id;
+			// $locations = get_term_by( 'slug', $country, 'locations' );
+			// $location = array();
+			// if( !empty( $locations ) ){
+			// 	$location[0] = $locations->term_id;
 
-				if( !empty( $location ) ){
-					wp_set_post_terms( $post_id, $location, 'locations' );
-				}
-			}
+			// 	if( !empty( $location ) ){
+			// 		wp_set_post_terms( $post_id, $location, 'locations' );
+			// 	}
+			// }
 
 			if( isset( $_POST['submit_type'] ) && $_POST['submit_type'] === 'update' ){
 				$json['type'] 		= 'success';
@@ -6300,7 +6327,7 @@ if ( !function_exists( 'workreap_more_rating_service' ) ) {
 }
 
 /*
-**
+ *
  * load more service
  *
  * @throws error
@@ -6418,11 +6445,41 @@ if ( !function_exists( 'workreap_more_service' ) ) {
 				$json['services'] 	= 'null';
 				wp_send_json($json);
 			}
-		}			
+		}
 	}
 	
 	add_action( 'wp_ajax_workreap_more_service', 'workreap_more_service' );
 	add_action( 'wp_ajax_nopriv_workreap_more_service', 'workreap_more_service' );
+}
+
+
+/**
+ * remove logged in freelancer from the project invitations
+ *
+ * @throws error
+ * @author Amentotech <theamentotech@gmail.com>
+ * @return 
+ */
+
+if( !function_exists('workreap_remove_freelancer_from_project_invitations') ) {
+    function workreap_remove_freelancer_from_project_invitations() {
+        $project_id = !empty( $_POST['project_id'] ) ? intval( $_POST['project_id'] ) : '';
+        $freelancer_id = get_current_user_id();
+
+        $success = workreap_delete_freelancer_from_project_invitations( $project_id, $freelancer_id );
+        if( $success ) {
+            $json['type']           = 'redirect';
+            $json['redirect_url']   = home_url();
+            $json['message']        = esc_html__('The invitation has been ignored.', 'workreap');
+        } else {
+            $json['type']       = 'error';
+            $json['message']    = esc_html__('You have ignored this invitation previously.', 'workreap');
+        }
+        wp_send_json($json);
+    }
+
+    add_action( 'wp_ajax_workreap_remove_freelancer_from_project_invitations', 'workreap_remove_freelancer_from_project_invitations' );
+    add_action( 'wp_ajax_nopriv_workreap_remove_freelancer_from_project_invitations', 'workreap_remove_freelancer_from_project_invitations' );
 }
 
 //Articluate plugin compatibility

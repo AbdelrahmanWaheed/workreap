@@ -81,6 +81,7 @@ require plugin_dir_path( __FILE__ ) . 'config.php';
 require plugin_dir_path( __FILE__ ) . 'includes/class-system.php';
 
 include workreap_template_exsits( 'chat/class-chat-system' );
+include workreap_template_exsits( 'notification/class-notification-system' );
 include workreap_template_exsits( 'hooks/hooks' );
 include workreap_template_exsits( 'helpers/EmailHelper' );
 include workreap_template_exsits( 'shortcodes/class-authentication' );

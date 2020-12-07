@@ -3132,6 +3132,7 @@ a.sp-linkedin-connect em{font-style:normal}
 .wt-headereleven .wt-logo{margin:29px 0}
 .wt-headereleven .wt-navigationarea{padding:0 15px 0}
 .wt-headereleven .wt-loginoptionvtwo .wt-btn{color:#323232;min-width:100px;background:var(--terthemecolor)}
+.wt-btn.wt-btn-wraning,.wt-btn.wt-btn-wraning:hover,.wt-btn.wt-btn-wraning:focus,.wt-btn.wt-btn-wraning:active{background: var(--secthemecolor);}
 .wt-headereleven .wt-loginarea{border:0;padding:0;margin:30px 0 30px 17px}
 .wt-headereleven .wt-loginarea>.wt-btn{background:var(--secthemecolor);min-width:100px}
 .wt-headereleven .wt-navigation>ul>li{margin:30px 0}

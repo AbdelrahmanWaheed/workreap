@@ -1243,6 +1243,10 @@ if ( ! function_exists( 'workreap_get_dashboard_menu' ) ) {
 				'title' => esc_html__('Inbox','workreap'),
 				'type'	=> 'none'
 			),
+			'notifications'	=> array(
+				'title' => esc_html__('Notifications','workreap'),
+				'type'	=> 'none'
+			),
 			'preview'	=> array(
 				'title' => esc_html__('View my profile','workreap'),
 				'type'	=> 'none'
@@ -2970,7 +2974,7 @@ if (!function_exists('workreap_show_freelancers_list')) {
  * @return 
  */
 if( !function_exists( 'workreap_apply_multiple_users_select_dropdown' ) ) {
-	add_filter('wp_custom_dropdown_users','workreap_apply_multiple_users_select_dropdown', 10, 1);
+	// add_filter('wp_custom_dropdown_users','workreap_apply_multiple_users_select_dropdown', 10, 1);
 	function workreap_apply_multiple_users_select_dropdown($output){
 		$output = str_replace("id='users_multiselect'","id='users_multiselect' multiple data-placeholder='" . 
 			esc_html__('Select Freelancers', 'workreap') . "'", $output);
@@ -3092,7 +3096,8 @@ function wp_custom_dropdown_users( $args = '' ) {
                 /* translators: 1: User's display name, 2: User login. */
                 $display = sprintf( _x( '%1$s (%2$s)', 'user dropdown' ), $user->display_name, $user->user_login );
             } elseif ( 'display_name_with_rating' === $show ) {
-                $display = sprintf( _x( '%1$s (rate: %2$0.1f)', 'workreap' ), $user->display_name, $user->rating );
+                $display = sprintf('%1$s (rating: %3$0.1f/5.0)', $user->display_name, 
+                	$user->rating * 100 / 5, $user->rating);
             } elseif ( ! empty( $user->$show ) ) {
                 $display = $user->$show;
             } else {
@@ -3217,5 +3222,62 @@ if (!function_exists('workreap_mark_project_proposals')) {
                 $wpdb->update($wpdb->postmeta, $update, $where);
             }
         }
+    }
+}
+
+/**
+ * Delete freelancer from project invitations
+ *
+ * @throws error
+ * @author Amentotech <theamentotech@gmail.com>
+ * @return 
+ */
+if( !function_exists('workreap_delete_freelancer_from_project_invitations') ) {
+    function workreap_delete_freelancer_from_project_invitations($project_id, $freelancer_id) {
+        if( empty($project_id) || empty($freelancer_id) ) {
+            return false;
+        }
+
+        $employer_id = get_post_field( 'post_author', $project_id );
+
+        $success  = delete_post_meta( $project_id, 'invitation_time' );
+        $success &= delete_post_meta( $project_id, 'suggested_freelancers', $freelancer_id );
+        $success &= delete_user_meta( $freelancer_id, 'allowed_jobs', $project_id );
+
+        if( class_exists('NotificationSystem') && function_exists('fw_get_db_settings_option') ) {
+            $freelancers_search_page = workreap_get_search_page_uri('freelancer');
+            $message = apply_filters( 'workreap_job_invitation_cancellation_message', $project_id, $freelancer_id );
+            NotificationSystem::sendNotification( $employer_id, $message, $freelancers_search_page );
+        }
+
+		if (class_exists('Workreap_Email_helper')) {
+			if (class_exists('WorkreapJobInvitationCancellation')) {
+				$email_helper = new WorkreapJobInvitationCancellation();
+				$emailData 	  = array();
+				
+				$employer_profile_id 	= workreap_get_linked_profile_id($employer_id);
+				$freelancer_profile_id 	= workreap_get_linked_profile_id($freelancer_id);
+				//update invitation
+				$invitation_count 	= get_user_meta(intval($freelancer_id), '_invitation_count', true);
+				$invitation_count	= !empty($invitation_count) ? $invitation_count + 1 : 1;
+				update_post_meta( $freelancer_id, '_invitation_count', $invitation_count);
+
+				$emailData['freelancer_link'] 		= get_the_permalink( $freelancer_profile_id );
+				$emailData['freelancer_name'] 		= get_the_title( $freelancer_profile_id );
+				$emailData['employer_link']       	= get_the_permalink( $employer_profile_id );
+				$emailData['employer_name'] 		= get_the_title( $employer_profile_id );
+				$emailData['project_link']        	= !empty( $project_id ) ?  get_the_permalink( $project_id ) : '';
+				$emailData['project_title']      	= !empty( $project_id ) ?  get_the_title( $project_id ) : '';
+				$emailData['project_id']      		= $project_id;
+				$emailData['employer_id']      		= $employer_profile_id;
+				$emailData['freelancer_id']      	= $freelancer_profile_id;
+				$emailData['message']      			= $message;
+				$emailData['email_to']      		= get_userdata( $freelancer_id )->user_email;
+
+				$email_helper->send_notification($emailData);
+			}
+		}
+
+        return $success;
     }
 }

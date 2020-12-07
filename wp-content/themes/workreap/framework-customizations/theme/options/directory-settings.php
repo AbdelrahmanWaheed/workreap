@@ -271,6 +271,41 @@ $options = array(
 							1) [FREELANCER]   : The freelancer name that will receive the invitation message.<br/>
 							2) [PROJECT_LINK] : The link of the project in which the employer wants to invite the freelancer to work.<br/>',
 					),
+					'job_invitation_cancellation_priod_hours' => array(
+						'label' => esc_html__( 'Job Invitation Cancellation Period (in hours)', 'workreap' ),
+						'type'  => 'number',
+						'value' => 24,
+						'desc' 	=> 'Set the job invitation automatic cancellation period in hours.',
+					),
+					'job_invitation_notice_priod_message' => array(
+						'label' => esc_html__( 'Job Invitation Notice Period Message', 'workreap' ),
+						'type'  => 'textarea',
+						'value' => "Notice: You have only [INVITATION_CANCELLATION_PERIOD] to accept the invitation and submit your proposal.",
+						'desc' 	=> 'Describe the job invitation message notice that will be prepended to the message sent to the freelancer to indicate the allowed time to submit the proposal to the project.<br/> 
+							use the following keywords to express their value in the message:<br/>
+							1) [INVITATION_CANCELLATION_PERIOD] : The invitation cancellation period (example: "8 hours").',
+					),
+					'job_invitation_cancellation_employer_message' => array(
+						'label' => esc_html__( 'Job Invitation Cancellation Message (For Employer)', 'workreap' ),
+						'type'  => 'textarea',
+						'value' => "Your invitation of the project \"[PROJECT_NAME]\" to the freelancer \"[FREELANCER]\" has been ignored.\nPlease choose another freelancer and send him the invitation from the freelancers page.",
+						'desc' 	=> 'Describe the job invitation cancellation message that will be sent to the employer if the selected freelancer ignored the invitation.<br/> 
+							use the following keywords to express their value in the message:<br/>
+							1) [PROJECT_NAME] : The name of the project.<br />
+							1) [FREELANCER]   : The name of the freelancer who ignored the job invitation.<br/>
+							2) [VIEW_FREELANCERS_LINK] : All freelancers view page link.<br/>',
+					),
+					'job_invitation_cancellation_freelancer_message' => array(
+						'label' => esc_html__( 'Job Invitation Cancellation Message (For Freelancer)', 'workreap' ),
+						'type'  => 'textarea',
+						'value' => "The invitation of the project \"[PROJECT_NAME]\" sent to you has been ignored automatically by the system due to inactivity 
+							for [NOTICE_PERIOD].",
+						'desc' 	=> 'Describe the job invitation cancellation message that will be sent to the freelancer if the system cancelled the invitation
+							due to not responding during all the notice period of the invitation.<br/> 
+							use the following keywords to express their value in the message:<br/>
+							1) [PROJECT_NAME]  : The name of the project.<br />
+							1) [NOTICE_PERIOD] : The job invitation notice period (for example: 24 hours).<br/>',
+					),
 					'upload_resume'  => array(
 						'label' => esc_html__( 'Upload Resume', 'workreap' ),
 						'type'  => 'select',

@@ -64,10 +64,20 @@ if( apply_filters('workreap_system_access','job_base') === true ){
 							if( is_user_logged_in() ) {
 								$user_type		= apply_filters('workreap_get_user_type', $current_user->ID );
 								if( in_array($post_status, array('publish', 'private')) && $user_type === 'freelancer' ) { ?>
-								<div class="wt-btnarea"><a href="<?php echo esc_url( $submit_proposal ); ?>" class="wt-btn wt-submit-proposal"><?php esc_html_e('Send Proposal', 'workreap'); ?></a></div>
-							<?php }}else{?>
+									<div class="wt-btnarea">
+										<a href="<?php echo esc_url( $submit_proposal ); ?>" class="wt-btn wt-submit-proposal">
+											<?php esc_html_e('Send Proposal', 'workreap'); ?>
+										</a>
+										<?php if( $post_status == 'private' ) { ?>
+											<a href="javascript:;" class="wt-btn wt-btn-wraning wt-not-interested" data-project-id="<?php echo $post->ID; ?>">
+												<?php esc_html_e('Not Interested', 'workreap'); ?>
+											</a>
+										<?php } ?>
+									</div>
+								<?php } ?> 
+							<?php } else { ?>
 								<div class="wt-btnarea"><a href="javascript:;" class="wt-btn wt-submit-proposal"><?php esc_html_e('Send Proposal', 'workreap'); ?></a></div>
-							<?php }?>
+							<?php } ?>
 						</div>
 					</div>
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-7 col-xl-8 float-left">

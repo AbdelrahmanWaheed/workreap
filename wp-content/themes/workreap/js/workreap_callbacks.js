@@ -773,6 +773,39 @@ jQuery(document).on('ready', function() {
         });           
     });
 	
+	// remove freelancer from project invitations
+	jQuery(document).on('click', '.wt-not-interested', function (e) {
+		e.preventDefault();	
+		var _this = jQuery(this);
+		var _project_id = _this.data('project-id');
+		
+		if( _project_id == '' || _project_id == 'undefined' || _project_id == null ){
+			jQuery.sticky(scripts_vars.message_error, {classList: 'important', speed: 200, autoclose: 5000});
+			return false;
+		}
+
+		//Send request
+		var dataString = 'project_id='+_project_id+'&action=workreap_remove_freelancer_from_project_invitations';
+		jQuery('body').append(loader_html);
+		jQuery.ajax({
+			type: "POST",
+			url: scripts_vars.ajaxurl,
+			data: dataString,
+			dataType: "json",
+			success: function (response) {
+				jQuery('body').find('.wt-preloader-section').remove();
+				if (response.type === 'success') {
+					jQuery.sticky(response.message, {classList: 'success', speed: 200, autoclose: 5000});
+				} else if (response.type === 'redirect') {
+					jQuery.sticky(response.message, {classList: 'success', speed: 200, autoclose: 5000});
+					window.location.href = response.redirect_url;
+				} else {
+					jQuery.sticky(response.message, {classList: 'important', speed: 200, autoclose: 5000});
+				}
+			}
+		});
+	});
+
 	//follow service
     jQuery(document).on('click', '.wt-saveservice', function (e) {
 		

@@ -181,8 +181,7 @@ if (!function_exists('workreap_payment_complete')) {
 					$freelancers  	= get_post_meta($project_id, 'suggested_freelancers', false);
 
 					if (function_exists('fw_get_db_settings_option')) {
-						$job_public_status 		= fw_get_db_settings_option('job_status');
-						$job_invitation_message = fw_get_db_settings_option('job_invitation_message');
+						$job_public_status 				= fw_get_db_settings_option('job_status');
 						$job_private_status = 'private';
 					}
 					$job_status = $type == 'one-to-one' ? $job_private_status : $job_public_status;
@@ -234,9 +233,7 @@ if (!function_exists('workreap_payment_complete')) {
 						// send messages to freelancers in case of one to one job
 						if($type == 'one-to-one' && !empty($freelancers)) {
 							foreach ($freelancers as $freelancer) {
-								$message = $job_invitation_message;
-								$message = str_replace('[FREELANCER]', workreap_get_username($freelancer), $message);
-								$message = str_replace('[PROJECT_LINK]', get_permalink($project_id), $message);
+								$message = apply_filters( 'workreap_job_invitation_message', $project_id, $freelancer );
 								$insert_data = array(
 									'sender_id' 		=> $current_user->ID,
 									'receiver_id' 		=> $freelancer,
@@ -258,7 +255,7 @@ if (!function_exists('workreap_payment_complete')) {
 										$invitation_count 	= get_user_meta(intval($freelancer_id), '_invitation_count', true);
 										$invitation_count	= !empty($invitation_count) ? $invitation_count + 1 : 1;
 										update_post_meta( $freelancer_id, '_invitation_count', $invitation_count);
-				                        
+
 										$emailData['freelancer_link'] 		= get_the_permalink( $freelancer_id );
 										$emailData['freelancer_name'] 		= get_the_title($freelancer_id);
 										$emailData['employer_link']       	= get_the_permalink( $employer_id );

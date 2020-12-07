@@ -1768,6 +1768,30 @@ $options = array(
                             )
                         )
                     ),
+                    'job_invitation_cancellation' => array(
+                        'title' => esc_html__('Job Invitation Cancellation', 'workreap'),
+                        'type' => 'tab',
+                        'options' => array(
+                            'job_invitation_cancel_content' => array(
+                                'type' => 'wp-editor',
+                                'value' => 'Hello %employer_name%<br/>
+                                            The freelancer <a href="%freelancer_link%">%freelancer_name%</a> is not interested in your job invitation of the project 
+                                            <a href="%project_link%">%project_title%</a><br/>
+                                            Message: %message%<br/><br/>
+                                            %signature%,',
+                                'attr' => array(),
+                                'label' => esc_html__('Email Contents', 'workreap'),
+                                'size' => 'large', // small, large
+                                'editor_height' => 400,
+                            ),
+                            'job_invitation_cancel_subject' => array(
+                                'type' => 'text',
+                                'value' => 'Job Invitation Cancellation',
+                                'label' => esc_html__('Subject', 'workreap'),
+                                'desc' => esc_html__('Please add subject for email', 'workreap'),
+                            ),
+                        )
+                    ),
                     'job_cancel_freelancer' => array(
                         'title' => esc_html__('Cancel Job', 'workreap'),
                         'type' => 'tab',

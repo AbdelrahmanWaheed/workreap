@@ -60,6 +60,10 @@ if( !function_exists('workreap_cron_activation') ) {
 			wp_schedule_event( time(), $interval , 'workreap_post_job_notification');
 		}
 		
+		if( ! wp_next_scheduled( 'workreap_job_invitation_auto_cancel' ) ) { 
+			wp_schedule_event( time(), 'hourly', 'workreap_job_invitation_auto_cancel' );
+		}
+
 		if ( ! wp_next_scheduled( 'workreap_update_featured_expiry_listing' ) ) {
 		  wp_schedule_event( time(), 'hourly', 'workreap_update_featured_expiry_listing' );
 		}
@@ -487,6 +491,55 @@ if( !function_exists('workreap_post_job_notification') ) {
 }
 
 /**
+ * Job Invitation Automatic Cancellation
+ *
+ * @throws error
+ * @author Amentotech <theamentotech@gmail.com>
+ * @return 
+ */
+if( !function_exists('workreap_job_invitation_auto_cancel') ) {
+	function workreap_job_invitation_auto_cancel() {
+
+		// get projects whose invitation period has passed the allowed period for accepting the project by the freelancer
+        $notice_priod = fw_get_db_settings_option('job_invitation_cancellation_priod_hours');
+        $notice_priod = intval( $notice_priod );
+		$args = array(
+			'post_type' 		=> 'projects',
+			'posts_per_page' 	=> -1,
+			'post_status' 		=> 'private',
+			'meta_query' 		=> array(
+				'relation' 		=> 'AND',
+				array(
+					'key' 		=> 'invitation_time',
+					'value' 	=> strtotime( sprintf("-%d hour", $notice_priod), current_time('timestamp') ),
+					'compare' 	=> '<=',
+					'type' 		=> 'NUMERIC',
+				),
+				array(
+					'key' 		=> 'suggested_freelancers',
+					'compare' 	=> 'EXISTS',
+				),
+			),
+		);
+		$projects = get_posts( $args );
+		if( !empty( $projects ) ) {
+			foreach ($projects as $project) {
+				$freelancer = get_post_meta( $project->ID, 'suggested_freelancers', true );
+				workreap_delete_freelancer_from_project_invitations( $project->ID, $freelancer );
+
+				// send notification to the freelancer in case of automatic cancellation to the project invitation
+		        if( class_exists('NotificationSystem') ) {
+		            $message = apply_filters( 'workreap_job_invitation_auto_cancellation_message', $project->ID );
+		            $subject = esc_html__('Job Invitation Automatic Cancellation', 'workreap');
+		            NotificationSystem::sendNotificationWithEmail( $freelancer, $message, null, $subject );
+		        }
+			}
+		}
+	}
+	add_action ('workreap_job_invitation_auto_cancel', 'workreap_job_invitation_auto_cancel');
+}
+
+/**
  * Deactive plugin
  *
  * @throws error
@@ -500,6 +553,9 @@ if( !function_exists('workreap_cron_deactivate') ) {
 		
 		$next_job_scheduled	= wp_next_scheduled( 'workreap_job_notification_cron' );
 		wp_unschedule_event ($next_job_scheduled, 'workreap_job_notification_cron');
+
+		$next_job_invit_auto_cancel_scheduled = wp_next_scheduled( 'workreap_job_invitation_auto_cancel' );
+		wp_unschedule_event ($next_job_invit_auto_cancel_scheduled, 'workreap_job_invitation_auto_cancel');
 	} 
 	register_deactivation_hook (__FILE__, 'workreap_cron_deactivate');
 }

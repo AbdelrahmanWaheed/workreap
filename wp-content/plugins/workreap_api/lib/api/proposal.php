@@ -478,7 +478,7 @@ if (!class_exists('AndroidApp_Proposal_Route')) {
 					}
 				}	
 				$json['type']       = 'success';
-				$json['message']    = esc_html__('Proposal sent Successfully ', 'workreap_api');
+				$json['message']    = esc_html__('Proposal sent successfully ', 'workreap_api');
 				return new WP_REST_Response($json, 200); 
 			}else {
 				$json['type'] 		= 'error';

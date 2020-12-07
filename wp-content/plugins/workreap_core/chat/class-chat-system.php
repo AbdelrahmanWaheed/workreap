@@ -300,12 +300,14 @@ if (!class_exists('ChatSystem')) {
 
 				if( $user_type === 'employer' ) {
 					$args = array(
-						'author'        	=>  $current_user->ID, 
-						'orderby'       	=>  'post_date',
+						'author'        	=> $current_user->ID, 
+						'orderby'       	=> 'post_date',
 						'post_type' 		=> 'projects',
-						'post_status' 		=> array('publish','pending'),
-						'order'         	=>  'ASC',
-						'posts_per_page' 	=> -1 // no limit
+						'post_status' 		=> array('publish', 'private'),
+						'order'         	=> 'ASC',
+						'posts_per_page' 	=> -1, // no limit
+                        'meta_key'          => 'suggested_freelancers',
+                        'meta_compare'      => 'NOT EXISTS',
                     );
                     
                     
@@ -758,10 +760,21 @@ if (!class_exists('ChatSystem')) {
             //Prepare Insert Message Data Array
             $current_time  = current_time('mysql');
             $gmt_time      = get_gmt_from_date($current_time);
-			
-			if (!empty($project_id)) {
-				$link		= get_the_permalink($project_id);
-                $message	= $message.'\n'.$link;
+
+            // sending job offer
+            if (!empty($project_id)) {
+                $link		= get_the_permalink($project_id);
+                $message	= $message."\n".$link;
+
+                // one to one message invitation handling
+                $post_status = get_post_status( $project_id );
+                if( $post_status == 'private' ) {
+                    $message = apply_filters( 'workreap_job_invitation_notice_message', $message );
+                    // allow the freelancer to view this private project
+                    add_user_meta( $receiverId, 'allowed_jobs', $project_id );
+                    add_post_meta( $project_id, 'suggested_freelancers', $receiverId );
+                    add_post_meta( $project_id, 'invitation_time', current_time('timestamp') );
+                }
 
 				//update api key data
 				if( apply_filters('workreap_filter_user_promotion', 'disable') === 'enable' ){	

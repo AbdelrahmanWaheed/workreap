@@ -109,7 +109,7 @@ body.logged-in main.wt-main{background:transparent;padding:20px 40px 20px 310px}
 .wt-memessage figure{right:0}
 .wt-offerermessage figure img,.wt-memessage figure img{display:block}
 .wt-offerermessage .wt-description p,.wt-memessage .wt-description p{padding:10px;font-size:14px;color:#323232;margin:0 0 5px;max-width:485px;line-height:24px;background:#f7f7f7}
-.wt-offerermessage .wt-description p{float:left}
+.wt-offerermessage .wt-description p{float:left;white-space: break-spaces;}
 .wt-memessage .wt-description p{float:right;white-space: break-spaces;}
 .wt-offerermessage .wt-description p{border-radius:10px 10px 10px 0}
 .wt-memessage .wt-description p{border-radius:10px 10px 0 10px}
@@ -308,7 +308,7 @@ table.wt-tablecategories tbody tr td figure img{width:100%;display:block}
 .wt-categoriescontentholder .wt-pagination{padding:30px;border-top:1px solid #eff2f5}
 .wt-tablecategories thead tr th:first-child,.wt-tablecategories tbody tr td:first-child{position:relative}
 .wt-tablecategories thead tr th:first-child:before,.wt-tablecategories tbody tr td:first-child:before{top:0;left:0;height:0;content:'';width:2px;position:absolute}
-.wt-tablecategories tr:hover th:first-child:before,.wt-tablecategories tr:hover td:first-child:before{height:100%}
+.wt-tablecategories tr:hover th:first-child:before,.wt-tablecategories tr:hover td:first-child:before,.wt-tablecategories tr.wt-newitem td:first-child:before{height:100%}
 .wt-tablecategories tr:hover{background:#fcfcfc}
 .wt-categoriesholder .wt-tablecategories tbody tr td .wt-actionbtn a{width:60px}
 .uploadprogressbar{left:0;top:0;height:100%;width:50%;content:'';display:none;background:#ecfff9;position:absolute!important;z-index:0!important}
