@@ -2890,12 +2890,14 @@ if ( !function_exists( 'workreap_post_job' ) ) {
 				$json['message'] = $value;        
 				wp_send_json($json);
 			}
-			
-            if( $key === 'type' && $value == 'one-to-one' && empty( $_POST['job']['freelancers'] ) ) {
-                $json['type']       = 'error';
-                $json['message']    = esc_html__('Freelancers are required', 'workreap');        
-                wp_send_json($json);
-            }
+            
+            // validate freelancers
+            // if( $key === 'type' && $value == 'one-to-one' && empty( $_POST['job']['freelancers'] ) ) {
+            //     $json['type']       = 'error';
+            //     $json['message']    = esc_html__('Freelancers are required', 'workreap');        
+            //     wp_send_json($json);
+            // }
+
 			// if( $key === 'project_type' && $_POST['job']['project_type'] === 'hourly' && empty( $_POST['job']['hourly_rate'] )  ){
 			// 	$json['type'] 		= 'error';
 			// 	$json['message'] 	= esc_html__('Per hour rate is required', 'workreap');        
@@ -2922,7 +2924,8 @@ if ( !function_exists( 'workreap_post_job' ) ) {
 	
 		//extract the job variables
 		extract($_POST['job']);
-		$title				= !empty( $title ) ? $title : rand(1,999999);		
+		$title				= !empty( $title ) ? $title : rand(1,999999);
+        $freelancers        = !empty( $freelancers ) && !empty($freelancers[0]) ? $freelancers : array();
 		
 		if( isset( $_POST['submit_type'] ) && $_POST['submit_type'] === 'update' ){
 			$current = !empty($_POST['id']) ? intval($_POST['id']) : '';
@@ -3003,10 +3006,12 @@ if ( !function_exists( 'workreap_post_job' ) ) {
 
             update_post_meta($post_id, 'type', $type);
             if($type == 'one-to-one') {
-                foreach($freelancers as $freelancer) {
-                    add_post_meta($post_id, 'suggested_freelancers', $freelancer);
-                    add_post_meta($post_id, 'invitation_time', current_time('timestamp'));
-                    add_user_meta($freelancer, 'allowed_jobs', $post_id);
+                if( !empty($freelancers) ) {
+                    foreach($freelancers as $freelancer) {
+                        add_post_meta($post_id, 'suggested_freelancers', $freelancer);
+                        add_post_meta($post_id, 'invitation_time', current_time('timestamp'));
+                        add_user_meta($freelancer, 'allowed_jobs', $post_id);
+                    }
                 }
             }
 

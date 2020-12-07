@@ -231,46 +231,52 @@ if (!function_exists('workreap_payment_complete')) {
 						}
 
 						// send messages to freelancers in case of one to one job
-						if($type == 'one-to-one' && !empty($freelancers)) {
-							foreach ($freelancers as $freelancer) {
-								$message = apply_filters( 'workreap_job_invitation_message', $project_id, $freelancer );
-								$insert_data = array(
-									'sender_id' 		=> $current_user->ID,
-									'receiver_id' 		=> $freelancer,
-									'chat_message' 		=> $message,
-									'status' 			=> 1,
-									'timestamp' 		=> time(),
-									'time_gmt' 			=> get_gmt_from_date(current_time('mysql')),
-								);
-								ChatSystem::instance()->getUsersThreadListData($current_user->ID, $freelancer, 'insert_msg', $insert_data);
+						if($type == 'one-to-one') {
+							if( !empty( $freelancers ) ) {
+								foreach ($freelancers as $freelancer) {
+									$message = apply_filters( 'workreap_job_invitation_message', $project_id, $freelancer );
+									$insert_data = array(
+										'sender_id' 		=> $current_user->ID,
+										'receiver_id' 		=> $freelancer,
+										'chat_message' 		=> $message,
+										'status' 			=> 1,
+										'timestamp' 		=> time(),
+										'time_gmt' 			=> get_gmt_from_date(current_time('mysql')),
+									);
+									ChatSystem::instance()->getUsersThreadListData($current_user->ID, $freelancer, 'insert_msg', $insert_data);
 
-								if (class_exists('Workreap_Email_helper')) {
-									if (class_exists('WorkreapSendOffer')) {
-										$email_helper = new WorkreapSendOffer();
-										$emailData 	  = array();
-										
-										$employer_id	= workreap_get_linked_profile_id($current_user->ID);
-										$freelancer_id	= workreap_get_linked_profile_id($freelancer);
-										//update invitation
-										$invitation_count 	= get_user_meta(intval($freelancer_id), '_invitation_count', true);
-										$invitation_count	= !empty($invitation_count) ? $invitation_count + 1 : 1;
-										update_post_meta( $freelancer_id, '_invitation_count', $invitation_count);
+									if (class_exists('Workreap_Email_helper')) {
+										if (class_exists('WorkreapSendOffer')) {
+											$email_helper = new WorkreapSendOffer();
+											$emailData 	  = array();
+											
+											$employer_id	= workreap_get_linked_profile_id($current_user->ID);
+											$freelancer_id	= workreap_get_linked_profile_id($freelancer);
+											//update invitation
+											$invitation_count 	= get_user_meta(intval($freelancer_id), '_invitation_count', true);
+											$invitation_count	= !empty($invitation_count) ? $invitation_count + 1 : 1;
+											update_post_meta( $freelancer_id, '_invitation_count', $invitation_count);
 
-										$emailData['freelancer_link'] 		= get_the_permalink( $freelancer_id );
-										$emailData['freelancer_name'] 		= get_the_title($freelancer_id);
-										$emailData['employer_link']       	= get_the_permalink( $employer_id );
-										$emailData['employer_name'] 		= get_the_title($employer_id);
-										$emailData['project_link']        	= !empty( $project_id ) ?  get_the_permalink( $project_id ) : '';
-										$emailData['project_title']      	= !empty( $project_id ) ?  get_the_title( $project_id ) : '';
-										$emailData['project_id']      		= $project_id;
-										$emailData['employer_id']      		= $employer_id;
-										$emailData['freelancer_id']      	= $freelancer_id;
-										$emailData['message']      			= $message;
-										$emailData['email_to']      		= get_userdata( $freelancer )->user_email;
+											$emailData['freelancer_link'] 		= get_the_permalink( $freelancer_id );
+											$emailData['freelancer_name'] 		= get_the_title($freelancer_id);
+											$emailData['employer_link']       	= get_the_permalink( $employer_id );
+											$emailData['employer_name'] 		= get_the_title($employer_id);
+											$emailData['project_link']        	= !empty( $project_id ) ?  get_the_permalink( $project_id ) : '';
+											$emailData['project_title']      	= !empty( $project_id ) ?  get_the_title( $project_id ) : '';
+											$emailData['project_id']      		= $project_id;
+											$emailData['employer_id']      		= $employer_id;
+											$emailData['freelancer_id']      	= $freelancer_id;
+											$emailData['message']      			= $message;
+											$emailData['email_to']      		= get_userdata( $freelancer )->user_email;
 
-										$email_helper->send_offer($emailData);
+											$email_helper->send_offer($emailData);
+										}
 									}
 								}
+							} else if( class_exists('NotificationSystem') && function_exists('fw_get_db_settings_option') ) {
+								$freelancers_search_page = workreap_get_search_page_uri('freelancer');
+								$message = apply_filters( 'workreap_job_without_freelancer_message', $project_id );
+								NotificationSystem::sendNotification( $current_user->ID, $message, $freelancers_search_page );
 							}
 						}
 					}

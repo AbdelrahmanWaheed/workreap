@@ -2956,12 +2956,14 @@ if (!function_exists('workreap_show_freelancers_list')) {
 	function workreap_show_freelancers_list($field_name) {
 		$roles	= array('freelancers');
 		wp_custom_dropdown_users( array(
-			'role__in' 	=> $roles,
-			'name' 		=> $field_name,
-			'id'		=> 'users_multiselect',
-			'class'		=> 'chosen-select',
-			'show' 		=> 'display_name_with_rating',
-			'include_selected' => true,
+			'role__in' 			=> $roles,
+			'name' 				=> $field_name,
+			'id'				=> 'users_multiselect',
+			'show_option_none' 	=> 'None Selected',
+			'option_none_value'	=> '',
+			'class'				=> 'chosen-select',
+			'show' 				=> 'display_name_with_rating',
+			'include_selected' 	=> true,
 		));
 	}
 }
@@ -3185,10 +3187,10 @@ if (!function_exists('workreap_count_employer_projects_new_proposals')) {
         $count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `{$wpdb->postmeta}` WHERE `meta_key` = %s AND `meta_value` = %d 
             AND `post_id` IN (
                 SELECT `post_id` FROM `{$wpdb->postmeta}` WHERE `meta_key` = %s AND `meta_value` IN (
-                    SELECT `id` FROM `{$wpdb->posts}` WHERE `post_author` = %d AND `post_status` = %s AND `post_type` = %s
+                    SELECT `id` FROM `{$wpdb->posts}` WHERE `post_author` = %d AND `post_type` = %s
                 )
             )",
-            '_new_proposal', 1, '_project_id', intval($user_id), 'publish', 'projects') );
+            '_new_proposal', 1, '_project_id', intval($user_id), 'projects') );
         return $count;
     }
 }

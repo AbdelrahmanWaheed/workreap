@@ -292,8 +292,8 @@ $options = array(
 						'desc' 	=> 'Describe the job invitation cancellation message that will be sent to the employer if the selected freelancer ignored the invitation.<br/> 
 							use the following keywords to express their value in the message:<br/>
 							1) [PROJECT_NAME] : The name of the project.<br />
-							1) [FREELANCER]   : The name of the freelancer who ignored the job invitation.<br/>
-							2) [VIEW_FREELANCERS_LINK] : All freelancers view page link.<br/>',
+							2) [FREELANCER]   : The name of the freelancer who ignored the job invitation.<br/>
+							3) [VIEW_FREELANCERS_LINK] : All freelancers view page link.<br/>',
 					),
 					'job_invitation_cancellation_freelancer_message' => array(
 						'label' => esc_html__( 'Job Invitation Cancellation Message (For Freelancer)', 'workreap' ),
@@ -304,7 +304,15 @@ $options = array(
 							due to not responding during all the notice period of the invitation.<br/> 
 							use the following keywords to express their value in the message:<br/>
 							1) [PROJECT_NAME]  : The name of the project.<br />
-							1) [NOTICE_PERIOD] : The job invitation notice period (for example: 24 hours).<br/>',
+							2) [NOTICE_PERIOD] : The job invitation notice period (for example: 24 hours).<br/>',
+					),
+					'job_without_freelancer_message' => array(
+						'label' => esc_html__( '"One To One" Job Without Freelancer Message', 'workreap' ),
+						'type'  => 'textarea',
+						'value' => "Your one to one project \"[PROJECT_NAME]\" is missing a freelancer to work on it.\nPlease choose a freelancer and send him the invitation from the freelancers page.",
+						'desc' 	=> 'Describe the message that will be sent to the employer in case of creating a project without selecting any freelancer.<br/> 
+							use the following keywords to express their value in the message:<br/>
+							1) [PROJECT_NAME]  : The name of the project.<br />',
 					),
 					'upload_resume'  => array(
 						'label' => esc_html__( 'Upload Resume', 'workreap' ),

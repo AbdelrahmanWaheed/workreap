@@ -637,7 +637,7 @@ if( !function_exists( 'workreap_job_invitation_message' ) ) {
 }
 
 /**
- * Apply shortcuts values in the jon invitation cancellation message (for employer)
+ * Apply shortcuts values in the job invitation cancellation message (for employer)
  *
  * @return
  */
@@ -658,7 +658,7 @@ if( !function_exists( 'workreap_job_invitation_cancellation_message' ) ) {
 }
 
 /**
- * Apply shortcuts values in the jon invitation notice message
+ * Apply shortcuts values in the job invitation notice message
  *
  * @return
  */
@@ -681,7 +681,7 @@ if( !function_exists( 'workreap_job_invitation_notice_message' ) ) {
 }
 
 /**
- * Apply shortcuts values in the jon invitation cancellation message (for freelancer)
+ * Apply shortcuts values in the job invitation cancellation message (for freelancer)
  *
  * @return
  */
@@ -700,3 +700,22 @@ if( !function_exists( 'workreap_job_invitation_auto_cancellation_message' ) ) {
 
     add_filter('workreap_job_invitation_auto_cancellation_message', 'workreap_job_invitation_auto_cancellation_message', 10, 1);
 }
+
+/**
+ * Apply shortcuts values in the message of job without freelancer 
+ *
+ * @return
+ */
+if( !function_exists( 'workreap_job_without_freelancer_message' ) ) {    
+
+    function workreap_job_without_freelancer_message( $project_id ) {
+        $message = fw_get_db_settings_option('job_without_freelancer_message');
+        if( !empty( $message ) ) {
+            $message = str_replace('[PROJECT_NAME]', get_the_title( $project_id ), $message);
+        }
+        return $message;
+    }
+
+    add_filter('workreap_job_without_freelancer_message', 'workreap_job_without_freelancer_message', 10, 1);
+}
+

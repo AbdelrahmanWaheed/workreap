@@ -282,6 +282,11 @@ $hide = true;
 								</div>
 								<div class="form-group" id="form-group-freelancers" style="display: none;">
 									<?php workreap_show_freelancers_list('job[freelancers][]'); ?>
+									<p class="small">
+										Our Designers are sorted based on their Earnings<br/>
+										If You want to view their Jobs first you can post the project details then go to view freelancers page 
+										to send offer to your selected one.
+									</p>
 								</div>
 							</fieldset>
 						</div>
