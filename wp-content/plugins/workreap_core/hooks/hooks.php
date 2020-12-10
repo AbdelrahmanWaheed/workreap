@@ -2491,6 +2491,7 @@ if( !function_exists( 'workreap_print_login_form' ) ){
 		
 		if ( is_user_logged_in() ) {
 			Workreap_Profile_Menu::workreap_profile_menu_top();
+			Workreap_Profile_Menu::workreap_profile_menu_notification();
 		} else{
 			
 		if( $is_auth === 'enable'){?>
@@ -2720,15 +2721,22 @@ if (!function_exists('workreap_save_project_meta_data')) {
 				update_post_meta($post_id, '_freelancer_level', $freelancer_level);	
 				
 				//Featured Expiry
-				if (!empty($_POST['fw_options']['featured_post']) && !empty( $_POST['fw_options']['featured_expiry'] )) {
+				if (!empty($_POST['fw_options']['featured_post'])) {
 					update_post_meta($post_id, '_featured_job_string',1);
-					update_post_meta($post_id, '_expiry_string', strtotime( $_POST['fw_options']['featured_expiry'] ));
-				}else{
-					 $featured_str = get_post_meta($post_id, '_featured_job_string', true);
-					 $featured_str	= !empty($featured_str) ? $featured_str : 0;
-					 update_post_meta($post_id, '_featured_job_string',$featured_str);
+					// update_post_meta($post_id, '_expiry_string', strtotime( $_POST['fw_options']['featured_expiry'] ));
+				} else {
+					$featured_str = get_post_meta($post_id, '_featured_job_string', true);
+					$featured_str	= !empty($featured_str) ? $featured_str : 0;
+					update_post_meta($post_id, '_featured_job_string',$featured_str);
 				}
 				
+				if (!empty($_POST['fw_options']['highlighted_post'])) {
+					update_post_meta($post_id, '_highlighted_job_string', 1);
+				} else {
+					$highlighted_str = get_post_meta($post_id, '_highlighted_job_string', true);
+					$highlighted_str = !empty($highlighted_str) ? $highlighted_str : 0;
+					update_post_meta($post_id, '_highlighted_job_string', $highlighted_str);
+				}
 			}
 		}
 		

@@ -4270,31 +4270,20 @@ if( !function_exists( 'workreap_job_detail_documents' ) ) {
 }
 
 /**
- * Return project Level
+ * Return project comments
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
  * @return 
  */
- if( !function_exists( 'workreap_project_print_project_level') ){
-    function workreap_project_print_project_level( $post_id = '', $single_sign = 'yes' ){
-        if( !empty( $post_id ) ) {
-            $project_level = '';
-            if (function_exists('fw_get_db_post_option')) {
-                $project_level          = fw_get_db_post_option($post_id, 'project_level', true);                
-            }
-			
-			$level	= workreap_get_project_level($project_level);
+if( !function_exists( 'workreap_job_comments' ) ) {
+    function workreap_job_comments( $post_id = '' ){
+        if( !empty( $post_id ) ){
 
-			ob_start();
-			?>
-			<li><span><img class="wt-job-icon" src="<?php echo esc_url(get_template_directory_uri());?>/images/job-level.png" alt="<?php esc_html_e('Project Level', 'workreap'); ?>"><?php echo esc_html( $level );?></span></li>
-			<?php
-            echo ob_get_clean();        
         }
     }
-    add_action('workreap_project_print_project_level', 'workreap_project_print_project_level', 10, 2);
- }
+    add_action('workreap_job_comments', 'workreap_job_comments', 10, 1);
+}
 
 /**
  * Return project bundle
@@ -4375,6 +4364,9 @@ if( !function_exists( 'workreap_save_project_html') ){
 			$is_featured	= get_post_meta( $post_id, '_featured_job_string',true);
 			$is_featured    = !empty( $is_featured ) ? intval( $is_featured ) : '';
 			
+			$is_highlighted = get_post_meta( $post_id, '_highlighted_job_string',true);
+			$is_highlighted = !empty( $is_highlighted ) ? intval( $is_highlighted ) : '';
+
 			$defult	= get_template_directory_uri().'/images/featured.png';
             if (function_exists('fw_get_db_settings_option')) {
                 $featured_image		= fw_get_db_settings_option('featured_job_img');
@@ -4390,6 +4382,10 @@ if( !function_exists( 'workreap_save_project_html') ){
 				} else{?>
 					<span class="wt-featuredtag" style="border-top: 40px solid <?php echo esc_attr($color);?>"><img src="<?php echo esc_url($tag);?>" alt="<?php echo esc_attr($title);?>" data-tipso="<?php esc_attr_e('Featured','workreap');?>" class="template-content tipso_style wt-tipso"></span>
 				<?php
+				}
+			} else if( !empty( $is_highlighted ) && $is_highlighted === 1 ) {
+				if( $returnClass === 'yes' ){
+					return 'wt-featured';
 				}
 			}
         }

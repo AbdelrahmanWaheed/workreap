@@ -106,6 +106,12 @@ if( apply_filters('workreap_system_access','job_base') === true ){
 									</div>
 								</div>
 							<?php }?>
+							<?php
+								// If comments are open or we have at least one comment, load up the comment template
+								if ( comments_open() || get_comments_number() ) {
+									comments_template();
+								}
+							?>
 						</div>
 					</div>
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-5 col-xl-4 float-left">

@@ -368,7 +368,6 @@ address{font-style:italic}
 .wt-loginfooterinfo a+a:before{top:50%;left:0;content:'';width:2px;height:30px;background:#ddd;position:absolute;margin:-15px 0 0}
 body.wt-login .wt-loginarea{display:none}
 .wt-userlogedin{float:right;padding:20px;cursor:pointer;position:relative;position:relative}
-.wt-userlogedin:before{left:0;top:50%;width:1px;content:'';height:36px;background:#ddd;margin-top:-18px;position:absolute}
 body.wt-login .wt-userlogedin{display:block}
 .wt-userlogedin .wt-userimg{float:left;margin-right:10px !important; position: relative;}
 .wt-username{overflow:hidden;position:relative}
@@ -376,6 +375,7 @@ body.wt-login .wt-userlogedin{display:block}
 .wt-username span{display:block;font-size:13px;line-height:16px}
 .wt-usernav{right:0;opacity:0;top:140px;z-index:9;width:220px;visibility:hidden;position:absolute;border-radius:5px}
 .wt-userlogedin:hover .wt-usernav{top:100%;opacity:1;visibility:visible}
+.wt-userlogedin.wt-notification-icon:before{left:0;top:50%;width:1px;content:'';height:36px;background:#ddd;margin-top:-18px;position:absolute}.wt-userlogedin.wt-notification-icon{padding-right:10px;}.wt-notification-icon .wt-notification-icon-figure{margin:0;padding:5px;position:relative;}.wt-notification-icon-figure .ti-bell{font-size:20px;}.wt-notification-icon-figure .wtunread-count{right:-5px;top:-5px;}
 .wt-usernav ul{width:100%;float:left;font-size:14px;background:#fff;list-style:none;line-height:16px;border-radius:0 0 4px 4px}
 .wt-usernav>ul{border-top:2px solid;-webkit-box-shadow:5px 10px 20px 0 rgba(0,0,0,0.25);box-shadow:5px 10px 20px 0 rgba(0,0,0,0.25)}
 .wt-usernav ul li{width:100%;float:left;position:relative;line-height:inherit;list-style-type:none}
@@ -1560,7 +1560,7 @@ button:focus{outline:0}
 .wt-securityhold .wt-emptydata-holder{padding:10px 0 0}
 .wt-securityhold .wt-emptydata-holder .wt-emptydata{height:617px}
 .wt-user-profile{float:left;width:100%}
-.wt-username h3,.wt-username span{max-width:200px;text-align:left;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.wt-username h3,.wt-username span{max-width:200px;text-align:left;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;line-height:36px;margin-bottom:0px;}
 .wt-sc-categories-freelancer{float:left;width:100%}
 .wt-earningsholder .wt-emptydata-holder .wt-emptydata,.wt-ongoingproject .wt-emptydata-holder .wt-emptydata{height:450px}
 .wt-managejobcontent.wt-emptydata-holder{padding:0}

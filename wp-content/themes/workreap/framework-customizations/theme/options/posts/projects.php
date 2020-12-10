@@ -92,19 +92,32 @@ $options = array(
                 'type' => 'checkbox',
                 'value' => '',
             ),
-			'featured_expiry' => array(
-				'label' => esc_html__('Featured Expiry', 'workreap'),
-				'type' => 'datetime-picker',
-				'datetime-picker' => array(
-					'format'  => 'Y-m-d',
-					'maxDate' => false, 
-					'minDate' => date('Y-m-d'),
-					'timepicker' => false,
-					'datepicker' => true,
-					'defaultTime' => ''
-				),
-				'desc' => esc_html__('Add date here, Futured date is required to add user into featured listing', 'workreap')
-			),
+			// 'featured_expiry' => array(
+			// 	'label' => esc_html__('Featured Expiry', 'workreap'),
+			// 	'type' => 'datetime-picker',
+			// 	'datetime-picker' => array(
+			// 		'format'  => 'Y-m-d',
+			// 		'maxDate' => false, 
+			// 		'minDate' => date('Y-m-d'),
+			// 		'timepicker' => false,
+			// 		'datepicker' => true,
+			// 		'defaultTime' => ''
+			// 	),
+			// 	'desc' => esc_html__('Add date here, Futured date is required to add user into featured listing', 'workreap')
+			// ),
+        ),
+    ),
+    'highlighted_job' => array(
+        'title' => esc_html__('Highlighted Job?', 'workreap'),
+        'type' => 'box',
+        'options' => array(
+            'highlighted_post' => array(
+                'value' => false,
+                'label' => esc_html__('Highlighted job?', 'workreap'),
+                'desc' => esc_html__('Select to make this job as highlighted', 'workreap'),
+                'type' => 'checkbox',
+                'value' => '',
+            ),
         ),
     ),
     'project_settings' => array(

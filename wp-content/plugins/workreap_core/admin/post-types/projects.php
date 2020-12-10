@@ -56,7 +56,7 @@ if (!class_exists('Workreap_Projects')) {
                 'labels' 				=> $labels,
                 'description' 			=> esc_html__('This is where you can add new projects ', 'workreap_core'),
                 'public' 				=> true,
-                'supports' 				=> array('title','editor','author','excerpt'),
+                'supports' 				=> array('title','editor','author','excerpt','comments'),
                 'show_ui' 				=> true,
                 'capability_type' 		=> 'post',
                 'map_meta_cap' 			=> true,
@@ -390,6 +390,7 @@ if (!class_exists('Workreap_Projects')) {
 		public function projects_columns_add($columns) {
 			$columns['type'] 			= esc_html__('Project Type','workreap_core');
 			$columns['featured'] 		= esc_html__('Featured','workreap_core');
+            $columns['highlighted']     = esc_html__('Highlighted','workreap_core');
 			$columns['status'] 			= esc_html__('Status','workreap_core');
 			$columns['price'] 			= esc_html__('Price','workreap_core');
 		 
@@ -404,6 +405,7 @@ if (!class_exists('Workreap_Projects')) {
 			global $post;
 			
 			$is_featured		= get_post_meta( get_the_ID(), '_featured_job_string',true);
+            $is_highlighted     = get_post_meta( get_the_ID(), '_highlighted_job_string',true);
 			$status				= ucfirst(get_post_field('post_status',get_the_ID()));
 			
 			if( !empty( $is_featured ) && $is_featured > 0 ) {
@@ -412,6 +414,12 @@ if (!class_exists('Workreap_Projects')) {
 				$featured		= esc_html__('No','workreap_core');
 			}
 			
+            if( !empty( $is_highlighted ) && $is_highlighted > 0 ) {
+                $highlighted     = esc_html__('Yes','workreap_core');
+            } else {
+                $highlighted     = esc_html__('No','workreap_core');
+            }
+
 			if (function_exists('fw_get_db_settings_option')) {
 				$db_project_type 	= fw_get_db_post_option(get_the_ID(), 'project_type', true);
 				$db_job_type 		= !empty( $db_project_type['gadget'] ) ? ucfirst($db_project_type['gadget']) : '';
@@ -430,6 +438,10 @@ if (!class_exists('Workreap_Projects')) {
 					echo esc_attr( $featured );
 				break;
 				
+                case 'highlighted':
+                    echo esc_attr( $highlighted );
+                break;
+
 				case 'status':
 					echo esc_attr( $status );
 				break;

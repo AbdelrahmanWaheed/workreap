@@ -103,6 +103,31 @@ if (!class_exists('Workreap_Profile_Menu')) {
         }
 
 		/**
+		 * Profile Menu top Notification Tab
+		 *
+		 * @throws error
+		 * @author Amentotech <theamentotech@gmail.com>
+		 * @return 
+		 */
+        public static function workreap_profile_menu_notification() {
+            global $current_user;
+            ob_start();
+			?>
+				<div class="wt-userlogedin sp-top-menu wt-notification-icon">
+					<figure class="wt-notification-icon-figure">
+						<a href="<?php Workreap_Profile_Menu::workreap_profile_menu_link('notifications', $current_user->ID); ?>">
+							<i class="ti-bell"></i>
+							<em class="wtunread-count">
+								<?php if( class_exists('NotificationSystem') ) { echo NotificationSystem::getNewUserNotificationsCount($current_user->ID); } ?>
+							</em>
+						</a>
+					</figure>
+				</div>
+            <?php
+            echo ob_get_clean();
+        }
+
+		/**
 		 * Profile Menu Left
 		 *
 		 * @throws error
