@@ -52,8 +52,8 @@ $hired_freelancer_avatar 	= apply_filters(
 							</div>
 							<ul class="wt-saveitem-breadcrumb wt-userlisting-breadcrumb">
 								<?php do_action('workreap_project_print_project_level', $edit_id); ?>
-								<?php do_action('workreap_print_location', $edit_id); ?>
-								<?php do_action('workreap_print_project_type', $edit_id); ?>
+								<?php // do_action('workreap_print_location', $edit_id); ?>
+								<?php // do_action('workreap_print_project_type', $edit_id); ?>
 							</ul>
 						</div>
 						<?php do_action( 'workreap_project_employer_html', $edit_id); ?>

@@ -2711,14 +2711,14 @@ if (!function_exists('workreap_save_project_meta_data')) {
 				}
 
 				//Add searchable data
-				update_post_meta($post_id, '_project_level', $project_level); 
-				update_post_meta($post_id, '_project_type', $project_type); 
-				update_post_meta($post_id, '_project_cost', $project_price);
-				update_post_meta($post_id, '_max_price', $max_price);
-				update_post_meta($post_id, '_estimated_hours', $estimated_hours);
-				update_post_meta($post_id, '_project_duration', $project_duration);
-				update_post_meta($post_id, '_english_level', $english_level);
-				update_post_meta($post_id, '_freelancer_level', $freelancer_level);	
+				// update_post_meta($post_id, '_project_level', $project_level); 
+				// update_post_meta($post_id, '_project_type', $project_type); 
+				// update_post_meta($post_id, '_project_cost', $project_price);
+				// update_post_meta($post_id, '_max_price', $max_price);
+				// update_post_meta($post_id, '_estimated_hours', $estimated_hours);
+				// update_post_meta($post_id, '_project_duration', $project_duration);
+				// update_post_meta($post_id, '_english_level', $english_level);
+				// update_post_meta($post_id, '_freelancer_level', $freelancer_level);	
 				
 				//Featured Expiry
 				if (!empty($_POST['fw_options']['featured_post'])) {

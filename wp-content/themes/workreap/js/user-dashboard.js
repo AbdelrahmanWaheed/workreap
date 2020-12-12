@@ -422,9 +422,51 @@ jQuery(document).on('ready', function() {
 				}
 			}
 		});
-        
     });
 	
+	//Hire Now
+    jQuery(document).on('click', '.hide-design', function (e) {
+        e.preventDefault();        
+        var _this    		= jQuery(this);
+        var _proposal_id   	= _this.data('id');
+		$.confirm({
+			'title': scripts_vars.hide_proposal,
+			'message': scripts_vars.hide_proposal_message,
+			'buttons': {
+				'Yes': {
+					'class': 'blue',
+					'action': function () {
+						jQuery('body').append(loader_html);
+						jQuery.ajax({
+							type: "POST",
+							url: scripts_vars.ajaxurl,
+							data: {
+								action		 	: 'workreap_hide_freelancer_proposal',
+								proposal_id 	: _proposal_id
+							},
+							dataType: "json",
+							success: function (response) {
+								jQuery('body').find('.wt-preloader-section').remove();
+								if (response.type === 'success') {
+									jQuery.sticky(response.message, {classList: 'success', speed: 200, autoclose: 5000}); 
+									_this.parent().parent().parent().remove();
+								} else {
+									jQuery.sticky(response.message, {classList: 'important', speed: 200, autoclose: 5000});
+								}
+							}
+						});
+					}
+				},
+				'No': {
+					'class': 'gray',
+					'action': function () {
+						return false;
+					}   // Nothing to do in this case. You can as well omit the action property.
+				}
+			}
+		});
+    });
+
 	//Remove All Save item
     jQuery(document).on('click', '.wt-clickremoveall', function (e) {
         e.preventDefault();        

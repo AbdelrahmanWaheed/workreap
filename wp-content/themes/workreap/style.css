@@ -1024,7 +1024,8 @@ body.wt-login .wt-userlogedin{display:block}
 .wt-proposalamount .form-group span{top:0;right:80px;color:#999;font-size:16px;line-height:50px;position:absolute}
 .wt-proposalamount .form-group span i{color:#2ecc71}
 .wt-proposalamount .form-group input{padding:10px 60px 10px 20px}
-.wt-totalamount{float:left;width:100%;margin-top:30px;list-style:none;line-height:16px}
+.wt-totalamount{float:left;width:100%;list-style:none;line-height:16px}
+.wt-proposalamount .proposed-amount+.wt-totalamount{margin-top: 30px;}
 .wt-totalamount li{float:left;width:100%;padding:0 20px;line-height:inherit;list-style-type:none}
 .wt-totalamount li+li{margin-top:20px;padding-top:20px;border-top:1px solid #ddd}
 .wt-totalamount li h3{margin:0;color:#999;font-size:14px;line-height:16px}
@@ -2196,7 +2197,7 @@ blockquote.wt-blockquotevone q,.wt-blockquotevone q{margin:0;display:block}
 .wt-service-pagination{margin-top:30px}
 .wt-historycontentcol .wt-emptydetails:before,.wt-historycontentcol .wt-emptydetails:after,.wt-historycontentcol .wt-emptydata:before,.wt-historycontentcol .wt-emptydata:after{display:none}
 .wt-historycontentcol .wt-emptydata{height:500px}
-.wt-historycontentcol li .wt-msgbtns{text-align:right}
+.wt-historycontentcol li .wt-msgbtns{text-align:right}.wt-historycontentcol li.wt-newitem{border-left:3px solid var(--primthemecolor);}
 .stripe-card-group{width:100%;float:left}
 .wt-services-holder .wt-emptydata{height:350px}
 .wt-topservices-title .wt-description p{color:#3d4461;font-size:16px;margin:0 0 38px;line-height:26px}

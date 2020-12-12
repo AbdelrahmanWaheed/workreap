@@ -3975,7 +3975,7 @@ if( !function_exists( 'workreap_print_project_date' ) ){
                 $expiry_date   = fw_get_db_post_option($post_id, 'deadline', true);
             }
 
-            if( !empty( $expiry_date ) ) {
+            if( !empty( $expiry_date ) && strtotime( $expiry_date ) ) {
 				if( current_time( 'timestamp' ) > strtotime($expiry_date) ){
 					$status	=  esc_html__('Expired','workreap');
 				} else{

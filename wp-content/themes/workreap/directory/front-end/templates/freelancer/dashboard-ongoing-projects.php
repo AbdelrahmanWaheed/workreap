@@ -61,7 +61,7 @@ if( $query->have_posts() ){
 			<div class="wt-dashboardboxcontent wt-jobdetailsholder">
 				<div class="wt-freelancerholder">
 					<div class="wt-tabscontenttitle">
-						<h2><?php esc_html_e('ongoing Jobs','workreap');?></h2>
+						<h2><?php esc_html_e('Ongoing Jobs','workreap');?></h2>
 					</div>
 					<div class="wt-managejobcontent <?php echo esc_attr( $emptyClass );?>">
 					<?php
@@ -93,11 +93,34 @@ if( $query->have_posts() ){
 										</ul>
 									</div>
 									<div class="wt-rightarea">
+										<?php 
+										$args = array(
+											'count' 					=> true,
+											'post_id'					=> $proposal_id,
+											'author__not_in'	=> array( $user_identity ),
+											'status'					=> 'approve',
+											'meta_key'				=> '_new_comment',
+											'meta_value'			=> true,
+										);
+										$comments_count = get_comments( $args ); 
+										?>
 										<div class="wt-btnarea">
 											<?php if(!empty($milestone_option) && $milestone_option === 'on' && !empty($proposal_id) ){ ?>
-												<a href="<?php Workreap_Profile_Menu::workreap_profile_menu_link('milestone', $user_identity, '','listing',$proposal_id); ?>" class="wt-btn"><?php esc_html_e('View Details','workreap');?></a>
-											<?php } else{ ?>
-												<a href="<?php Workreap_Profile_Menu::workreap_profile_menu_link('jobs', $user_identity, '','history',$post->ID); ?>" class="wt-btn"><?php esc_html_e('View Details','workreap');?></a>
+												<a href="<?php Workreap_Profile_Menu::workreap_profile_menu_link('milestone', $user_identity, '','listing',$proposal_id); ?>" 
+													class="wt-btn">
+													<?php esc_html_e('View Details','workreap');?>
+													<?php if( $comments_count > 0 ) { ?>
+														<span class="badge badge-light badge-pill"><?php echo $comments_count; ?> &nbsp; New</span>
+													<?php } ?>
+												</a>
+											<?php } else { ?>
+												<a href="<?php Workreap_Profile_Menu::workreap_profile_menu_link('jobs', $user_identity, '','history',$post->ID); ?>" 
+													class="wt-btn">
+													<?php esc_html_e('View Details','workreap');?>
+													<?php if( $comments_count > 0 ) { ?>
+														<span class="badge badge-light badge-pill"><?php echo $comments_count; ?> &nbsp; New</span>
+													<?php } ?>
+												</a>
 											<?php } ?>
 										</div>
 										<?php do_action('workreap_project_employer_html', $post->ID); ?>

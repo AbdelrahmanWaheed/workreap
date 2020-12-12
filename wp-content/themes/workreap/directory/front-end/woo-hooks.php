@@ -199,12 +199,14 @@ if (!function_exists('workreap_payment_complete')) {
 						$bundle_id 		= get_post_meta($project_id, '_bundle_id', true);
 						$featured 		= fw_get_db_post_option($bundle_id, 'featured');
 						$highlighted 	= fw_get_db_post_option($bundle_id, 'highlighted');
-						if( $featured === 'enabled' ) {
-							update_post_meta( $project_id, '_featured_job_string', 1 );
-						}
-						if( $highlighted === 'enabled' ) {
-							update_post_meta( $project_id, '_highlighted_job_string', 1 );
-						}
+
+						// set project featured property
+						update_post_meta( $project_id, '_featured_job_string', $featured === 'enabled' ? 1 : 0 );
+						fw_set_db_post_option( $project_id, 'featured_post', $featured === 'enabled' ? 1 : 0 );
+
+						// set project highlighted property
+						update_post_meta( $project_id, '_highlighted_job_string', $highlighted === 'enabled' ? 1 : 0 );
+						fw_set_db_post_option( $project_id, 'highlighted_post', $highlighted === 'enabled' ? 1 : 0 );
 
 						// Send email to users that the job is posted
 						if (class_exists('Workreap_Email_helper')) {
@@ -435,7 +437,7 @@ if (!function_exists('workreap_update_hiring_data')) {
 				$project_title			= esc_html( get_the_title( $project_id ) );
 				$project_link			= esc_url( get_the_permalink( $project_id ));
 				$message				= esc_html__('You are hiring for','workreap').' '.$project_title.' '.$project_link;
-				 $insert_data = array(
+				$insert_data = array(
 					'sender_id' 		=> $employer_id_user,
 					'receiver_id' 		=> $freelancer_user_id,
 					'chat_message' 		=> $message,
@@ -453,6 +455,13 @@ if (!function_exists('workreap_update_hiring_data')) {
 				update_post_meta( $project_id, '_order_id', $order_id );
 				update_post_meta( $order_detail['proposal_id'], '_order_id', $order_id );
 				
+				// send notification to users
+				if( class_exists('NotificationSystem') ) {
+					$message = apply_filters( 'workreap_job_hired_freelancer_message', $project_id );
+					$url = Workreap_Profile_Menu::workreap_profile_menu_link( 'projects', $freelancer_user_id, true, 'ongoing' );
+					NotificationSystem::sendNotification( $freelancer_user_id, $message, $url );
+				}
+
 				//Send email to users
 				if (class_exists('Workreap_Email_helper')) {
 					if (class_exists('WorkreapHireFreelancer')) {

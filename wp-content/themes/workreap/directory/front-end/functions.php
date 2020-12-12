@@ -266,12 +266,17 @@ if ( ! function_exists( 'workreap_get_totoal_proposals' ) ) {
 			'post_type' 		=> 'proposals',
 			'posts_per_page'   	=> $count,
 			'meta_query' 		=> array(
-									array(
-										'key'     => '_project_id',
-										'value'   => $post_id,
-										'compare' => '=',
-									),
-								),
+				'relation'		=> 'AND',
+				array(
+					'key'     => '_project_id',
+					'value'   => $post_id,
+					'compare' => '=',
+				),
+				array(
+					'key'     => '_hidden',
+					'compare' => 'NOT EXISTS',
+				),
+			),
 		);
 		
 		$proposals 	= get_posts($args);

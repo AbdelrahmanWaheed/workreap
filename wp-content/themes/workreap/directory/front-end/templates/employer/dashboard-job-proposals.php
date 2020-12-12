@@ -71,7 +71,8 @@ $offline_package		= !empty($offline_package['type']) ? $offline_package['type'] 
 				</div>
 				<div class="wt-freelancerholder wt-rcvproposalholder">
 				<?php 
-					$query_args = array('posts_per_page' => $show_posts,
+					$query_args = array(
+						'posts_per_page' => $show_posts,
 						'post_type' 		=> 'proposals',
 						'paged' 		 	  => $paged,
 						'suppress_filters' 	=> false,
@@ -80,7 +81,11 @@ $offline_package		= !empty($offline_package['type']) ? $offline_package['type'] 
 					$meta_query_args[] = array(
 						'key' 			=> '_project_id',
 						'value' 		=> $edit_id,
-						'compare' 		=> '='
+						'compare' 	=> '='
+					);
+					$meta_query_args[] = array(
+						'key' 			=> '_hidden',
+						'compare' 	=> 'NOT EXISTS',
 					);
 					$query_relation = array('relation' => 'AND',);
 					$query_args['meta_query'] = array_merge($query_relation, $meta_query_args);    
@@ -268,19 +273,40 @@ $offline_package		= !empty($offline_package['type']) ? $offline_package['type'] 
 												$_milestone   	= get_post_meta($edit_id,'_milestone',true);
 												$is_milestone	= !empty( $_milestone ) ? $_milestone : 'off';
 												if(!empty($is_milestone) && $is_milestone ==='on' ){?>
-												<div class="wt-btnarea">
-													<a href="<?php Workreap_Profile_Menu::workreap_profile_menu_link('milestone', $user_identity,'','listing',$post->ID); ?>" class="wt-btn" ><?php esc_html_e('Choose Winner and Set Milestones','workreap');?></a>
-												</div>
+													<div class="wt-btnarea">
+														<a href="<?php Workreap_Profile_Menu::workreap_profile_menu_link('milestone', $user_identity,'','listing',$post->ID); ?>" 
+															class="wt-btn wt-btn-wraning">
+															<?php esc_html_e('Choose Winner and Set Milestones','workreap');?>
+														</a>
+													</div>
 												<?php } else if( empty($order_id) ){ ?>
-												<div class="wt-btnarea"><a href="javascript:;" class="wt-btn hire-now" data-id="<?php echo intval($post->ID);?>" data-post-id="<?php echo esc_attr($edit_id);?>"><?php esc_html_e('Choose Winner','workreap');?></a></div>
+													<div class="wt-btnarea">
+														<a href="javascript:;" class="wt-btn hire-now wt-btn-wraning" data-id="<?php echo intval($post->ID);?>" 
+															data-post-id="<?php echo esc_attr($edit_id);?>">
+															<?php esc_html_e('Choose Winner','workreap');?>
+														</a>
+													</div>
 												<?php }
 											} else if( empty($order_id) ){?>
-												<div class="wt-btnarea"><a href="javascript:;" class="wt-btn hire-now" data-id="<?php echo intval($post->ID);?>" data-post-id="<?php echo esc_attr($edit_id);?>"><?php esc_html_e('Choose Winner','workreap');?></a></div>
+												<div class="wt-btnarea">
+													<a href="javascript:;" class="wt-btn hire-now wt-btn-wraning" data-id="<?php echo intval($post->ID);?>" 
+														data-post-id="<?php echo esc_attr($edit_id);?>">
+														<?php esc_html_e('Choose Winner','workreap');?>
+													</a>
+												</div>
 											<?php } ?>
 											<?php if( !empty($order_id) ){ ?>
-												<div class="wt-btnarea"><a href="<?php echo esc_url($order_url);?>" class="wt-btn" target="_blank"><?php esc_html_e('Check Invoice','workreap');?></a></div>
+												<div class="wt-btnarea">
+													<a href="<?php echo esc_url($order_url);?>" class="wt-btn wt-btn-wraning" target="_blank"><?php esc_html_e('Check Invoice','workreap');?></a>
+												</div>
 											<?php } ?>
-										<?php } ?>						
+
+											<div class="wt-btnarea">
+												<a href="javascript:;" class="wt-btn hide-design" data-id="<?php echo intval($post->ID);?>" ><?php esc_html_e('Hide Design','workreap');?></a>
+											</div>
+
+										<?php } ?>
+
 										<?php // do_action('worrketic_proposal_duration_and_amount',$post->ID);?>
 										<?php do_action('worrketic_proposal_cover',$post->ID);?>
 										<?php do_action('worrketic_proposal_view_attachments',$post->ID);?>

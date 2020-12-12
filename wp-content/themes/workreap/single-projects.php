@@ -96,7 +96,7 @@ if( apply_filters('workreap_system_access','job_base') === true ){
 							<?php do_action( 'workreap_display_langauges_html', $post->ID); ?>
 							<?php do_action( 'workreap_display_required_freelancer_html', $post->ID); ?>
 							<?php do_action('workreap_job_detail_documents', $post->ID); ?>
-							<?php if( !empty($deadline_date) ){?>
+							<?php if( !empty($deadline_date) && strtotime($deadline_date) > 0 ){?>
 								<div class="wt-skillsrequired">
 									<div class="wt-title">
 										<h3><?php esc_html_e('Project Completion deadline', 'workreap'); ?></h3>

@@ -328,6 +328,8 @@ if (!function_exists('workreap_prepare_constants')) {
 			'portfolio_attachments' 	=> esc_html__('Portfolio attachments','workreap'),
 			'hire_freelancer'    		=> esc_html__('Hire freelancer', 'workreap'),
 			'hire_freelancer_message'   => esc_html__('Are you sure you want to hire this freelancer?', 'workreap'),
+			'hide_proposal'             => esc_html__('Hide Design', 'workreap'),
+			'hide_proposal_message'     => esc_html__('Are you sure you want to hide this freelancer design?', 'workreap'),
 			'hire_service'    			=> esc_html__('Buy this service?', 'workreap'),
 			'hire_service_message'    	=> esc_html__('Are you sure you want buy this service?', 'workreap'),
 			'required_field' 			=> esc_html__('field is required','workreap'),

@@ -41,7 +41,23 @@ if( !empty($hired_freelance_id) ) {?>
 			</div>
 			<div class="wt-rightarea">
 				<div class="wt-btnarea">
-					<a class="wt-btn" href="<?php Workreap_Profile_Menu::workreap_profile_menu_link('jobs', $user_identity,'','history',$edit_id); ?>"><?php esc_html_e('View History','workreap');?></a>
+					<?php
+					$args = array(
+						'count' 					=> true,
+						'post_id'					=> $proposal_id,
+						'author__not_in'	=> array( $user_identity ),
+						'status'					=> 'approve',
+						'meta_key'				=> '_new_comment',
+						'meta_value'			=> true,
+					);
+					$comments_count = get_comments( $args );
+					?>
+					<a class="wt-btn" href="<?php Workreap_Profile_Menu::workreap_profile_menu_link('jobs', $user_identity,'','history',$edit_id); ?>">
+						<?php esc_html_e('View History','workreap');?>
+						<?php if( $comments_count > 0 ) { ?>
+							<span class="badge badge-light badge-pill"><?php echo $comments_count; ?> &nbsp; New</span>
+						<?php } ?>
+					</a>
 				</div>
 				<?php do_action('worrketic_proposal_duration_and_amount',$proposal_id);?>
 				<?php do_action('worrketic_proposal_cover',$proposal_id);?>

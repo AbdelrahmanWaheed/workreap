@@ -415,7 +415,7 @@ table.wt-tablecategories tbody tr td figure img{width:100%;display:block}
 .wt-awayd:before{background:#ffc30d}
 .wt-freelancerholder{float:left;width:100%}
 .wt-jobdetailscontent{float:left;width:100%;padding:0 20px}
-.wt-userlistingvtwo{padding:0 30px;background:#fafafa}
+.wt-userlistingvtwo{padding:0 30px;background:#fafafa}.wt-userlistingvtwo.wt-featured{background:#fffdf3;}
 .wt-userlistingvtwo:hover{box-shadow:none}
 .wt-userlistingvtwo .wt-userlistingcontent{float:left;width:100%;overflow:visible}
 .wt-userlistingvtwo .wt-contenthead{padding:30px 0}
@@ -462,7 +462,7 @@ table.wt-tablecategories tbody tr td figure img{width:100%;display:block}
 .wt-canceljobholder .wt-userlistinghold .wt-rightarea .wt-btnarea{padding:51px 0}
 .wt-canceljobholder .wt-userlistinghold .wt-rightarea .wt-btnarea .wt-cancelbtn{color:#999;display:inline-block;vertical-align:middle;text-transform:uppercase;font:700 13px/36px 'Poppins',Arial,Helvetica,sans-serif}
 .wt-canceljobholder .wt-userlistinghold .wt-rightarea .wt-btnarea a+a{margin-left:25px;margin-right:10px}
-.wt-historycontent{float:left;width:100%;padding:0 20px}
+.wt-historycontent{float:left;width:100%;padding:0;}
 .wt-historycontentcol{float:left;width:100%;list-style:none;border:1px solid #eff2f5;}
 .wt-historycontentcol li{float:left;width:100%;padding:10px;line-height:inherit;list-style-type:none;}
 .wt-historycontentcol li+li{border-top:1px solid #eff2f5}

@@ -143,6 +143,11 @@ if( !empty( $project_id ) && get_post_type( $project_id ) == 'projects' ){
 		$remaining_cost	= !empty($proposed_cost) && !empty($service_count) ? $proposed_cost - $service_count : 0.00 ;
 	}
 
+	$show_project_price = false;
+	$show_employer_project_cost = false;
+	$show_workreap_service_fees = false;
+	$show_freelancer_fees = true;
+
 	if(!empty($proposal_id) && !empty($post_author) 
 	   && ($current_user->ID == $post_author) 
 	   && !empty( $post_status ) 
@@ -249,18 +254,20 @@ if( !empty( $project_id ) && get_post_type( $project_id ) == 'projects' ){
 								<h2><?php esc_html_e('Proposal Amount', 'workreap'); ?></h2>
 							</div>
 							<div class="wt-proposalamount accordion">
-								<div class="form-group">
-									<span>(<i><?php echo esc_attr($price_symbol);?></i> )</span>
-									<input type="number" value="<?php echo esc_html($proposed_amount);?>" name="proposed_amount" class="form-control wt-proposal-amount" min="0" max="<?php echo intval($max_val);?>" placeholder="<?php echo esc_attr($amount_text); ?>" 
-									<?php disabled( !empty($proposed_amount)); ?>>
-									<a href="javascript:;" class="collapsed" id="headingOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"><i class="lnr lnr-chevron-up"></i></a>
-									<?php if( !empty( $db_project_type['gadget'] ) && $db_project_type['gadget'] === 'hourly' ){ ?>
-										<input type="number" value="<?php echo esc_html($estimeted_time);?>"  name="estimeted_time" class="form-control wt-estimated-hours" min="0" placeholder="<?php echo esc_attr_e('Estimated Hours','workreap'); ?>">
-									<?php } ?>
-									<em><?php esc_html_e('Total amount the client will see on your proposal', 'workreap'); ?></em>
-								</div>
+								<?php if( $show_project_price == true ) { ?>
+									<div class="form-group proposed-amount">
+										<span>(<i><?php echo esc_attr($price_symbol);?></i> )</span>
+										<input type="number" value="<?php echo esc_html($proposed_amount);?>" name="proposed_amount" class="form-control wt-proposal-amount" min="0" max="<?php echo intval($max_val);?>" placeholder="<?php echo esc_attr($amount_text); ?>" 
+										<?php disabled( !empty($proposed_amount)); ?>>
+										<a href="javascript:;" class="collapsed" id="headingOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"><i class="lnr lnr-chevron-up"></i></a>
+										<?php if( !empty( $db_project_type['gadget'] ) && $db_project_type['gadget'] === 'hourly' ){ ?>
+											<input type="number" value="<?php echo esc_html($estimeted_time);?>"  name="estimeted_time" class="form-control wt-estimated-hours" min="0" placeholder="<?php echo esc_attr_e('Estimated Hours','workreap'); ?>">
+										<?php } ?>
+										<em><?php esc_html_e('Total amount the client will see on your proposal', 'workreap'); ?></em>
+									</div>
+								<?php } ?>
 								<ul class="wt-totalamount collapse show" id="collapseOne" aria-labelledby="headingOne">
-									<?php if( !empty($project_cost) ){?>
+									<?php if( !empty($project_cost) && $show_employer_project_cost == true ){?>
 									<li>
 										<h3>(<i><?php echo esc_attr($price_symbol);?></i> ) <em class="wt-project-cost"><?php echo esc_html($project_cost); ?></em></h3>
 										<span><strong><?php esc_html_e('Employer’s Proposed Project Cost', 'workreap'); ?></strong></span>
@@ -270,11 +277,13 @@ if( !empty( $project_id ) && get_post_type( $project_id ) == 'projects' ){
 										<span><strong><?php esc_html_e('Your proposed project cost', 'workreap'); ?></strong></span>
 									</li>
 									<?php }?>
-									<?php if( !empty( $service_fee ) ){?>
+									<?php if( !empty( $service_fee ) && $show_workreap_service_fees == true ){?>
 										<li>
 											<h3>(<i><?php echo esc_attr($price_symbol);?></i> ) <em class="wt-service-fee"><?php echo esc_html('- '.$service_count); ?></em></h3>
 											<span><strong><?php echo esc_html( $blog_name ); ?></strong> <?php esc_html_e('Service Fee', 'workreap'); ?><?php if( !empty( $service_hint ) ){ ?><i class="fa fa-exclamation-circle template-content tipso_style wt-tipso" data-tipso="<?php echo esc_attr( $service_hint ); ?>"></i><?php } ?></span>
 										</li>
+									<?php }?>
+									<?php if( !empty( $service_fee ) && $show_freelancer_fees == true ){?>
 										<li>
 											<h3>(<i><?php echo esc_attr($price_symbol);?></i> ) <em class="wt-user-amount"><?php echo esc_html($remaining_cost); ?></em></h3>
 											<span><?php esc_html_e('Amount You’ll Receive after', 'workreap'); ?> <strong><?php echo esc_html( $blog_name ); ?></strong> <?php esc_html_e('Service Fee deduction', 'workreap'); ?><?php if( !empty( $deduction_hint ) ){ ?><i class="fa fa-exclamation-circle template-content tipso_style wt-tipso" data-tipso="<?php echo esc_attr( $deduction_hint ); ?>"></i><?php } ?></span>

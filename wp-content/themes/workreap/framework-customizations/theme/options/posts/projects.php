@@ -124,17 +124,17 @@ $options = array(
         'title' => esc_html__('Project Settings', 'workreap'),
         'type' => 'box',
         'options' => array(
-			'_featured_job_string' => array(
-                'type' => 'hidden',
-                'value' => 0,
-            ),
-            'project_level' => array(
-                'type'  => 'select',
-                'value' => '',
-                'label' => esc_html__('Project level', 'workreap'),
-                'desc'  => esc_html__('Required project level.', 'workreap'),                
-                'choices' => $project_level
-            ),
+            // '_featured_job_string' => array(
+            //     'type' => 'hidden',
+            //     'value' => 0,
+            // ),
+            // 'project_level' => array(
+            //     'type'  => 'select',
+            //     'value' => '',
+            //     'label' => esc_html__('Project level', 'workreap'),
+            //     'desc'  => esc_html__('Required project level.', 'workreap'),                
+            //     'choices' => $project_level
+            // ),
 			$job_option_list,
             'project_type' => array(
                 'type' => 'multi-picker',
@@ -150,28 +150,28 @@ $options = array(
                     )
                 ),
                 'choices' => array(                                       
-                    'hourly' => array(
-                        'hourly_rate' => array(
-                            'type' => 'text',
-                            'value' => '',
-                            'label' => esc_html__('Minimum Price', 'workreap'),
-                            'desc' => esc_html__('Add job minimum hourly rate (integers only)', 'workreap'),
-                            'value' => '',
-                        ),
-						$max_price,
-						'estimated_hours' => array(
-                            'type' => 'text',
-                            'value' => '',
-                            'label' => esc_html__('Estimated Hours', 'workreap'),
-                            'desc' => esc_html__('Add job estimated hours (integers only)', 'workreap'),
-                            'value' => '',
-                        ),
-                    ),
+                    // 'hourly' => array(
+                    //     'hourly_rate' => array(
+                    //         'type' => 'text',
+                    //         'value' => '',
+                    //         'label' => esc_html__('Minimum Price', 'workreap'),
+                    //         'desc' => esc_html__('Add job minimum hourly rate (integers only)', 'workreap'),
+                    //         'value' => '',
+                    //     ),
+                    //     $max_price,
+                    //     'estimated_hours' => array(
+                    //         'type' => 'text',
+                    //         'value' => '',
+                    //         'label' => esc_html__('Estimated Hours', 'workreap'),
+                    //         'desc' => esc_html__('Add job estimated hours (integers only)', 'workreap'),
+                    //         'value' => '',
+                    //     ),
+                    // ),
 					'fixed' => array(
                         'project_cost' => array(
                             'type' => 'text',
                             'value' => '',
-                            'label' => esc_html__('Minimum Price', 'workreap'),
+                            'label' => esc_html__('Project Price', 'workreap'),
                             'desc' => esc_html__('Add job cost (integers only)', 'workreap'),
                             'value' => '',
                         ),
@@ -180,47 +180,47 @@ $options = array(
                     ),
                 )
             ), 
-			$freelancertype,
-            'project_duration' => array(
-                'type'  => 'select',
-                'value' => '',
-                'label' => esc_html__('Project Duration', 'workreap'),
-                'desc'  => esc_html__('Select duration of the project', 'workreap'),                
-                'choices' => $list,
-            ),  
-            'english_level' => array(
-                'type'  => 'select',
-                'value' => '',
-                'label' => esc_html__('English level', 'workreap'),
-                'desc'  => esc_html__('Select English level required for the project', 'workreap'),                
-                'choices' => $english_level,
-            ),
-			'expiry_date' => array(
-				'label' => esc_html__('Expiry Date', 'workreap'),
-				'type' => 'datetime-picker',
-				'datetime-picker' => array(
-					'format'  => 'Y/m/d', // Format datetime.
-					'maxDate' => false, // By default there is not maximum date , set a date in the datetime format.
-					'minDate' => false, // By default minimum date will be current day, set a date in the datetime format.
-					'timepicker' => false, // Show timepicker.
-					'datepicker' => true, // Show datepicker.
-					'defaultTime' => '' // If the input value is empty, timepicker will set time use defaultTime.
-				),
-				'desc' => esc_html__('Add date here', 'workreap')
-			),
-			'deadline' => array(
-				'label' => esc_html__('Project deadline date', 'workreap'),
-				'type' => 'datetime-picker',
-				'datetime-picker' => array(
-					'format'  => 'Y/m/d', // Format datetime.
-					'maxDate' => false, // By default there is not maximum date , set a date in the datetime format.
-					'minDate' => false, // By default minimum date will be current day, set a date in the datetime format.
-					'timepicker' => false, // Show timepicker.
-					'datepicker' => true, // Show datepicker.
-					'defaultTime' => '' // If the input value is empty, timepicker will set time use defaultTime.
-				),
-				'desc' => esc_html__('Add date here', 'workreap')
-			),
+			// $freelancertype,
+            // 'project_duration' => array(
+            //     'type'  => 'select',
+            //     'value' => '',
+            //     'label' => esc_html__('Project Duration', 'workreap'),
+            //     'desc'  => esc_html__('Select duration of the project', 'workreap'),                
+            //     'choices' => $list,
+            // ),  
+            // 'english_level' => array(
+            //     'type'  => 'select',
+            //     'value' => '',
+            //     'label' => esc_html__('English level', 'workreap'),
+            //     'desc'  => esc_html__('Select English level required for the project', 'workreap'),                
+            //     'choices' => $english_level,
+            // ),
+			// 'expiry_date' => array(
+			// 	'label' => esc_html__('Expiry Date', 'workreap'),
+			// 	'type' => 'datetime-picker',
+			// 	'datetime-picker' => array(
+			// 		'format'  => 'Y/m/d', // Format datetime.
+			// 		'maxDate' => false, // By default there is not maximum date , set a date in the datetime format.
+			// 		'minDate' => false, // By default minimum date will be current day, set a date in the datetime format.
+			// 		'timepicker' => false, // Show timepicker.
+			// 		'datepicker' => true, // Show datepicker.
+			// 		'defaultTime' => '' // If the input value is empty, timepicker will set time use defaultTime.
+			// 	),
+			// 	'desc' => esc_html__('Add date here', 'workreap')
+			// ),
+			// 'deadline' => array(
+			// 	'label' => esc_html__('Project deadline date', 'workreap'),
+			// 	'type' => 'datetime-picker',
+			// 	'datetime-picker' => array(
+			// 		'format'  => 'Y/m/d', // Format datetime.
+			// 		'maxDate' => false, // By default there is not maximum date , set a date in the datetime format.
+			// 		'minDate' => false, // By default minimum date will be current day, set a date in the datetime format.
+			// 		'timepicker' => false, // Show timepicker.
+			// 		'datepicker' => true, // Show datepicker.
+			// 		'defaultTime' => '' // If the input value is empty, timepicker will set time use defaultTime.
+			// 	),
+			// 	'desc' => esc_html__('Add date here', 'workreap')
+			// ),
 			'show_attachments' => array(
                 'type'  => 'select',
                 'value' => '',
@@ -241,37 +241,37 @@ $options = array(
             ),
         )
     ),
-	'settings' => array(
-        'title' => esc_html__('General Settings', 'workreap'),
-        'type' => 'box',
-        'options' => array(
-            'address' => array(
-				'label' => esc_html__('Address', 'workreap'),
-                'desc' => esc_html__('Please add address', 'workreap'),
-                'type' => 'text',
-                'value' => '',
-            ),
-            'longitude' => array(
-				'label' => esc_html__('Longitude', 'workreap'),
-                'desc' => esc_html__('Please add Longitude', 'workreap'),
-                'type' => 'text',
-                'value' => '',
-            ),
-            'latitude' => array(
-				'label' => esc_html__('Latitude', 'workreap'),
-                'desc' => esc_html__('Please add Latitude', 'workreap'),
-                'type' => 'text',
-                'value' => '',
-            ),
-            'country' => array(
-				'type' => 'multi-select',
-				'label' => esc_html__('Select country', 'workreap'),
-				'population' => 'taxonomy',
-				'source' => 'locations',
-				'prepopulate' => 500,
-				'limit' => 1,
-				'desc' => esc_html__('Select country to display.', 'workreap'),
-			),
-        )
-    ),
+    // 'settings' => array(
+    //     'title' => esc_html__('General Settings', 'workreap'),
+    //     'type' => 'box',
+    //     'options' => array(
+    //         'address' => array(
+    //             'label' => esc_html__('Address', 'workreap'),
+    //             'desc' => esc_html__('Please add address', 'workreap'),
+    //             'type' => 'text',
+    //             'value' => '',
+    //         ),
+    //         'longitude' => array(
+    //             'label' => esc_html__('Longitude', 'workreap'),
+    //             'desc' => esc_html__('Please add Longitude', 'workreap'),
+    //             'type' => 'text',
+    //             'value' => '',
+    //         ),
+    //         'latitude' => array(
+    //             'label' => esc_html__('Latitude', 'workreap'),
+    //             'desc' => esc_html__('Please add Latitude', 'workreap'),
+    //             'type' => 'text',
+    //             'value' => '',
+    //         ),
+    //         'country' => array(
+    //             'type' => 'multi-select',
+    //             'label' => esc_html__('Select country', 'workreap'),
+    //             'population' => 'taxonomy',
+    //             'source' => 'locations',
+    //             'prepopulate' => 500,
+    //             'limit' => 1,
+    //             'desc' => esc_html__('Select country to display.', 'workreap'),
+    //         ),
+    //     )
+    // ),
 );

@@ -81,16 +81,21 @@ if( !function_exists('workreap_update_featured_expiry_listing') ) {
 	function workreap_update_featured_expiry_listing() {
 		//Projects
 		$query_args = array(
-			'posts_per_page' 	  => -1,
-			'post_type' 	 	  => array( 'projects' ),
-			'post_status' 	 	  => array( 'publish' ),
-			'ignore_sticky_posts' => 1,
+			'posts_per_page' 	  	=> -1,
+			'post_type' 	 	  	=> array( 'projects' ),
+			'post_status' 	 	  	=> array( 'publish' ),
+			'ignore_sticky_posts' 	=> 1,
 			'meta_query' 			=> array(
-											array(
-												'key'   => '_featured_job_string',
-												'value' => 1,
-											)
-										)
+				'relation'			=> 'AND',
+				array(
+					'key'   => '_featured_job_string',
+					'value' => 1,
+				),
+				array(
+					'key'   => '_expiry_string',
+					'value' => 'EXISTS',
+				),
+			)
 		);
 		
 		$all_posts 		= get_posts( $query_args );
@@ -98,25 +103,25 @@ if( !function_exists('workreap_update_featured_expiry_listing') ) {
 		foreach( $all_posts as $key => $item ){
 			$current_time   = strtotime( current_time( 'mysql' ) );
 			$get_expiry	= get_post_meta($item->ID,'_expiry_string',true);
-			$get_expiry	= !empty($get_expiry) ? $get_expiry : 0;
+			$get_expiry = is_numeric( $get_expiry ) ? intval( $get_expiry ) : 0;
 			
-			if( empty( $get_expiry ) || $get_expiry < $current_time  ){
+			if( $get_expiry > 0 && $get_expiry < $current_time  ){
 				update_post_meta( $item->ID, '_featured_job_string', 0 );
 			}
 		}
 		
 		//Services expiry
 		$query_args = array(
-			'posts_per_page' 	  => -1,
-			'post_type' 	 	  => array( 'micro-services' ),
-			'post_status' 	 	  => array( 'publish' ),
-			'ignore_sticky_posts' => 1,
+			'posts_per_page' 	  	=> -1,
+			'post_type' 	 	  	=> array( 'micro-services' ),
+			'post_status' 	 	  	=> array( 'publish' ),
+			'ignore_sticky_posts' 	=> 1,
 			'meta_query' 			=> array(
-											array(
-												'key'   => '_featured_service_string',
-												'value' => 1,
-											)
-										)
+				array(
+					'key'   => '_featured_service_string',
+					'value' => 1,
+				)
+			)
 		);
 		
 		$all_posts 		= get_posts( $query_args );
@@ -124,25 +129,25 @@ if( !function_exists('workreap_update_featured_expiry_listing') ) {
 		foreach( $all_posts as $key => $item ){
 			$current_time   = strtotime( current_time( 'mysql' ) );
 			$get_expiry	= get_post_meta($item->ID,'_expiry_string',true);
-			$get_expiry	= !empty($get_expiry) ? $get_expiry : 0;
+			$get_expiry = is_numeric( $get_expiry ) ? intval( $get_expiry ) : 0;
 			
-			if( empty( $get_expiry ) || $get_expiry < $current_time  ){
+			if( $get_expiry > 0 && $get_expiry < $current_time  ){
 				update_post_meta( $item->ID, '_featured_service_string', 0 );
 			}
 		}
 		
 		//Freelancers expiry
 		$query_args = array(
-			'posts_per_page' 	  => -1,
-			'post_type' 	 	  => array( 'freelancers' ),
-			'post_status' 	 	  => array( 'publish' ),
-			'ignore_sticky_posts' => 1,
+			'posts_per_page' 	  	=> -1,
+			'post_type' 	 	  	=> array( 'freelancers' ),
+			'post_status' 	 	  	=> array( 'publish' ),
+			'ignore_sticky_posts' 	=> 1,
 			'meta_query' 			=> array(
-											array(
-												'key'   => '_featured_timestamp',
-												'value' => 1,
-											)
-										)
+				array(
+					'key'   => '_featured_timestamp',
+					'value' => 1,
+				)
+			)
 		);
 		
 		$all_posts 		= get_posts( $query_args );
@@ -150,9 +155,9 @@ if( !function_exists('workreap_update_featured_expiry_listing') ) {
 		foreach( $all_posts as $key => $item ){
 			$current_time   = strtotime( current_time( 'mysql' ) );
 			$get_expiry	= get_post_meta($item->ID,'_expiry_string',true);
-			$get_expiry	= !empty($get_expiry) ? $get_expiry : 0;
+			$get_expiry = is_numeric( $get_expiry ) ? intval( $get_expiry ) : 0;
 			
-			if( empty( $get_expiry ) || $get_expiry < $current_time  ){
+			if( $get_expiry > 0 && $get_expiry < $current_time  ){
 				update_post_meta( $item->ID, '_featured_timestamp', 0 );
 			}
 		}

@@ -719,3 +719,20 @@ if( !function_exists( 'workreap_job_without_freelancer_message' ) ) {
     add_filter('workreap_job_without_freelancer_message', 'workreap_job_without_freelancer_message', 10, 1);
 }
 
+/**
+ * Apply shortcuts values in the message of job hiring for freelancer 
+ *
+ * @return
+ */
+if( !function_exists( 'workreap_job_hired_freelancer_message' ) ) {    
+
+    function workreap_job_hired_freelancer_message( $project_id ) {
+        $message = fw_get_db_settings_option('job_hired_freelancer_message');
+        if( !empty( $message ) ) {
+            $message = str_replace('[PROJECT_NAME]', get_the_title( $project_id ), $message);
+        }
+        return $message;
+    }
+
+    add_filter('workreap_job_hired_freelancer_message', 'workreap_job_hired_freelancer_message', 10, 1);
+}

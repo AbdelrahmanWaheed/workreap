@@ -971,6 +971,8 @@ jQuery(document).on('ready', function() {
     //Init Plupupload for proposal documents
     if (jQuery(".wt-formproposal").length) {
 		//Job add upload attachment
+		var all_extensions = "pdf,doc,docx,xls,xlsx,ppt,pptx,csv,jpg,jpeg,gif,png,zip,rar,mp4,mp3,3gp,flv,ogg,wmv,avi,stl,obj,iges,js,php,html";
+		var image_extensions = "jpg,jpeg,gif,png";
 		var ProposalUploaderArguments = {
 			browse_button: 'proposal-btn', // this can be an id of a DOM element or the DOM element itself
 			file_data_name: 'file_name',
@@ -984,7 +986,7 @@ jQuery(document).on('ready', function() {
 			url: scripts_vars.ajaxurl + "?action=workreap_temp_file_uploader&nonce=" + sys_upload_nonce,
 			filters: {
 				mime_types: [
-					{title: scripts_vars.proposal_attachments, extensions: "pdf,doc,docx,xls,xlsx,ppt,pptx,csv,jpg,jpeg,gif,png,zip,rar,mp4,mp3,3gp,flv,ogg,wmv,avi,stl,obj,iges,js,php,html"}
+					{title: scripts_vars.proposal_attachments, extensions: image_extensions}
 				],
 				max_file_size: 50000000000,
 				max_file_count: 1,

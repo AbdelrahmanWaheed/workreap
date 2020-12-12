@@ -590,7 +590,7 @@ if( !function_exists( 'workreap_process_project_proposal' ) ){
 					$json['message'] 	= esc_html__('Proposal time is required','workreap');
 					wp_send_json( $json );
 				} else {
-					$proposed_time      = sanitize_text_field( $_POST['proposed_time'] );
+					$proposed_time      = isset( $_POST['proposed_time'] ) ? sanitize_text_field( $_POST['proposed_time'] ) : null;
 				}
 			}
 		}
@@ -744,7 +744,7 @@ if( !function_exists( 'workreap_process_project_proposal' ) ){
 						$project_link           = esc_url( get_the_permalink( $project_id ));
 						$project_title          = esc_html( get_the_title( $project_id ));
 						$duration_list          = worktic_job_duration_list();
-						$project_duration_value = !empty( $duration_list ) ? $duration_list[$proposed_time] : '';
+						$project_duration_value = !empty( $duration_list ) && !empty( $proposed_time ) ? $duration_list[$proposed_time] : '';
 
 						$post_author_id         = get_post_field( 'post_author', $project_id );
 						$author_data            = get_userdata( $post_author_id );                    
@@ -3096,36 +3096,36 @@ if ( !function_exists( 'workreap_post_job' ) ) {
 			// $expiry_date             = !empty( $_POST['job']['expiry_date'] ) ? $_POST['job']['expiry_date'] : '';
 			// $deadline             	 = !empty( $_POST['job']['deadline'] ) ? $_POST['job']['deadline'] : '';
 			
-			$is_featured              = !empty( $_POST['job']['is_featured'] ) ? $_POST['job']['is_featured'] : '';
-			if( !empty($is_featured) ){
-				if( $is_featured === 'on'){
-					$is_featured_job	= get_post_meta($post_id,'_featured_job_string',true); 
-					if(empty($is_featured_job)){
-						$featured_jobs	= workreap_featured_job( $current_user->ID );
-						if( $featured_jobs ) {
-							update_post_meta($post_id, '_featured_job_string', 1);
-							$remaning_featured_jobs		= workreap_get_subscription_metadata( 'wt_featured_jobs',intval($current_user->ID) );
-							$remaning_featured_jobs  	= !empty( $remaning_featured_jobs ) ? intval($remaning_featured_jobs) : 0;
+			// $is_featured              = !empty( $_POST['job']['is_featured'] ) ? $_POST['job']['is_featured'] : '';
+			// if( !empty($is_featured) ){
+			// 	if( $is_featured === 'on'){
+			// 		$is_featured_job	= get_post_meta($post_id,'_featured_job_string',true); 
+			// 		if(empty($is_featured_job)){
+			// 			$featured_jobs	= workreap_featured_job( $current_user->ID );
+			// 			if( $featured_jobs ) {
+			// 				update_post_meta($post_id, '_featured_job_string', 1);
+			// 				$remaning_featured_jobs		= workreap_get_subscription_metadata( 'wt_featured_jobs',intval($current_user->ID) );
+			// 				$remaning_featured_jobs  	= !empty( $remaning_featured_jobs ) ? intval($remaning_featured_jobs) : 0;
 
-							if( !empty( $remaning_featured_jobs) && $remaning_featured_jobs >= 1 ) {
-								$update_featured_jobs	= intval( $remaning_featured_jobs ) - 1 ;
-								$update_featured_jobs	= intval( $update_featured_jobs );
-								$wt_subscription 	= get_user_meta(intval($current_user->ID), 'wt_subscription', true);
-								$wt_subscription	= !empty( $wt_subscription ) ?  $wt_subscription : array();
-								$wt_subscription['wt_featured_jobs'] = $update_featured_jobs;
+			// 				if( !empty( $remaning_featured_jobs) && $remaning_featured_jobs >= 1 ) {
+			// 					$update_featured_jobs	= intval( $remaning_featured_jobs ) - 1 ;
+			// 					$update_featured_jobs	= intval( $update_featured_jobs );
+			// 					$wt_subscription 	= get_user_meta(intval($current_user->ID), 'wt_subscription', true);
+			// 					$wt_subscription	= !empty( $wt_subscription ) ?  $wt_subscription : array();
+			// 					$wt_subscription['wt_featured_jobs'] = $update_featured_jobs;
 
-								update_user_meta( intval($current_user->ID), 'wt_subscription', $wt_subscription);
-							}
-						} else{
-							update_post_meta( $post_id, '_featured_job_string',0 );
-						}
-					}
-				} else {
-					update_post_meta( $post_id, '_featured_job_string',0 );
-				}
-			} else{
-				update_post_meta( $post_id, '_featured_job_string',0 );
-			}
+			// 					update_user_meta( intval($current_user->ID), 'wt_subscription', $wt_subscription);
+			// 				}
+			// 			} else{
+			// 				update_post_meta( $post_id, '_featured_job_string',0 );
+			// 			}
+			// 		}
+			// 	} else {
+			// 		update_post_meta( $post_id, '_featured_job_string',0 );
+			// 	}
+			// } else{
+			// 	update_post_meta( $post_id, '_featured_job_string',0 );
+			// }
 
 			//update langs
 			// wp_set_post_terms( $post_id, $languages, 'languages' );
@@ -3341,7 +3341,8 @@ if( !function_exists( 'workreap_submit_project_chat' ) ){
 			workreap_is_demo_site() ;
 		}; //if demo site then prevent
 		
-		if ( apply_filters('workreap_get_user_type', $user_id) === 'employer' ){
+        $user_type = apply_filters('workreap_get_user_type', $user_id);
+		if ( $user_type === 'employer' ){
 			$employer_post_id   		= get_user_meta($user_id, '_linked_profile', true);
     		$avatar = apply_filters(
 		        'workreap_employer_avatar_fallback', workreap_get_employer_avatar(array('width' => 100, 'height' => 100), $employer_post_id), array('width' => 100, 'height' => 100) 
@@ -3401,6 +3402,9 @@ if( !function_exists( 'workreap_submit_project_chat' ) ){
 		    'user_id' 				=> $user_id,
 		    'comment_date' 			=> $time,
 		    'comment_approved' 		=> 1,
+            'comment_meta'          => array(
+                '_new_comment'      => true,
+            ),
 		);
 
 		$comment_id = wp_insert_comment($data);
@@ -4083,15 +4087,14 @@ if ( !function_exists( 'workreap_hire_freelancer' ) ) {
             $order_detail['proposal_id'] = $proposal_id;
             wc_update_order_item_meta( $item_id, 'cus_woo_product_data', $order_detail );
 
-            workreap_update_hiring_data($order_id);
-            
             // hire the freelancer
-            workreap_hired_freelancer_after_payment($job_id, $proposal_id); 
+            workreap_update_hiring_data($order_id);
 
             // update api key data
             if( apply_filters('workreap_filter_user_promotion', 'disable') === 'enable' ){  
                 do_action('workreap_update_users_marketing_product_creation', $current_user->ID, $job_id, 'product_status_update');
-            }          
+            }
+
             $json['type']       = 'success';
             $json['message']    = esc_html__('Freelancer has hired successfully.', 'workreap');
             wp_send_json($json);
@@ -4178,6 +4181,41 @@ if ( !function_exists( 'workreap_mark_proposal_feedback' ) ) {
 
     add_action( 'wp_ajax_workreap_mark_proposal_feedback', 'workreap_mark_proposal_feedback' );
     add_action( 'wp_ajax_nopriv_workreap_mark_proposal_feedback', 'workreap_mark_proposal_feedback' );
+}
+
+/**
+ * send feedback to freelancer job proposal
+ *
+ * @throws error
+ * @author Amentotech <theamentotech@gmail.com>
+ * @return 
+ */
+if ( !function_exists( 'workreap_hide_freelancer_proposal' ) ) {
+
+    function workreap_hide_freelancer_proposal() {
+        global $current_user;
+        $json             = array();
+        $proposal_id      = !empty( $_POST['proposal_id'] ) ? intval( $_POST['proposal_id'] ) : '';
+
+        if( function_exists('workreap_is_demo_site') ) { 
+            workreap_is_demo_site();
+        }; //if demo site then prevent
+
+        if ( empty($proposal_id) ) {
+            $json['type'] = 'error';
+            $json['message'] = esc_html__('Some error occur, please try again later', 'workreap');
+            wp_send_json($json);
+        }
+
+        update_post_meta( $proposal_id, '_hidden', true );
+
+        $json['type'] = 'success';
+        $json['message'] = esc_html__('Successfully! design became hidden.', 'workreap');
+        wp_send_json($json);
+    }
+
+    add_action( 'wp_ajax_workreap_hide_freelancer_proposal', 'workreap_hide_freelancer_proposal' );
+    add_action( 'wp_ajax_nopriv_workreap_hide_freelancer_proposal', 'workreap_hide_freelancer_proposal' );
 }
 
 /**
