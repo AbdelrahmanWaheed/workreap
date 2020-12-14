@@ -54,6 +54,7 @@ iframe{width:100%;float:left;border:0}
 .wp-caption,.wp-caption-text,.gallery-caption,.wp-caption.alignleft,.wp-caption.alignnone{width:100%}
 button{border:0}
 textarea,select,.wt-select select,.form-control,input[type="text"],input[type="password"],input[type="datetime"],input[type="datetime-local"],input[type="date"],input[type="month"],input[type="time"],input[type="week"],input[type="number"],input[type="email"],input[type="url"],input[type="search"],input[type="tel"],input[type="color"],.uneditable-input{color:#999;outline:0;height:50px;background:#fff;font-size:14px;-webkit-box-shadow:none;box-shadow:none;line-height:18px;padding:10px 20px;border-radius:4px;display:inline-block;vertical-align:middle;border:1px solid #dbdbdb;text-transform:inherit;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}
+input[type="color"]{min-width:70px;}
 .form-group textarea::placeholder{color:#999}
 textarea.form-control{resize:none;height:210px}
 .form-control::-webkit-input-placeholder{color:#999}
@@ -880,7 +881,7 @@ body.wt-login .wt-userlogedin{display:block}
 .wt-projectdetail-holder{float:left;width:100%}
 .wt-projectdetail-holder{float:left;width:100%;padding:30px;background:#fff;border-radius:4px}
 .wt-projectdetail{float:left;width:100%}
-.wt-projectdetail-holder .wt-title h3{font-size:20px;margin:0 0 10px;line-height:22px;font-weight:400}
+.wt-projectdetail-holder .wt-title h3{font-size:20px;margin:0 0 10px;line-height:22px;font-weight:400}.wt-projectdetail-holder>.wt-title h3{margin:0 0 20px;}
 .wt-projectdetail .wt-description{margin:0 0 30px}
 .wt-projectdetail .wt-description p{font-size:16px;line-height:26px;margin:0 0 30px}
 .wt-projectdetail .wt-description p:last-child{margin:0}
@@ -2211,7 +2212,7 @@ blockquote.wt-blockquotevone q,.wt-blockquotevone q{margin:0;display:block}
 .wt-prjoect-categories>div>div.col-xl-6:nth-child(2){margin-top:0}
 .wt-prjoect-categories>div .theme-nav{margin:0}
 .wt-profile-content-holder{float:left;width:100%}
-.wt-sticky .wt-header{top:0;left:0;z-index:999;position:fixed;background:#fff;-webkit-box-shadow:0 0 20px 0 rgba(0,0,0,0.25);box-shadow:0 0 20px 0 rgba(0,0,0,0.25)}
+.wt-sticky .wt-header{top:0;left:0;z-index:9999;position:fixed;background:#fff;-webkit-box-shadow:0 0 20px 0 rgba(0,0,0,0.25);box-shadow:0 0 20px 0 rgba(0,0,0,0.25)}
 .fw-alert{float:left;width:100%;border:1px solid;line-height:inherit;list-style-type:none;margin:0 0 10px;position:relative;border-radius:4px;font-size:14px;padding:15px 50px 15px 20px}
 .fw-accordion .fw-accordion-title.ui-state-active{border-top:0}
 .fw-accordion .fw-accordion-title:first-child{border-top:1px solid #ddd}
@@ -2764,7 +2765,8 @@ button.wt-btn:focus{outline:0}
 .wt-dragdroptool a{color:#999;display:block;font-size:14px;line-height:30px;margin-right:10px}
 .wt-myskills li>span{font-size:14px;line-height:30px;display:inline-block;vertical-align:middle}
 .wt-myskills li .skill-dynamic-field,.wt-myskills li.wt-skillsaddinfo .skill-dynamic-html{display:none}
-.skill-dynamic-field input{border:0;padding:0;width:100%;height:30px;background:transparent}
+.skill-dynamic-field input{border:0;padding:0;width:100%;height:30px;background:transparent}.color-dynamic-field{height: 20px;width:20px;margin:0 5px;border-radius:50%;}
+.wt-skillsrequired span.color-dynamic-field{display: inline-block;}
 .wt-myskills li .wt-rightarea .wt-delete-skill{width:30px;float:left;color:#fff;height:30px;font-size:14px;line-height:30px;border-radius:4px;text-align:center;background:var(--primthemecolor)}
 .wt-myskills li+li{border-top:0}
 .post-step-5 .wt-userform .wt-select .chosen-container-single:after,.post-step-5 .wt-userform .wt-select .chosen-container-multi:after{display:none}
@@ -3777,3 +3779,9 @@ body.single .wt-chatbox .wt-replaybox .form-control{overflow:visible;}
 .wt-formpopup fieldset .form-group-margin {
 	margin-bottom: 20px;
 }
+.wt-project-characteristics .row{margin:35px 0;}
+.wt-project-characteristics .slider-selection{background:#0478b2;background-image:-webkit-linear-gradient(top,#0480BE,#036fa5)}
+.wt-project-characteristics .slider.slider-horizontal{width:100%;}
+.wt-project-colors .wt-widgettag .design-color{font-size:14px;float:left;margin:5px;padding:0 18px 0 2px;color:#767676;font-size:14px;line-height:38px;text-align:center;border-radius:20px;border:1px solid #ddd;}
+.wt-project-colors .wt-widgettag .design-color span{vertical-align:middle;display:inline-block;}
+.wt-project-colors .design-color .color-dynamic-field{height:36px;width:36px;margin-left:0px;border:1px solid #ddd;}

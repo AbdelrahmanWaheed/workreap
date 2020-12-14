@@ -48,6 +48,8 @@ if(!empty($job_price_option) && $job_price_option === 'enable') {
 	$place_holder	= esc_attr__('Project Price','workreap');
 }
 
+$characteristics = workreap_get_design_characteristics();
+
 $hide = true;
 
 ?>
@@ -333,6 +335,39 @@ $hide = true;
 							</div>
 						</div>
 					<?php endif; ?>
+					<div class="wt-jobdetails wt-tabsinfo">
+						<div class="wt-tabscontenttitle">
+							<h2><?php esc_html_e('Design Characteristics','workreap');?></h2>
+						</div>
+						<div class="wt-dropdown-characteristics wt-formtheme wt-userform wt-userformvtwo">
+							<fieldset>
+							<?php foreach ($characteristics as $key => $attribute) { ?>
+								<div class="form-group row">
+									<div class="col-sm-2 text-center"><?php echo $attribute['left']; ?></div>
+									<div class="col-sm-8">
+										<input type="range" name="job[characteristics][<?php echo $key; ?>]" data-provide="slider" data-slider-min="0" data-slider-max="100" 
+											data-slider-value="50" />
+									</div>
+									<div class="col-sm-2 text-center"><?php echo $attribute['right']; ?></div>
+								</div>
+							<?php } ?>
+							</fieldset>
+						</div>
+					</div>
+					<div class="wt-jobdetails wt-tabsinfo">
+						<div class="wt-tabscontenttitle">
+							<h2><?php esc_html_e('Design Colors','workreap');?></h2>
+						</div>
+						<div class="wt-dropdown-characteristics wt-formtheme wt-userform wt-userformvtwo">
+							<div class="form-group">
+								<input type="color" class="color-dynamic-field">
+								<a href="javascript:;" class="wt-btn add-job-colors"><?php esc_html_e('Add Color','workreap');?></a>
+							</div>
+							<div class="form-group wt-myskills">
+								<ul class="jobcolors-wrap wt-haslayout"></ul>
+							</div>
+						</div>
+					</div>
 					<div class="wt-attachmentsholder">
 						<div class="wt-tabscontenttitle">
 							<h2><?php esc_html_e('Upload Relevant Project Files','workreap');?></h2>
@@ -418,5 +453,20 @@ $hide = true;
 				<input type="hidden" class="attachment_url" name="job[project_documents][]" value="{{data.url}}">	
 			</li>
 		</script>	
+		<script type="text/template" id="tmpl-load-job-color">
+			<li class="wt-skill-list">
+				<div class="wt-dragdroptool">
+					<a href="javascript:" class="lnr lnr-menu"></a>
+				</div>
+				<span class="color-dynamic-field" style="background:{{data.value}}"></span>
+				<span class="skill-dynamic-html">{{data.name}}</span>
+				<span class="skill-dynamic-field">
+					<input type="color" name="job[colors][]" value="{{data.value}}">
+				</span>
+				<div class="wt-rightarea">
+					<a href="javascript:;" class="wt-deleteinfo wt-delete-color"><i class="lnr lnr-trash"></i></a>
+				</div>
+			</li>
+		</script>
 	</div>
 </div>

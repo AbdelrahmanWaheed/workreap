@@ -25,6 +25,7 @@ $job_type 		 	= workreap_get_job_type();
 $cats			    = workreap_get_taxonomy_array('project_cat');
 $languages		    = workreap_get_taxonomy_array('languages');
 $experiences		= workreap_get_taxonomy_array('project_experience');
+$characteristics 		= workreap_get_design_characteristics();
 
 $job_options		= function_exists('workreap_get_job_option') ? workreap_get_job_option() : array();
 
@@ -125,14 +126,16 @@ $post_author = get_post_field('post_author', $edit_id);
 						$db_job_option      = fw_get_db_post_option($post->ID,'job_option');
 					}
 
-					$db_address     	  = fw_get_db_post_option($post->ID,'address');
-					$db_latitude     	  = fw_get_db_post_option($post->ID,'latitude');
+					$db_address     	  	= fw_get_db_post_option($post->ID,'address');
+					$db_latitude     	  	= fw_get_db_post_option($post->ID,'latitude');
 					$db_longitude     	  = fw_get_db_post_option($post->ID,'longitude');
-					$db_country     	  = fw_get_db_post_option($post->ID,'project_documents');
+					$db_country     	  	= fw_get_db_post_option($post->ID,'project_documents');
 					$show_attachments   	= fw_get_db_post_option($post->ID,'show_attachments');
-					$db_project_documents   = fw_get_db_post_option($post->ID,'project_documents');
+					$db_project_documents = fw_get_db_post_option($post->ID,'project_documents');
 					$db_expiry_date     	= fw_get_db_post_option($post->ID,'expiry_date');
-					$db_deadline     		= fw_get_db_post_option($post->ID,'deadline');
+					$db_deadline     			= fw_get_db_post_option($post->ID,'deadline');
+					$db_project_chars 		= workreap_get_project_design_characteristics( $edit_id );
+					$db_colors 						= fw_get_db_post_option($post->ID,'colors');
 				}
 			
 				$db_job_option	= !empty($db_job_option) ? $db_job_option : '';
@@ -490,6 +493,61 @@ $post_author = get_post_field('post_author', $edit_id);
 								</div>
 							</div>
 						<?php endif; ?>
+						<div class="wt-jobdetails wt-tabsinfo">
+							<div class="wt-tabscontenttitle">
+								<h2><?php esc_html_e('Design Characteristics','workreap');?></h2>
+							</div>
+							<div class="wt-dropdown-characteristics wt-formtheme wt-userform wt-userformvtwo">
+								<fieldset>
+								<?php foreach ($characteristics as $key => $attribute) { ?>
+									<div class="form-group row">
+										<div class="col-sm-2 text-center"><?php echo $attribute['left']; ?></div>
+										<div class="col-sm-8">
+											<input type="range" name="job[characteristics][<?php echo $key; ?>]" data-provide="slider" data-slider-min="0" data-slider-max="100" 
+												data-slider-value="<?php echo is_array($db_project_chars) && array_key_exists($key, $db_project_chars) ? $db_project_chars[$key] : 50; ?>" />
+										</div>
+										<div class="col-sm-2 text-center"><?php echo $attribute['right']; ?></div>
+									</div>
+								<?php } ?>
+								</fieldset>
+							</div>
+						</div>
+						<div class="wt-jobdetails wt-tabsinfo">
+							<div class="wt-tabscontenttitle">
+								<h2><?php esc_html_e('Design Colors','workreap');?></h2>
+							</div>
+							<div class="wt-dropdown-characteristics wt-formtheme wt-userform wt-userformvtwo">
+								<div class="form-group">
+									<input type="color" class="color-dynamic-field">
+									<a href="javascript:;" class="wt-btn add-job-colors"><?php esc_html_e('Add Color','workreap');?></a>
+								</div>
+								<div class="form-group wt-myskills">
+									<ul class="jobcolors-wrap wt-haslayout">
+										<?php 
+											if( !empty( $db_colors ) ){
+												foreach( $db_colors as $key => $color ){
+												?>
+												<li class="wt-skill-list">
+													<div class="wt-dragdroptool">
+														<a href="javascript:" class="lnr lnr-menu"></a>
+													</div>
+													<span class="color-dynamic-field" style="background:<?php echo esc_attr( $color );?>"></span>
+													<span class="skill-dynamic-html"><?php echo esc_html( $color );?></span>
+													<span class="skill-dynamic-field">
+														<input type="color" name="job[colors][]" value="<?php echo esc_attr( $color );?>">
+													</span>
+													<div class="wt-rightarea">
+														<a href="javascript:;" class="wt-deleteinfo wt-delete-color"><i class="lnr lnr-trash"></i></a>
+													</div>
+												</li>
+												<?php
+												}
+											}
+										?>
+									</ul>
+								</div>
+							</div>
+						</div>
 						<div class="wt-attachmentsholder">
 							<div class="wt-tabscontenttitle">
 								<h2><?php esc_html_e('Upload Relevant Project Files','workreap');?></h2>
@@ -605,5 +663,20 @@ $post_author = get_post_field('post_author', $edit_id);
 				<input type="hidden" class="attachment_url" name="job[project_documents][]" value="{{data.url}}">	
 			</li>
 		</script>	
+		<script type="text/template" id="tmpl-load-job-color">
+			<li class="wt-skill-list">
+				<div class="wt-dragdroptool">
+					<a href="javascript:" class="lnr lnr-menu"></a>
+				</div>
+				<span class="color-dynamic-field" style="background:{{data.value}}"></span>
+				<span class="skill-dynamic-html">{{data.name}}</span>
+				<span class="skill-dynamic-field">
+					<input type="color" name="job[colors][]" value="{{data.value}}">
+				</span>
+				<div class="wt-rightarea">
+					<a href="javascript:;" class="wt-deleteinfo wt-delete-color"><i class="lnr lnr-trash"></i></a>
+				</div>
+			</li>
+		</script>
 	</div>
 </div>

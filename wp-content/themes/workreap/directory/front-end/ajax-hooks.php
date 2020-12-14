@@ -2844,6 +2844,7 @@ if ( !function_exists( 'workreap_post_job' ) ) {
 				// 'latitude'  => esc_html__('Latitude is required', 'workreap'),
 				// 'longitude' => esc_html__('Longitude is required', 'workreap'),
 				// 'country'   => esc_html__('Country is required', 'workreap'),
+                'colors' => esc_html__('Design colors are required', 'workreap'),
 			);
 		} else{
 			$required = array(
@@ -2857,6 +2858,7 @@ if ( !function_exists( 'workreap_post_job' ) ) {
 				'type' 		        => esc_html__('Please select job type.', 'workreap'),
 				'categories' 		=> esc_html__('Please select at-least one category', 'workreap'),
 				// 'country'   => esc_html__('Country is required', 'workreap'),
+                'colors' => esc_html__('Design colors are required', 'workreap'),
 			);
 		}
 
@@ -2943,6 +2945,10 @@ if ( !function_exists( 'workreap_post_job' ) ) {
 				);
 
 				wp_update_post($article_post);
+
+                // update project characteristics and colors
+                fw_set_db_post_option($post_id, 'characteristics', $characteristics);
+                fw_set_db_post_option($post_id, 'colors', $colors);
 
                 //Upload files from temp folder to uploads
                 $files              = !empty( $_POST['job']['project_documents'] ) ? $_POST['job']['project_documents'] : array();
@@ -3084,6 +3090,8 @@ if ( !function_exists( 'workreap_post_job' ) ) {
             // $fw_options['longitude']             = $longitude;
             // $fw_options['latitude']              = $latitude;
             // $fw_options['country']               = $location;
+            $fw_options['characteristics']       = $characteristics;
+            $fw_options['colors']                = $colors;
 
             //Update User Profile
             fw_set_db_post_option($post_id, null, $fw_options);

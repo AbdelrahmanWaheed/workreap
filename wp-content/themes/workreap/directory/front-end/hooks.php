@@ -4226,6 +4226,81 @@ if( !function_exists( 'workreap_print_freelancer_skills' ) ){
 }
                                
 /**
+ * Return project characteristics
+ *
+ * @throws error
+ * @author Amentotech <theamentotech@gmail.com>
+ * @return 
+ */
+if( !function_exists( 'workreap_job_detail_characteristics' ) ) {
+    function workreap_job_detail_characteristics( $post_id = '' ){
+        if( !empty( $post_id ) ){
+			$characteristics = workreap_get_design_characteristics();
+            if (function_exists('fw_get_db_post_option')) {
+                $project_characteristics = fw_get_db_post_option($post_id, 'characteristics');
+				if( !empty( $project_characteristics ) ) { ?>
+					<div class="wt-skillsrequired">
+						<div class="wt-title">
+							<h3><?php echo esc_html__('Design Characteristics', 'workreap'); ?></h3>
+						</div>
+						<div class="wt-widgettag wt-project-characteristics">
+							<?php foreach ($characteristics as $key => $attribute) { 
+								if( array_key_exists($key, $project_characteristics) ) { ?>
+									<div class="row">
+										<div class="col-sm-2 text-center"><?php echo $attribute['left']; ?></div>
+										<div class="col-sm-8">
+											<input type="range" data-provide="slider" data-slider-min="0" 
+												data-slider-max="100" data-slider-enabled="false" data-slider-tooltip="always"
+												data-slider-value="<?php echo $project_characteristics[$key]; ?>" />
+										</div>
+										<div class="col-sm-2 text-center"><?php echo $attribute['right']; ?></div>
+									</div>
+								<?php } ?>
+							<?php } ?>
+						</div>
+					</div>
+				<?php }
+            }
+        }
+    }
+    add_action('workreap_job_detail_characteristics', 'workreap_job_detail_characteristics', 10, 1);
+}
+
+/**
+ * Return project colors
+ *
+ * @throws error
+ * @author Amentotech <theamentotech@gmail.com>
+ * @return 
+ */
+if( !function_exists( 'workreap_job_detail_colors' ) ) {
+    function workreap_job_detail_colors( $post_id = '' ){
+        if( !empty( $post_id ) ){
+            $project_colors = array();
+            if (function_exists('fw_get_db_post_option')) {
+                $project_colors = fw_get_db_post_option($post_id, 'colors');
+            }
+			if( !empty( $project_colors ) ) { ?>
+				<div class="wt-skillsrequired wt-project-colors">
+					<div class="wt-title">
+						<h3><?php echo esc_html__('Design Colors', 'workreap'); ?></h3>
+					</div>
+					<div class="wt-tag wt-widgettag">
+						<?php foreach ( $project_colors as $key => $color ) { ?>
+							<div class="design-color">
+								<span class="color-dynamic-field" style="background:<?php echo esc_attr( $color );?>"></span>
+								<span><?php echo esc_attr( $color ); ?></span>
+							</div>
+						<?php } ?>
+					</div>
+				</div>
+			<?php }
+        }
+    }
+    add_action('workreap_job_detail_colors', 'workreap_job_detail_colors', 10, 1);
+}
+
+/**
  * Return project documents
  *
  * @throws error
@@ -4260,7 +4335,7 @@ if( !function_exists( 'workreap_job_detail_documents' ) ) {
                             <em><?php esc_html_e('File size', 'workreap'); ?>:&nbsp;<?php echo esc_html( size_format($file_size, 2) ); ?><a href="<?php echo esc_url( $value['url'] ); ?>" download><i class="lnr lnr-download"></i></a></em>
                         </label>
                     </li>
-                    <?php } ?>                   
+                    <?php } ?>
                 </ul>
             </div>
         <?php } 

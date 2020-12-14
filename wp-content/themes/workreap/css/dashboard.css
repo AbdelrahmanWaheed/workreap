@@ -1012,3 +1012,5 @@ body.rtl .wt-formcategory .form-group-label .wt-labelgroup>span{margin:10px 0 0}
 .elementor-location-footer,
 .elementor-location-header {margin: 0 -40px;}
 .wt-job-proposals .wt-paginationvtwo{margin-bottom:30px}
+.wt-dropdown-characteristics fieldset .form-group{margin:5px 0;}
+.slider-selection{background:#0478b2;background-image:-webkit-linear-gradient(top,#0480BE,#036fa5)}.slider.slider-horizontal{width:100%;}

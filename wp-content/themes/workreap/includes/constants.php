@@ -264,6 +264,7 @@ if (!function_exists('workreap_prepare_constants')) {
             'specification_alert_value_error' => esc_html__('Enter a valid value', 'workreap'),
 			
 			'already_skill_value_error' => esc_html__('This skill is already selected', 'workreap'),
+			'already_color_value_error' => esc_html__('This color is already selected', 'workreap'),
 			
 			'award_image'       => esc_html__('Image title', 'workreap'),
 			'emptyexperience'   => esc_html__('Industrial experience value is required', 'workreap'),

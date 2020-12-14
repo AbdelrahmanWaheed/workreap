@@ -1323,7 +1323,7 @@ jQuery(document).on('ready', function() {
     });
 
 	// Push up the checked checkbox to the top
-	if( jQuery('.wt-checkboxholder').length > 0 ) {
+	if( jQuery('.wt-checkboxholder').length ) {
 		jQuery('.wt-checkboxholder input[type="checkbox"]:checked').each(function() {
 			var _this = $(this);
 			var container = _this.parent().parent();

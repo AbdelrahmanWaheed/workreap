@@ -5,33 +5,33 @@
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if( !function_exists( 'worktic_get_search_list' ) ) {
 	function worktic_get_search_list($is_single='no'){
-		
+
 		$list = array(
-		    
-	        'freelancer' => array( 
+
+	        'freelancer' => array(
 	    		'title' 		=> esc_html__('Freelancers', 'workreap'),
 	    	),
-			'job' => array( 
+			'job' => array(
 		    	'title' => esc_html__('Jobs', 'workreap'),
 		    ),
-	        'employer' => array( 
+	        'employer' => array(
 	    		'title' 		=> esc_html__('Employers', 'workreap'),
 	    	),
-			'services' => array( 
+			'services' => array(
 	    		'title' 		=> esc_html__('Services', 'workreap'),
 	    	),
 		);
 
-		$list = apply_filters('worktic_filter_search_list', $list);		
-		
+		$list = apply_filters('worktic_filter_search_list', $list);
+
 		if( $is_single === 'yes' ){
 			$list = workreap_array_column_extract($list, 'title',-1);
 		}
-		
+
 		return $list;
 	}
 }
@@ -42,7 +42,7 @@ if( !function_exists( 'worktic_get_search_list' ) ) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if (!function_exists('workreap_count_featured_by_meta')) {
 
@@ -54,13 +54,13 @@ if (!function_exists('workreap_count_featured_by_meta')) {
 						);
 		//status
 		if( !empty( $author_id ) ){
-			$args['author'] = $author_id;	
+			$args['author'] = $author_id;
 		}
 		//status
 		if( !empty( $status ) ){
-			$args['post_status'] = $status;	
+			$args['post_status'] = $status;
 		}
-		
+
 		//meta filterss
 		if( !empty( $key ) && !empty( $value ) ){
 			$meta_query_args[] = array(
@@ -68,11 +68,11 @@ if (!function_exists('workreap_count_featured_by_meta')) {
 								'value' 	=> $value,
 								'compare' 	=> '='
 							);
-		
+
 			$query_relation 	= array('relation' => 'AND',);
-			$args['meta_query'] = array_merge($query_relation, $meta_query_args);	
+			$args['meta_query'] = array_merge($query_relation, $meta_query_args);
 		}
-		
+
 		$query 				= new WP_Query($args);
 		$count_post 		= $query->found_posts;
 		return $count_post;
@@ -84,7 +84,7 @@ if (!function_exists('workreap_count_featured_by_meta')) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if( !function_exists( 'workreap_array_column_extract' ) ) {
 	function workreap_array_column_extract($array, $columnkey, $indexkey = null) {
@@ -108,22 +108,22 @@ if( !function_exists( 'workreap_array_column_extract' ) ) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if( !function_exists( 'workreap_experience_years' ) ) {
     function workreap_experience_years(){
         $list = array(
             '1'              => esc_html__('1 Year', 'workreap'),
 			'2'              => esc_html__('2 Years', 'workreap'),
-			'3'              => esc_html__('3 Years', 'workreap'), 
-			'4'              => esc_html__('4 Years', 'workreap'), 
-			'5'              => esc_html__('5 Years', 'workreap'), 
-			'6'              => esc_html__('6 Years', 'workreap'), 
-			'7'              => esc_html__('7 Years', 'workreap'), 
-			'8'              => esc_html__('8 Years', 'workreap'), 
-			'9'              => esc_html__('9 Years', 'workreap'), 
-			'10'              => esc_html__('10+ Years', 'workreap'), 
-			
+			'3'              => esc_html__('3 Years', 'workreap'),
+			'4'              => esc_html__('4 Years', 'workreap'),
+			'5'              => esc_html__('5 Years', 'workreap'),
+			'6'              => esc_html__('6 Years', 'workreap'),
+			'7'              => esc_html__('7 Years', 'workreap'),
+			'8'              => esc_html__('8 Years', 'workreap'),
+			'9'              => esc_html__('9 Years', 'workreap'),
+			'10'              => esc_html__('10+ Years', 'workreap'),
+
         );
 		$list = apply_filters('worktic_set_experience_years', $list);
 		return $list;
@@ -135,44 +135,44 @@ if( !function_exists( 'workreap_experience_years' ) ) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if( !function_exists( 'worktic_get_employees_list' ) ) {
 	function worktic_get_employees_list(){
 		$list = array(
-		    '1' => array( 
+		    '1' => array(
 		    		'title' 		=> esc_html__('Its Just Me', 'workreap'),
 		    		'search_title' 	=> esc_html__('Less Than Two', 'workreap'),
 		    		'value' 		=> 1,
 		    	),
-	        '2' => array( 
+	        '2' => array(
 	    		'title' 		=> esc_html__('2 - 9 Employees', 'workreap'),
 	    		'search_title' 	=> esc_html__('Less Than 10', 'workreap'),
 	    		'value' 		=> 10,
 	    	),
-	        '3' => array( 
+	        '3' => array(
 	    		'title' 		=> esc_html__('10 - 99 Employees', 'workreap'),
 	    		'search_title' 	=> esc_html__('Less Than 100', 'workreap'),
 	    		'value' 		=> 100,
 	    	),
-	        '4' => array( 
+	        '4' => array(
 	    		'title' 		=> esc_html__('100 - 499 Employees', 'workreap'),
 	    		'search_title' 	=> esc_html__('Less Than 500', 'workreap'),
 	    		'value' 		=> 500,
 	    	),
-	        '5' => array( 
+	        '5' => array(
 	    		'title' 		=> esc_html__('500 - 1000 Employees', 'workreap'),
 	    		'search_title' 	=> esc_html__('Less Than 1000', 'workreap'),
 	    		'value' 		=> 1000,
 	    	),
-	    	'6' => array( 
+	    	'6' => array(
 	    		'title' 		=> esc_html__('More Than 1000 Employees', 'workreap'),
 	    		'search_title' 	=> esc_html__('More Than 1000', 'workreap'),
 	    		'value' 		=> 5000,
 	    	),
 		);
 
-		$list = apply_filters('worktic_set_employees_list', $list);			
+		$list = apply_filters('worktic_set_employees_list', $list);
 		return $list;
 	}
 }
@@ -183,7 +183,7 @@ if( !function_exists( 'worktic_get_employees_list' ) ) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if (!function_exists('workreap_temp_upload_to_media')) {
     function workreap_temp_upload_to_media($image_url, $post_id) {
@@ -192,7 +192,7 @@ if (!function_exists('workreap_temp_upload_to_media')) {
 			require_once (ABSPATH . '/wp-admin/includes/file.php');
 			WP_Filesystem();
 		}
-		
+
         $json   =  array();
         $upload_dir = wp_upload_dir();
 		$folderRalativePath = $upload_dir['baseurl']."/workreap-temp";
@@ -203,19 +203,19 @@ if (!function_exists('workreap_temp_upload_to_media')) {
 			'headers' => array('Accept-Encoding' => ''),
 			'sslverify' => false
 		);
-		
+
 		$response   	= wp_remote_get( $image_url, $args );
 		$image_data		= wp_remote_retrieve_body($response);
-		
+
 		if(empty($image_data)){
 			$json['attachment_id']  = '';
 			$json['url']            = '';
 			$json['name']			= '';
 			return $json;
 		}
-		
+
         $filename 		= basename($image_url);
-		
+
         if (wp_mkdir_p($upload_dir['path'])){
 			 $file = $upload_dir['path'] . '/' . $filename;
 		}  else {
@@ -224,7 +224,7 @@ if (!function_exists('workreap_temp_upload_to_media')) {
 
 		//$wp_filesystem->put_contents( $file, $image_data, 0755);
 		file_put_contents($file, $image_data);
-		
+
         $wp_filetype = wp_check_filetype($filename, null);
         $attachment = array(
             'post_mime_type' 	=> $wp_filetype['type'],
@@ -232,13 +232,13 @@ if (!function_exists('workreap_temp_upload_to_media')) {
             'post_content' 		=> '',
             'post_status' 		=> 'inherit'
         );
-        
+
         $attach_id = wp_insert_attachment($attachment, $file, $post_id);
 
         require_once(ABSPATH . 'wp-admin/includes/image.php');
         $attach_data = wp_generate_attachment_metadata($attach_id, $file);
         wp_update_attachment_metadata($attach_id, $attach_data);
-        
+
         $json['attachment_id']  = $attach_id;
         $json['url']            = $upload_dir['url'] . '/' . basename( $filename );
 		$json['name']			= $filename;
@@ -256,7 +256,7 @@ if (!function_exists('workreap_temp_upload_to_media')) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if ( ! function_exists( 'workreap_get_totoal_proposals' ) ) {
 	function workreap_get_totoal_proposals($post_id='',$return='count',$count='-1') {
@@ -278,9 +278,9 @@ if ( ! function_exists( 'workreap_get_totoal_proposals' ) ) {
 				),
 			),
 		);
-		
+
 		$proposals 	= get_posts($args);
-		
+
 		if($return === 'count'){
 			$proposals	= !empty( $proposals ) ? count($proposals) : 0;
 		}
@@ -294,12 +294,12 @@ if ( ! function_exists( 'workreap_get_totoal_proposals' ) ) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if( !function_exists( 'workreap_get_term_name') ){
     function workreap_get_term_name($term_id = '', $taxonomy = ''){
         if( !empty( $term_id ) && !empty( $taxonomy ) ){
-            $term = get_term_by( 'id', $term_id, $taxonomy);  
+            $term = get_term_by( 'id', $term_id, $taxonomy);
             if( !empty( $term ) ){
                 return $term->name;
             }
@@ -313,7 +313,7 @@ if( !function_exists( 'workreap_get_term_name') ){
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if (!function_exists('workreap_get_review_data')) {
 
@@ -332,7 +332,7 @@ if (!function_exists('workreap_get_review_data')) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if (!function_exists('workreap_get_everage_rating')) {
 
@@ -356,14 +356,14 @@ if (!function_exists('workreap_get_everage_rating')) {
 
         $average_rating = 0;
         $total_rating   = 0;
-		
+
         $query = new WP_Query($args);
 
         if ($query->have_posts()) {
             while ($query->have_posts()) : $query->the_post();
                 global $post;
                 $user_rating = get_post_meta($post->ID, 'user_rating', true);
-			
+
                 $average_rating = $average_rating + $user_rating;
                 $total_rating++;
 
@@ -374,7 +374,7 @@ if (!function_exists('workreap_get_everage_rating')) {
         $data['wt_average_rating'] 			= 0;
         $data['wt_total_rating'] 			= 0;
         $data['wt_total_percentage'] 		= 0;
-		
+
         if (isset($average_rating) && $average_rating > 0) {
             $data['wt_average_rating'] 			= $average_rating / $total_rating;
             $data['wt_total_rating'] 			= $total_rating;
@@ -391,12 +391,12 @@ if (!function_exists('workreap_get_everage_rating')) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if (!function_exists('workreap_get_milestone_statistics')) {
 
     function workreap_get_milestone_statistics($propsal_id = '',$status='pending') {
-		
+
         $meta_query_args = array('relation' => 'AND');
         $meta_query_args[] = array(
             'key' 		=> '_propsal_id',
@@ -422,11 +422,11 @@ if (!function_exists('workreap_get_milestone_statistics')) {
                 $user_price = get_post_meta($post->ID, '_price', true);
 
                 $total_price = $total_price + $user_price;
-			
+
             endwhile;
             wp_reset_postdata();
         }
-		
+
         return $total_price;
     }
 
@@ -437,7 +437,7 @@ if (!function_exists('workreap_get_milestone_statistics')) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if (!function_exists('workreap_count_items')) {
     function workreap_count_items($items) {
@@ -454,13 +454,13 @@ if (!function_exists('workreap_count_items')) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if ( ! function_exists( 'workreap_project_ratings' ) ) {
 	function workreap_project_ratings( $key = 'project_ratings' ){
 		if ( function_exists( 'fw_get_db_settings_option' ) ) {
 			$ratings_headings	= fw_get_db_settings_option( $key, true);
-			
+
 			if( !empty( $ratings_headings ) and is_array($ratings_headings) ){
 				$ratings_headings = array_filter($ratings_headings);
 				$ratings_headings = array_combine(array_map('sanitize_title', $ratings_headings), $ratings_headings);
@@ -468,12 +468,12 @@ if ( ! function_exists( 'workreap_project_ratings' ) ) {
 			} else{
 				return array();
 			}
-			
+
 		} else {
 			return array();
 		}
 	}
-	
+
 }
 
 /**
@@ -481,13 +481,13 @@ if ( ! function_exists( 'workreap_project_ratings' ) ) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if ( ! function_exists( 'workreap_get_earning_freelancer' ) ) {
     function workreap_get_earning_freelancer( $user_identity,$limit=6  ) {
 		global $wpdb;
 		$table_name = $wpdb->prefix . "wt_earnings";
-		
+
 		if ($wpdb->get_var("SHOW TABLES LIKE '$table_name'") === $table_name) {
 			if( !empty($user_identity) ) {
 				$e_query	= $wpdb->prepare("SELECT * FROM $table_name where user_id =%d and ( status = 'completed' || status = 'processed' ) ORDER BY id DESC LIMIT %d",$user_identity,$limit);
@@ -498,9 +498,9 @@ if ( ! function_exists( 'workreap_get_earning_freelancer' ) ) {
 		} else{
 			$earning	= 0;
 		}
-		
+
 		return $earning;
-		
+
 	}
 }
 
@@ -509,7 +509,7 @@ if ( ! function_exists( 'workreap_get_earning_freelancer' ) ) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if ( ! function_exists( 'workreap_get_sum_earning_freelancer' ) ) {
     function workreap_get_sum_earning_freelancer( $user_id='',$status='',$colum_name='') {
@@ -525,9 +525,9 @@ if ( ! function_exists( 'workreap_get_sum_earning_freelancer' ) ) {
 		} else{
 			$total_earning	= 0;
 		}
-		
+
 		return $total_earning;
-		
+
 	}
 }
 
@@ -536,7 +536,7 @@ if ( ! function_exists( 'workreap_get_sum_earning_freelancer' ) ) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if ( ! function_exists( 'workreap_get_sum_earning_milestone' ) ) {
     function workreap_get_sum_earning_milestone( $project_id='',$status='',$colum_name='') {
@@ -552,9 +552,9 @@ if ( ! function_exists( 'workreap_get_sum_earning_milestone' ) ) {
 		} else{
 			$total_earning	= 0;
 		}
-		
+
 		return $total_earning;
-		
+
 	}
 }
 
@@ -563,7 +563,7 @@ if ( ! function_exists( 'workreap_get_sum_earning_milestone' ) ) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if ( ! function_exists( 'workreap_get_total_earning_freelancer' ) ) {
     function workreap_get_total_earning_freelancer( $user_id='',$status='',$colum_name='') {
@@ -579,9 +579,9 @@ if ( ! function_exists( 'workreap_get_total_earning_freelancer' ) ) {
 		} else{
 			$total_earning	= 0;
 		}
-		
+
 		return $total_earning;
-		
+
 	}
 }
 
@@ -590,7 +590,7 @@ if ( ! function_exists( 'workreap_get_total_earning_freelancer' ) ) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if ( ! function_exists( 'workreap_get_payments_freelancer' ) ) {
     function workreap_get_payments_freelancer( $user_identity,$limit=6  ) {
@@ -607,9 +607,9 @@ if ( ! function_exists( 'workreap_get_payments_freelancer' ) ) {
 		} else{
 			$payments	= 0;
 		}
-		
+
 		return $payments;
-		
+
 	}
 }
 
@@ -618,7 +618,7 @@ if ( ! function_exists( 'workreap_get_payments_freelancer' ) ) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if ( ! function_exists( 'workreap_get_sum_payments_freelancer' ) ) {
     function workreap_get_sum_payments_freelancer( $user_id='',$status='',$colum_name='') {
@@ -634,7 +634,7 @@ if ( ! function_exists( 'workreap_get_sum_payments_freelancer' ) ) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if (!function_exists('workreap_get_package_type')) {
 
@@ -649,19 +649,19 @@ if (!function_exists('workreap_get_package_type')) {
 			'post_status' 			=> 'publish',
 			'ignore_sticky_posts' 	=> 1
 		);
-		 
+
 		$meta_query_args[] = array(
 			'key' 			=> $key,
 			'value' 		=> $value,
 			'compare' 		=> '=',
-		);	
-		 
+		);
+
 		$query_relation 		= array('relation' => 'AND',);
 		$meta_query_args 		= array_merge($query_relation, $meta_query_args);
 		$args['meta_query'] 	= $meta_query_args;
-		
+
 		$trial_product = get_posts($args);
-		
+
 		if (!empty($trial_product)) {
             return (int) $trial_product[0]->ID;
         } else{
@@ -675,18 +675,18 @@ if (!function_exists('workreap_get_package_type')) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if (!function_exists('workreap_get_subscription_metadata')) {
 
     function workreap_get_subscription_metadata($key = '', $user_id) {
         $wt_subscription 	= get_user_meta($user_id, 'wt_subscription', true);
 		$current_date 		= current_time('mysql');
-		
+
 		if (function_exists('fw_get_db_settings_option')) {
 			$remove_chat = fw_get_db_settings_option('remove_chat', $default_value = null);
 		}
-		
+
 		//check if listing is free
 		if(apply_filters('workreap_is_listing_free',false,$user_id) === true ){
 			return 'yes';
@@ -715,11 +715,11 @@ if (!function_exists('workreap_get_subscription_metadata')) {
 }
 
 /**
- * Get Packages Type 
+ * Get Packages Type
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if ( !function_exists( 'workreap_packages_types' ) ) {
 
@@ -727,18 +727,18 @@ if ( !function_exists( 'workreap_packages_types' ) ) {
 		if ( !empty( $post ) ) {
 			$package_type	= get_post_meta( $post->ID , 'package_type', true);
 		}
-		
+
 		$system_access = 'paid';
 		if (function_exists('fw_get_db_settings_option')) {
 			$system_access = fw_get_db_settings_option('system_access', $default_value = null);
 		}
-		
+
 		$packages						= array();
 		$packages[0]					= esc_html__('Package Type', 'workreap');
 		if( $system_access != 'both'  ){
 			$trail_employer_package_id		= workreap_get_package_type( 'package_type','trail_employer');
 			$trail_freelancer_package_id	= workreap_get_package_type( 'package_type','trail_freelancer');
-			
+
 			if( $system_access != 'employer_free' ){
 				$packages['employer']			= esc_html__('For Employer', 'workreap');
 				if( empty($trail_employer_package_id )) {
@@ -747,7 +747,7 @@ if ( !function_exists( 'workreap_packages_types' ) ) {
 					$packages['trail_employer']		= esc_html__('For Trial Employer', 'workreap');
 				}
 			}
-			
+
 			$packages['freelancer']			= esc_html__('For Freelancer', 'workreap');
 
 			if( empty( $trail_freelancer_package_id ) ) {
@@ -755,10 +755,10 @@ if ( !function_exists( 'workreap_packages_types' ) ) {
 			} else if ( !empty( $post ) && $package_type === 'trail_freelancer') {
 				$packages['trail_freelancer']	= esc_html__('For Trial Freelancer', 'workreap');
 			}
-			
+
 		}
-		
-		
+
+
 		return $packages;
 	}
 }
@@ -768,7 +768,7 @@ if ( !function_exists( 'workreap_packages_types' ) ) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if (!function_exists('workreap_get_pakages_features_attributes')) {
 
@@ -788,13 +788,13 @@ if (!function_exists('workreap_get_pakages_features_attributes')) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if (!function_exists('workreap_get_pakages_badges')) {
 
     function workreap_get_pakages_badges() {
 		$values	= array();
-		
+
 		if( taxonomy_exists('badge_cat') ) {
 			$terms = get_terms( array(
 				'taxonomy' 		=> 'badge_cat',
@@ -808,9 +808,9 @@ if (!function_exists('workreap_get_pakages_badges')) {
 				foreach( $terms as $term ) {
 					$values[$term->term_id]	= $term->name;
 				}
-			} 
+			}
 		}
-		
+
 		return $values;
 	}
 }
@@ -820,13 +820,13 @@ if (!function_exists('workreap_get_pakages_badges')) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if ( !function_exists( 'workreap_hired_freelancer_after_payment' ) ) {
 
 	function workreap_hired_freelancer_after_payment( $job_id, $proposal_id ) {
 		global $current_user;
-		
+
 		update_post_meta( $job_id, '_proposal_id', $proposal_id );
 		$job_post_data = array(
 							'ID'            => $job_id,
@@ -846,7 +846,7 @@ if ( !function_exists( 'workreap_hired_freelancer_after_payment' ) ) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if ( !function_exists( 'workreap_hired_milestone_after_payment' ) ) {
 
@@ -869,27 +869,27 @@ if ( !function_exists( 'workreap_hired_milestone_after_payment' ) ) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if ( !function_exists( 'worrketic_hiring_payment_setting' ) ) {
 	function worrketic_hiring_payment_setting() {
 		$settings	 = array();
-		
+
 		if (function_exists('fw_get_db_settings_option')) {
             $hiring 		= fw_get_db_settings_option('hiring_payment_settings');
 			$min_amount 	= fw_get_db_settings_option('min_amount');
 			$service_fee 	= fw_get_db_settings_option('service_fee');
         }
-		
+
 		if( isset( $hiring['gadget'] ) && $hiring['gadget'] === 'enable' ){
 			$settings['type']			= !empty( $hiring['enable']['pay']['type'] )  ? $hiring['enable']['pay']['type'] : '';
 			$settings['is_enable']		= 'yes';
 		}
-		
+
 		$settings['minamount']		= !empty( $min_amount )  ? $min_amount : 0;
 		$settings['percentage']		= !empty( $service_fee )  ? $service_fee : 0;
-		
-		
+
+
 		return $settings;
 	}
 }
@@ -899,13 +899,13 @@ if ( !function_exists( 'worrketic_hiring_payment_setting' ) ) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if ( !function_exists( 'workreap_update_earning' ) ) {
 
 	function workreap_update_earning( $where, $update, $table_name ) {
 		global $wpdb;
-		
+
 		if( !empty($where) && !empty($update) && !empty($table_name) ) {
 			$wpdb->update($wpdb->prefix.$table_name, $update, $where);
 		} else {
@@ -919,7 +919,7 @@ if ( !function_exists( 'workreap_update_earning' ) ) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if ( ! function_exists( 'workreap_get_account_settings' ) ) {
 	function workreap_get_account_settings($key='') {
@@ -934,18 +934,18 @@ if ( ! function_exists( 'workreap_get_account_settings' ) ) {
 				'_profile_blocked' 		=> esc_html__('Disable my account temporarily','workreap'),
 			),
 		);
-		
+
 		if( function_exists('fw_get_db_settings_option')  ){
 			$hide_perhour	= fw_get_db_settings_option('hide_freelancer_perhour', $default_value = null);
 		}
-		
-		
+
+
 		if( isset($hide_perhour) && $hide_perhour === 'yes' ){
 			unset( $settings['freelancer']['_hourly_rate_settings']);
 		}
 
 		$settings	= apply_filters('workreap_filters_account_settings',$settings);
-		
+
 		return !empty( $settings[$key] ) ? $settings[$key] : array();
 	}
 }
@@ -955,7 +955,7 @@ if ( ! function_exists( 'workreap_get_account_settings' ) ) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if ( ! function_exists( 'workreap_get_account_delete_reasons' ) ) {
 	function workreap_get_account_delete_reasons($key='') {
@@ -967,11 +967,11 @@ if ( ! function_exists( 'workreap_get_account_delete_reasons' ) ) {
 		);
 
 		$reasons	= apply_filters('workreap_filters_account_delete_reasons',$list);
-		
+
 		if( !empty( $key ) ){
 			return !empty( $list[$key] ) ? $list[$key] : '';
 		}
-		
+
 		return $reasons;
 	}
 }
@@ -981,7 +981,7 @@ if ( ! function_exists( 'workreap_get_account_delete_reasons' ) ) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if (!function_exists('workreap_get_linked_profile_id')) {
 
@@ -993,7 +993,7 @@ if (!function_exists('workreap_get_linked_profile_id')) {
 		}
 
         $linked_profile	= !empty( $linked_profile ) ? $linked_profile : '';
-		
+
         return intval( $linked_profile );
     }
 }
@@ -1003,7 +1003,7 @@ if (!function_exists('workreap_get_linked_profile_id')) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if( !function_exists(  'workreap_get_all_skills' ) ) {
     function workreap_get_all_skills(){
@@ -1024,7 +1024,7 @@ if( !function_exists(  'workreap_get_all_skills' ) ) {
 				}
 			}
 		}
-		
+
 		return $skills;
     }
 }
@@ -1034,7 +1034,7 @@ if( !function_exists(  'workreap_get_all_skills' ) ) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if( !function_exists(  'workreap_get_texanomy_list' ) ) {
     function workreap_get_texanomy_list($texnomy_name){
@@ -1055,7 +1055,7 @@ if( !function_exists(  'workreap_get_texanomy_list' ) ) {
 				}
 			}
 		}
-		
+
 		return $texnomy_list;
     }
 }
@@ -1065,15 +1065,15 @@ if( !function_exists(  'workreap_get_texanomy_list' ) ) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if( !function_exists(  'workreap_get_project_level' ) ) {
     function workreap_get_project_level($key=''){
-		$term_data = get_terms( 
+		$term_data = get_terms(
 			array(
 				'taxonomy' 		=> 'project_levels',
 				'hide_empty' 	=> false,
-			) 
+			)
 		);
 
 		if( !empty( $term_data ) && empty( $key ) ){
@@ -1084,7 +1084,7 @@ if( !function_exists(  'workreap_get_project_level' ) ) {
 				return $data;
 			}
 		}
-		
+
         $list = array(
 			'basic' 		=> esc_html__('Basic Level','workreap'),
 			'medium' 		=> esc_html__('Medium Level','workreap'),
@@ -1092,11 +1092,11 @@ if( !function_exists(  'workreap_get_project_level' ) ) {
 		);
 
 		$levels	= apply_filters('workreap_filters_project_level',$list);
-		
+
 		if( !empty( $key ) ){
 			return !empty( $levels[$key] ) ? $levels[$key] : '';
 		}
-		
+
 		return $levels;
     }
 }
@@ -1106,7 +1106,7 @@ if( !function_exists(  'workreap_get_project_level' ) ) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if( !function_exists(  'workreap_get_job_type' ) ) {
     function workreap_get_job_type($key=''){
@@ -1116,21 +1116,21 @@ if( !function_exists(  'workreap_get_job_type' ) ) {
 		);
 
 		$data	= apply_filters('workreap_filters_job_type',$list);
-		
+
 		if( !empty( $key ) ){
 			return !empty( $data[$key] ) ? $data[$key] : '';
 		}
-		
+
 		return $data;
     }
 }
 
 /**
- * Get job option 
+ * Get job option
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if( !function_exists(  'workreap_get_job_option ' ) ) {
     function workreap_get_job_option ($key=''){
@@ -1141,11 +1141,11 @@ if( !function_exists(  'workreap_get_job_option ' ) ) {
 		);
 
 		$data	= apply_filters('workreap_filters_job_option ',$list);
-		
+
 		if( !empty( $key ) ){
 			return !empty( $data[$key] ) ? $data[$key] : '';
 		}
-		
+
 		return $data;
     }
 }
@@ -1156,7 +1156,7 @@ if( !function_exists(  'workreap_get_job_option ' ) ) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if( !function_exists(  'workreap_project_price ' ) ) {
     function workreap_project_price ($job_id=''){
@@ -1171,23 +1171,23 @@ if( !function_exists(  'workreap_project_price ' ) ) {
 			$db_project_type	= fw_get_db_post_option($job_id,'project_type');
 		}
 
-		$data				= array();	
+		$data				= array();
 		$project_cost		= 0;
 		$price_text			= '';
 		$estimated_hours 	= 0;
-		
+
 		if( !empty( $db_project_type['gadget'] ) && $db_project_type['gadget'] === 'fixed' ){
 			$job_type_text = '';
 			$price_text		= esc_html__('Cost','workreap');
 			$amount_text	= esc_html__('Enter Your Proposal Amount','workreap');
 			$project_cost 	= !empty( $db_project_type['fixed']['project_cost'] ) ? workreap_price_format($db_project_type['fixed']['project_cost'],'return') : '';
 			$max_val		= !empty($db_project_type['fixed']['project_cost']) ? $db_project_type['fixed']['project_cost'] : 0;
-			
+
 			if(!empty($job_price_option) && $job_price_option === 'enable') {
 				$db_max_price	= !empty( $db_project_type['fixed']['max_price'] ) ? $db_project_type['fixed']['max_price'] : '';
 				$project_cost	= !empty($db_max_price) ? ($project_cost.' - '.workreap_price_format($db_max_price,'return')) : $project_cost;
 				$max_val			= $db_max_price;
-			} 
+			}
 		} else if( !empty( $db_project_type['gadget'] ) && $db_project_type['gadget'] === 'hourly' ){
 			$price_text			= esc_html__('Per hour rate for estimated','workreap');
 			$amount_text		= esc_html__('Enter Your Per Hour rate','workreap');
@@ -1195,7 +1195,7 @@ if( !function_exists(  'workreap_project_price ' ) ) {
 			$job_type_text		= ' '.$estimated_hours.esc_attr__(" hours","workreap");
 			$project_cost 		= !empty( $db_project_type['hourly']['hourly_rate'] ) ? ($db_project_type['hourly']['hourly_rate'] ) : 0;
 			$max_val			= $project_cost;
-				
+
 			if(!empty($job_price_option) && $job_price_option === 'enable') {
 				$db_max_price	= !empty( $db_project_type['hourly']['max_price'] ) ? ($db_project_type['hourly']['max_price'] ) : 0;
 				$max_val		= $db_max_price;
@@ -1205,11 +1205,11 @@ if( !function_exists(  'workreap_project_price ' ) ) {
 				$project_cost		= workreap_price_format($project_cost,'return');
 				$total_amount		= apply_filters('workreap_price_format',$total_amount,'return');
 				$job_type_text		.= '<br>'.esc_attr__("Total Amount","workreap").' = '.$total_amount;
-			} 
-			
+			}
+
 			$job_type_text		.= '';
 		}
-		
+
 		$data['cost']		= !empty($project_cost) ? $project_cost : 0;
 		$data['max_val']	= !empty($max_val) ? $max_val : 0;
 		$data['price_text']	= !empty($price_text) ? $price_text : '';
@@ -1223,18 +1223,52 @@ if( !function_exists(  'workreap_project_price ' ) ) {
 }
 
 /**
+ * Get Project Design Characteristics
+ *
+ * @throws error
+ * @author Amentotech <theamentotech@gmail.com>
+ * @return
+ */
+if( !function_exists( 'workreap_get_project_design_characteristics' ) ) {
+    function workreap_get_project_design_characteristics($job_id=''){
+		$characteristics	= array();
+		if( function_exists('fw_get_db_post_option')  ){
+			$characteristics = fw_get_db_post_option($job_id, 'characteristics');
+		}
+		return $characteristics;
+    }
+}
+
+/**
+ * Get Project Design Color
+ *
+ * @throws error
+ * @author Amentotech <theamentotech@gmail.com>
+ * @return
+ */
+if( !function_exists( 'workreap_get_project_design_colors' ) ) {
+    function workreap_get_project_design_colors($job_id=''){
+		$characteristics	= array();
+		if( function_exists('fw_get_db_settings_option')  ){
+			$characteristics = fw_get_db_post_option($job_id, 'colors');
+		}
+		return $characteristics;
+    }
+}
+
+/**
  * Filter dashboard menu
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if ( ! function_exists( 'workreap_get_dashboard_menu' ) ) {
 	function workreap_get_dashboard_menu() {
 		global $current_user;
-		
+
 		$menu_settings = get_option( 'wt_dashboard_menu_settings' );
-		
+
 		$list	= array(
 			'insights'	=> array(
 				'title' => esc_html__('Dashboard','workreap'),
@@ -1284,7 +1318,7 @@ if ( ! function_exists( 'workreap_get_dashboard_menu' ) ) {
 				'title' => esc_html__('Manage Services','workreap'),
 				'type'	=> 'freelancer'
 			),
-			
+
 			'manage-service'	=> array(
 				'title' => esc_html__('Manage Services','workreap'),
 				'type'	=> 'employer'
@@ -1319,7 +1353,7 @@ if ( ! function_exists( 'workreap_get_dashboard_menu' ) ) {
 				'type'	=> 'none'
 			)
 		);
-		
+
 		$final_list	= !empty( $menu_settings ) ? $menu_settings : $list;
 		$menu_list 	= apply_filters('workreap_filter_dashboard_menu',$final_list);
 		return $menu_list;
@@ -1331,7 +1365,7 @@ if ( ! function_exists( 'workreap_get_dashboard_menu' ) ) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if ( !function_exists( 'workreap_get_freelancer_banner' ) ) {
 	function workreap_get_freelancer_banner( $sizes = array(), $user_identity = '' ) {
@@ -1339,10 +1373,10 @@ if ( !function_exists( 'workreap_get_freelancer_banner' ) ) {
 			"width" => '1920',
 			"height" => '400',
 		), $sizes ) );
-		
+
 		$height = intval($height);
 		$width  = intval($width);
-		
+
 		if ( function_exists( 'fw_get_db_settings_option' ) ) {
 			$default_banner = fw_get_db_settings_option( 'default_freelancer_banner', $default_value = null );
 			$thumb_id = fw_get_db_post_option( $user_identity, 'banner_image', true );
@@ -1391,7 +1425,7 @@ if ( !function_exists( 'workreap_get_freelancer_banner' ) ) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if ( !function_exists( 'workreap_get_employer_banner' ) ) {
 	function workreap_get_employer_banner( $sizes = array(), $user_identity = '' ) {
@@ -1399,10 +1433,10 @@ if ( !function_exists( 'workreap_get_employer_banner' ) ) {
 			"width" => '1110',
 			"height" => '300',
 		), $sizes ) );
-		
+
 		$height = intval($height);
 		$width  = intval($width);
-		
+
 		if ( function_exists( 'fw_get_db_settings_option' ) ) {
 			$default_banner = fw_get_db_settings_option( 'default_employer_banner', $default_value = null );
 			$thumb_id = fw_get_db_post_option( $user_identity, 'banner_image', true );
@@ -1450,7 +1484,7 @@ if ( !function_exists( 'workreap_get_employer_banner' ) ) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if ( !function_exists( 'workreap_get_freelancer_avatar' ) ) {
 	function workreap_get_freelancer_avatar( $sizes = array(), $user_identity = '' ) {
@@ -1458,13 +1492,13 @@ if ( !function_exists( 'workreap_get_freelancer_avatar' ) ) {
 			"width" => '100',
 			"height" => '100',
 		), $sizes ) );
-		
+
 		if ( function_exists( 'fw_get_db_settings_option' ) ) {
 			$default_avatar = fw_get_db_settings_option( 'default_freelancer_avatar', $default_value = null );
 		}
 
 		$thumb_id = get_post_thumbnail_id( $user_identity );
-		
+
 		if ( !empty( $thumb_id ) ) {
 			$thumb_url = wp_get_attachment_image_src( $thumb_id, array( $width, $height ), true );
 			if ( $thumb_url[1] == $width and $thumb_url[2] == $height ) {
@@ -1508,7 +1542,7 @@ if ( !function_exists( 'workreap_get_freelancer_avatar' ) ) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if( !function_exists(  'workreap_get_username' ) ) {
 	function workreap_get_username( $user_id = '' , $linked_profile = '' ){
@@ -1516,7 +1550,7 @@ if( !function_exists(  'workreap_get_username' ) ) {
 		if( function_exists('fw_get_db_settings_option')  ){
 			$shortname_option	= fw_get_db_settings_option('shortname_option', $default_value = null);
 		}
-		
+
 		if( !empty( $linked_profile ) ){
 			$title	= get_the_title($linked_profile);
 			if(!empty($shortname_option) && $shortname_option === 'enable' ){
@@ -1527,12 +1561,12 @@ if( !function_exists(  'workreap_get_username' ) ) {
 			} else {
 				return esc_html( $title );
 			}
-		} 
-		
+		}
+
 		if ( empty($user_id) ) {
             return esc_html__('unnamed', 'workreap');
         }
-		
+
         $userdata = get_userdata($user_id);
         $user_role = '';
         if (!empty($userdata->roles[0])) {
@@ -1547,14 +1581,14 @@ if( !function_exists(  'workreap_get_username' ) ) {
 					$full_name		= explode(' ',$title);
 					$first_name		= !empty($full_name[0]) ? ucfirst($full_name[0]) : '';
 					$second_name	= !empty($full_name[1]) ? ' '.strtoupper($full_name[1][0]) : '';
-					
+
 					return esc_html( $first_name.$second_name );
 				} else {
 					return esc_html( $title );
 				}
 			} else{
 				if (!empty($userdata->first_name) && !empty($userdata->last_name)) {
-					
+
 					if(!empty($shortname_option) && $shortname_option === 'enable' ){
 						$last_name		= substr($userdata->last_name,0,1);
 						$second_name	= !empty($last_name) ? ' '.ucfirst($last_name) : '';
@@ -1562,7 +1596,7 @@ if( !function_exists(  'workreap_get_username' ) ) {
 					} else {
 						return $userdata->first_name . ' ' . $userdata->last_name;
 					}
-					
+
 				} else if (!empty($userdata->first_name) && empty($userdata->last_name)) {
 					return $userdata->first_name;
 				} else if (empty($userdata->first_name) && !empty($userdata->last_name)) {
@@ -1571,7 +1605,7 @@ if( !function_exists(  'workreap_get_username' ) ) {
 					return esc_html__('No Name', 'workreap');
 				}
 			}
-			
+
 		} else{
 			if (!empty($userdata->first_name) && !empty($userdata->last_name)) {
 				if(!empty($shortname_option) && $shortname_option === 'enable' ){
@@ -1597,7 +1631,7 @@ if( !function_exists(  'workreap_get_username' ) ) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if( !function_exists(  'workreap_get_report_reasons' ) ) {
 	function workreap_get_report_reasons(){
@@ -1606,7 +1640,7 @@ if( !function_exists(  'workreap_get_report_reasons' ) ) {
 			'bahavior' 	=> esc_html__('Their behavior is inappropriate or abusive', 'workreap'),
 			'Other' 	=> esc_html__('Other', 'workreap'),
 		);
-		
+
 		$list	= apply_filters('workreap_filter_reasons',$list);
 		return $list;
 	}
@@ -1617,7 +1651,7 @@ if( !function_exists(  'workreap_get_report_reasons' ) ) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if ( !function_exists( 'workreap_get_employer_avatar' ) ) {
 	function workreap_get_employer_avatar( $sizes = array(), $user_identity = '' ) {
@@ -1631,7 +1665,7 @@ if ( !function_exists( 'workreap_get_employer_avatar' ) ) {
 		}
 
 		$thumb_id = get_post_thumbnail_id( $user_identity );
-		
+
 		if ( !empty( $thumb_id ) ) {
 			$thumb_url = wp_get_attachment_image_src( $thumb_id, array( $width, $height ), true );
 			if ( $thumb_url[1] == $width and $thumb_url[2] == $height ) {
@@ -1674,7 +1708,7 @@ if ( !function_exists( 'workreap_get_employer_avatar' ) ) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if (!function_exists('workreap_add_http')) {
 
@@ -1693,7 +1727,7 @@ if (!function_exists('workreap_add_http')) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if (!function_exists('workreap_get_page_by_slug')) {
 
@@ -1721,7 +1755,7 @@ if (!function_exists('workreap_get_page_by_slug')) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if (!function_exists('workreap_matched_cart_items')) {
 
@@ -1738,7 +1772,7 @@ if (!function_exists('workreap_matched_cart_items')) {
                     $count++; // incrementing the counted items
                 }
             endforeach;
-            // returning counted items 
+            // returning counted items
             return $count;
         }
 
@@ -1752,14 +1786,14 @@ if (!function_exists('workreap_matched_cart_items')) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if (!function_exists('workreap_get_taxonomy_options')) {
 
     function workreap_get_taxonomy_options($current = '', $taxonomyName = '', $parent = '') {
-		
+
 		if( taxonomy_exists($taxonomyName) ){
-			//This gets top layer terms only.  This is done by setting parent to 0.  
+			//This gets top layer terms only.  This is done by setting parent to 0.
 			$parent_terms = get_terms($taxonomyName, array('parent' => 0, 'orderby' => 'slug', 'hide_empty' => false));
 
 
@@ -1790,23 +1824,23 @@ if (!function_exists('workreap_get_taxonomy_options')) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if (!function_exists('workreap_get_taxonomy_array')) {
 
     function workreap_get_taxonomy_array($taxonomyName = '',$parent='') {
-		
+
 		if( taxonomy_exists($taxonomyName) ){
 			if(!empty( $parent )){
 				return get_terms($taxonomyName, array('parent' => $parent, 'orderby' => 'slug', 'hide_empty' => false));
 			} else{
 				return get_terms($taxonomyName, array('orderby' => 'slug', 'hide_empty' => false));
 			}
-			
+
 		} else{
 			return array();
 		}
-        
+
     }
 
 }
@@ -1816,12 +1850,12 @@ if (!function_exists('workreap_get_taxonomy_array')) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if (!function_exists('workreap_get_categories')) {
 
     function workreap_get_categories($current = '', $type = '') {
-        //This gets top layer terms only.  This is done by setting parent to 0.  
+        //This gets top layer terms only.  This is done by setting parent to 0.
 
         $args = array('posts_per_page' => '-1',
             'post_type' 			=> $type,
@@ -1854,7 +1888,7 @@ if (!function_exists('workreap_get_categories')) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if (!function_exists('workreap_prepare_business_hours_settings')) {
 
@@ -1877,7 +1911,7 @@ if (!function_exists('workreap_prepare_business_hours_settings')) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if (!function_exists('workreap_get_week_array')) {
 
@@ -1900,7 +1934,7 @@ if (!function_exists('workreap_get_week_array')) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if (!function_exists('workreap_date_24midnight')) {
 
@@ -1929,12 +1963,12 @@ if (!function_exists('workreap_date_24midnight')) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if (!function_exists('workreap_GetDistanceBetweenPoints')) {
 	function workreap_GetDistanceBetweenPoints($latitude1, $longitude1, $latitude2, $longitude2, $unit = 'Km') {
 		$unit	= workreap_get_distance_scale();
-		
+
 		$theta = $longitude1 - $longitude2;
 		$distance = (sin(deg2rad($latitude1)) * sin(deg2rad($latitude2))) + (cos(deg2rad($latitude1)) * cos(deg2rad($latitude2)) * cos(deg2rad($theta)));
 		$distance = acos($distance);
@@ -1952,7 +1986,7 @@ if (!function_exists('workreap_GetDistanceBetweenPoints')) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if (!function_exists('workreap_get_distance_scale')) {
 	function workreap_get_distance_scale() {
@@ -1961,9 +1995,9 @@ if (!function_exists('workreap_get_distance_scale')) {
 		} else {
 			$dir_distance_type = 'Km';
 		}
-		
+
 		$unit = !empty( $dir_distance_type ) && $dir_distance_type === 'mi' ? 'Mi' : 'Km';
-		
+
 		return $unit;
 	}
 }
@@ -1973,7 +2007,7 @@ if (!function_exists('workreap_get_distance_scale')) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if ( ! function_exists( 'workreap_get_current_currency' ) ) {
 	function workreap_get_current_currency() {
@@ -1985,7 +2019,7 @@ if ( ! function_exists( 'workreap_get_current_currency' ) ) {
 			$currency['code']	= 'USD';
 			$currency['symbol']	= '$';
 		}
-		
+
 		return $currency;
 	}
 }
@@ -1995,7 +2029,7 @@ if ( ! function_exists( 'workreap_get_current_currency' ) ) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if ( ! function_exists( 'workreap_get_calendar_format' ) ) {
 	function workreap_get_calendar_format() {
@@ -2005,7 +2039,7 @@ if ( ! function_exists( 'workreap_get_calendar_format' ) ) {
 		}else{
 			$calendar_format	= 'Y-m-d';
 		}
-		
+
 		return $calendar_format;
 	}
 }
@@ -2015,7 +2049,7 @@ if ( ! function_exists( 'workreap_get_calendar_format' ) ) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if ( ! function_exists( 'workreap_get_social_settings_value' ) ) {
     function workreap_get_social_settings_value($parent,$key,$sub_key,$user_identity) {
@@ -2029,7 +2063,7 @@ if ( ! function_exists( 'workreap_get_social_settings_value' ) ) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if ( ! function_exists( 'workreap_get_login_registration_page_uri' ) ) {
     function workreap_get_login_registration_page_uri() {
@@ -2042,12 +2076,12 @@ if ( ! function_exists( 'workreap_get_login_registration_page_uri' ) ) {
 		if (!empty($login_register['enable']['login_reg_page'])) {
 			$login_reg_link = $login_register['enable']['login_reg_page'];
 		}
-		
+
 		if( !empty( $login_reg_link[0] ) ){
 			return get_permalink((int) $login_reg_link[0]);
 		} else{
 			return '#';
-		}	
+		}
 	}
 }
 
@@ -2056,7 +2090,7 @@ if ( ! function_exists( 'workreap_get_login_registration_page_uri' ) ) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if( !function_exists(  'workreap_get_status_list' ) ) {
 	function workreap_get_status_list(){
@@ -2081,9 +2115,9 @@ if( !function_exists(  'workreap_get_status_list' ) ) {
 				'classes' => 'sphide',
 				'title'   => esc_html__('Hide status','workreap')
 			)
-			
+
 		);
-		
+
 		return $list;
 	}
 }
@@ -2093,14 +2127,14 @@ if( !function_exists(  'workreap_get_status_list' ) ) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if( !function_exists(  'workreap_get_profile_status' ) ) {
 	function workreap_get_profile_status($view='one',$type='echo',$user_id){
 		if( empty($user_id)){return;}
-		
+
 		ob_start();
-		
+
 		$profile_status	= get_user_meta($user_id,'profile_status',true);
 		$statuses		= workreap_get_status_list();
 
@@ -2114,9 +2148,9 @@ if( !function_exists(  'workreap_get_profile_status' ) ) {
 					<span><i class="fa fa-circle"></i>&nbsp;<?php echo esc_attr($statuses[$profile_status]['title']);?></span>
 				</div>
 			<?php
-			} 
+			}
 		}
-		
+
 		if( isset( $type ) && $type === 'return'){
 			return ob_get_clean();
 		} else{
@@ -2130,7 +2164,7 @@ if( !function_exists(  'workreap_get_profile_status' ) ) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if (!function_exists('workreap_get_term_by_type')) {
 
@@ -2165,7 +2199,7 @@ if (!function_exists('workreap_get_term_by_type')) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if (!function_exists('workreap_get_total_posts_by_user')) {
 
@@ -2191,7 +2225,7 @@ if (!function_exists('workreap_get_total_posts_by_user')) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if ( ! function_exists( 'workreap_get_search_page_uri' ) ) {
     function workreap_get_search_page_uri( $type = '' ) {
@@ -2209,24 +2243,24 @@ if ( ! function_exists( 'workreap_get_search_page_uri' ) ) {
             $tpl_dashboard  = fw_get_db_settings_option('dashboard_tpl');
 			$tpl_services   = fw_get_db_settings_option('search_services_tpl');
         }
-        
+
         $search_page = '';
         if ( !empty( $type ) && $type === 'freelancer' ) {
             $search_page = !empty($tpl_freelancer) ? get_permalink((int) $tpl_freelancer[0]) : '';
         } elseif ( !empty( $type ) && $type === 'employer' ) {
             $search_page = !empty( $tpl_employer ) ? get_permalink((int) $tpl_employer[0]) : '';
         } elseif ( !empty( $type ) && $type === 'dashboard' ) {
-            $search_page = !empty( $tpl_dashboard[0] ) ? get_permalink((int) $tpl_dashboard[0]) : '';           
+            $search_page = !empty( $tpl_dashboard[0] ) ? get_permalink((int) $tpl_dashboard[0]) : '';
         } elseif ( !empty( $type ) && $type === 'services' ) {
-            $search_page = !empty( $tpl_services[0] ) ? get_permalink((int) $tpl_services[0]) : '';           
+            $search_page = !empty( $tpl_services[0] ) ? get_permalink((int) $tpl_services[0]) : '';
         } elseif ( !empty( $type ) && $type === 'jobs' ) {
-            $search_page = !empty( $tpl_project[0] ) ? get_permalink((int) $tpl_project[0]) : '';           
+            $search_page = !empty( $tpl_project[0] ) ? get_permalink((int) $tpl_project[0]) : '';
         } elseif ( !empty( $type ) && $type === 'job' ) {
-            $search_page = !empty( $tpl_project[0] ) ? get_permalink((int) $tpl_project[0]) : '';           
+            $search_page = !empty( $tpl_project[0] ) ? get_permalink((int) $tpl_project[0]) : '';
         } else {
             $search_page = !empty( $tpl_freelancer ) ? get_permalink((int) $tpl_freelancer[0]) : '';
         }
-        
+
         return $search_page;
     }
 }
@@ -2236,7 +2270,7 @@ if ( ! function_exists( 'workreap_get_search_page_uri' ) ) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if( !function_exists(  'workreap_get_payouts_lists' ) ) {
 	function workreap_get_payouts_lists(){
@@ -2245,10 +2279,10 @@ if( !function_exists(  'workreap_get_payouts_lists' ) ) {
             $payout_paypal   = fw_get_db_settings_option('payout_paypal');
 			$payout_choices   = fw_get_db_settings_option('payout_choices');
         }
-		
+
 		$payout_bank	= !empty( $payout_bank['url'] ) ? $payout_bank['url'] : get_template_directory_uri().'/images/payouts/bank.png';
 		$payout_paypal	= !empty( $payout_paypal['url'] ) ? $payout_paypal['url'] : get_template_directory_uri().'/images/payouts/paypal.png';
-			
+
 		$list	= array(
 					'paypal' => array(
 									'id'		=> 'paypal',
@@ -2336,11 +2370,11 @@ if( !function_exists(  'workreap_get_payouts_lists' ) ) {
 									)
 								),
 			);
-		
+
 		if( !empty( $list[$payout_choices] )){
 			unset($list[$payout_choices]);
 		}
-		
+
 		$list	= apply_filters('workreap_filter_payouts_lists',$list);
 		return $list;
 	}
@@ -2351,7 +2385,7 @@ if( !function_exists(  'workreap_get_payouts_lists' ) ) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if(!function_exists('workreap_get_tagline') ) {
 	function workreap_get_tagline($post_id ='') {
@@ -2362,7 +2396,7 @@ if(!function_exists('workreap_get_tagline') ) {
 			$tag_line	= "";
 		}
 		return $tag_line;
-	} 
+	}
 }
 
 /**
@@ -2370,7 +2404,7 @@ if(!function_exists('workreap_get_tagline') ) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if(!function_exists('workreap_get_location') ) {
 	function workreap_get_location($post_id ='') {
@@ -2386,7 +2420,7 @@ if(!function_exists('workreap_get_location') ) {
 		$icon          				= fw_get_db_term_option($terms[0]->term_id,'locations', 'image');
 		$item['flag'] 	= !empty($icon['url']) ? workreap_add_http($icon['url']) : '';
 		return $item;
-	} 
+	}
 }
 
 
@@ -2395,29 +2429,29 @@ if(!function_exists('workreap_get_location') ) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
-if( !function_exists( 'workreap_get_signup_page_url' ) ) {    
+if( !function_exists( 'workreap_get_signup_page_url' ) ) {
     function workreap_get_signup_page_url($key = 'step', $slug = '1') {
         //Get authentication page settings
-        $login_register     = '';   
+        $login_register     = '';
         $login_reg_link     = '';
         $signup_page_slug   = '';
 
         if (function_exists('fw_get_db_settings_option')) {
-            $login_register = fw_get_db_settings_option('enable_login_register');            
-        } 
+            $login_register = fw_get_db_settings_option('enable_login_register');
+        }
 
         if (!empty($login_register['enable']['login_reg_page'])) {
             $login_reg_link = $login_register['enable']['login_reg_page'];
         }
 
         if(!empty( $login_reg_link[0] )){
-            $signup_page_slug = esc_url(get_permalink((int) $login_reg_link[0]));            
+            $signup_page_slug = esc_url(get_permalink((int) $login_reg_link[0]));
         }
 
         if( !empty( $signup_page_slug ) ){
-            $signup_page_slug = add_query_arg( $key, $slug, $signup_page_slug );    
+            $signup_page_slug = add_query_arg( $key, $slug, $signup_page_slug );
             return $signup_page_slug;
         }
 
@@ -2430,7 +2464,7 @@ if( !function_exists( 'workreap_get_signup_page_url' ) ) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if ( ! function_exists( 'workreap_sum_earning_freelancer_payouts' ) ) {
     function workreap_sum_earning_freelancer_payouts( $status='',$colum_name='') {
@@ -2446,9 +2480,9 @@ if ( ! function_exists( 'workreap_sum_earning_freelancer_payouts' ) ) {
 		} else{
 			$total_earning	= 0;
 		}
-		
+
 		return $total_earning;
-		
+
 	}
 }
 
@@ -2457,7 +2491,7 @@ if ( ! function_exists( 'workreap_sum_earning_freelancer_payouts' ) ) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if ( ! function_exists( 'workreap_list_month' ) ) {
     function workreap_list_month( ) {
@@ -2475,9 +2509,9 @@ if ( ! function_exists( 'workreap_list_month' ) ) {
 						'11'	=> esc_html__("November",'workreap'),
 						'12'	=> esc_html__("December",'workreap')
 					);
-		
+
 		return $month_names;
-		
+
 	}
 }
 
@@ -2486,7 +2520,7 @@ if ( ! function_exists( 'workreap_list_month' ) ) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if( !function_exists(  'workreap_get_earning_status_list' ) ) {
 	function workreap_get_earning_status_list(){
@@ -2495,9 +2529,9 @@ if( !function_exists(  'workreap_get_earning_status_list' ) ) {
 			'completed' => esc_html__('Completed','workreap'),
 			'cancelled' => esc_html__('Cancelled','workreap'),
 			'processed' => esc_html__('Processed','workreap')
-			
+
 		);
-		
+
 		return $list;
 	}
 }
@@ -2507,7 +2541,7 @@ if( !function_exists(  'workreap_get_earning_status_list' ) ) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if ( ! function_exists( 'workreap_get_services_count' ) ) {
 	function workreap_get_services_count($post_type, $status = array(),$post_id='',$return='count',$count='-1') {
@@ -2526,7 +2560,7 @@ if ( ! function_exists( 'workreap_get_services_count' ) ) {
 		);
 
 		$services 	= get_posts($args);
-		
+
 		if($return === 'count'){
 			$services	= !empty( $services ) ? count($services) : 0;
 		}
@@ -2540,7 +2574,7 @@ if ( ! function_exists( 'workreap_get_services_count' ) ) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if ( ! function_exists( 'workreap_get_post_count_by_meta' ) ) {
 	function workreap_get_post_count_by_meta($post_type, $status = array(),$meta_array=array(),$return='count',$count='-1') {
@@ -2553,11 +2587,11 @@ if ( ! function_exists( 'workreap_get_post_count_by_meta' ) ) {
 			foreach($meta_array as $meta){
 				$args['meta_query'][]	= $meta;
 			}
-			
+
 		}
 
 		$post_data 	= get_posts($args);
-		
+
 		if($return === 'count'){
 			$post_data	= !empty( $post_data ) ? count($post_data) : 0;
 		}
@@ -2566,11 +2600,11 @@ if ( ! function_exists( 'workreap_get_post_count_by_meta' ) ) {
 	}
 }
 /**
- * Return Service Cart attributes 
+ * Return Service Cart attributes
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if( !function_exists( 'worktic_service_cart_attributes' ) ) {
 	function worktic_service_cart_attributes(){
@@ -2579,7 +2613,7 @@ if( !function_exists( 'worktic_service_cart_attributes' ) ) {
 			'delivery_time' 	=> esc_html__('Delivery time', 'workreap')
 		);
 
-		$list = apply_filters('worktic_set_service_cart_attributes', $list);			
+		$list = apply_filters('worktic_set_service_cart_attributes', $list);
 		return $list;
 	}
 }
@@ -2589,7 +2623,7 @@ if( !function_exists( 'worktic_service_cart_attributes' ) ) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if (!function_exists('workreap_post_author_meta_box_services')) {
 	function workreap_post_author_meta_box_services( $post ) {
@@ -2604,7 +2638,7 @@ if (!function_exists('workreap_post_author_meta_box_services')) {
 			'selected' 	=> empty( $post->ID ) ? $user_ID : $post->post_author,
 			'show' 		=> 'display_name_with_login',
 			'include_selected' => true,
-			
+
 		) );
 	}
 }
@@ -2614,7 +2648,7 @@ if (!function_exists('workreap_post_author_meta_box_services')) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if (!function_exists('workreap_post_author_meta_box_order_services')) {
 	function workreap_post_author_meta_box_order_services( $post ) {
@@ -2629,7 +2663,7 @@ if (!function_exists('workreap_post_author_meta_box_order_services')) {
 			'selected' 	=> empty( $post->ID ) ? $user_ID : $post->post_author,
 			'show' 		=> 'display_name_with_login',
 			'include_selected' => true,
-			
+
 		) );
 	}
 }
@@ -2639,7 +2673,7 @@ if (!function_exists('workreap_post_author_meta_box_order_services')) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if(!function_exists('workreap_save_service_rating')){
     function workreap_save_service_rating($post_id = '', $rating_options = '' ,$action = ''){
@@ -2649,7 +2683,7 @@ if(!function_exists('workreap_save_service_rating')){
 		$rating_evaluation_count 	= !empty($rating_titles) ? count($rating_titles) : 0;
 		$review_extra_meta 			= array();
 		$rating 					= 0;
-		
+
 		$service_id				= get_post_meta( $post_id , '_service_id',true );
 		$service_id				= !empty( $service_id ) ? intval( $service_id ) : '';
 
@@ -2657,7 +2691,7 @@ if(!function_exists('workreap_save_service_rating')){
 			$serviceTotalRating	= get_post_meta( $service_id , '_service_total_rating',true );
 			$serviceFeedbacks	= get_post_meta( $service_id , '_service_feedbacks',true );
 			$hiredRating		= get_post_meta( $post_id , '_hired_service_rating',true );
-			
+
 			$serviceTotalRating	= !empty( $serviceTotalRating ) ? $serviceTotalRating : 0;
 			$serviceFeedbacks	= !empty( $serviceFeedbacks ) ? intval( $serviceFeedbacks ) : 0;
 			$hiredRating		= !empty( $hiredRating ) ?  $hiredRating  : 0;
@@ -2669,10 +2703,10 @@ if(!function_exists('workreap_save_service_rating')){
 					$rating += (float) $rating_options[$slug];
 				}
 			}
-			
+
 			$hired_service_rating = $rating / $rating_evaluation_count;
 			$hired_service_rating = number_format((float) $hired_service_rating, 2, '.', '');
-			
+
 			if( !empty( $serviceTotalRating ) && !empty( $serviceFeedbacks ) ) {
 				if( !empty( $action ) && $action === 'add' ) {
 					$newServiceTotal	= $serviceTotalRating + $hired_service_rating;
@@ -2682,21 +2716,21 @@ if(!function_exists('workreap_save_service_rating')){
 					$newServiceTotal	= $newServiceTotal - $hiredRating;
 					$newServiceTotal	= ( $newServiceTotal + $hired_service_rating ) / $serviceFeedbacks ;
 				}
-								
+
 			} else {
 				$newServiceTotal	= $hired_service_rating;
 				$serviceFeedbacks	= 1;
 			}
-			
-			
+
+
 			//user rating
 			$freelancer_id			= get_post_meta( $post_id, '_service_author', true);
 			$freelance_profile_id	= workreap_get_linked_profile_id( $freelancer_id );
 			$user_db_reviews	= get_post_meta($freelance_profile_id, 'review_data', true);
 			$user_db_reviews	= !empty( $user_db_reviews ) ? $user_db_reviews : array();
-			
+
 			$user_rating			= 0;
-			
+
 			if( !empty( $user_db_reviews['wt_rating_count'] ) ){
 				$rating			= !empty( $user_db_reviews['wt_rating_count'] ) ? ( $user_db_reviews['wt_rating_count'] + $hired_service_rating ) / ( $user_db_reviews['wt_total_rating'] + 1 ) : $user_rating;
 				$user_rating 	= number_format((float) $rating, 2, '.', '');
@@ -2737,17 +2771,17 @@ if(!function_exists('workreap_save_service_rating')){
 			//end user rating
 			update_post_meta($service_id, '_service_total_rating', $newServiceTotal);
 			update_post_meta($service_id, '_service_feedbacks', $serviceFeedbacks);
-						
+
 			$review_meta = array(
 				'_hired_service_rating' 	=> $hired_service_rating,
 				'_review_date' 				=> date('Y-m-d H:i:s', strtotime($current_date)),
 			);
-			
+
 			//Update post meta
 			foreach ($review_meta as $key => $value) {
 				update_post_meta($post_id, $key, $value);
 			}
-		} 
+		}
     }
 }
 
@@ -2756,7 +2790,7 @@ if(!function_exists('workreap_save_service_rating')){
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if(!function_exists('workreap_save_service_status')){
     function workreap_save_service_status($post_id = '', $status = '' ){
@@ -2782,7 +2816,7 @@ if(!function_exists('workreap_save_service_status')){
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if (!function_exists('workreap_post_author_meta_box_services')) {
 	function workreap_post_author_meta_box_services( $post ) {
@@ -2797,7 +2831,7 @@ if (!function_exists('workreap_post_author_meta_box_services')) {
 			'selected' 	=> empty( $post->ID ) ? $user_ID : $post->post_author,
 			'show' 		=> 'display_name_with_login',
 			'include_selected' => true,
-			
+
 		) );
 	}
 }
@@ -2807,7 +2841,7 @@ if (!function_exists('workreap_post_author_meta_box_services')) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if (!function_exists('workreap_post_author_meta_box_order_services')) {
 	function workreap_post_author_meta_box_order_services( $post ) {
@@ -2822,7 +2856,7 @@ if (!function_exists('workreap_post_author_meta_box_order_services')) {
 			'selected' 	=> empty( $post->ID ) ? $user_ID : $post->post_author,
 			'show' 		=> 'display_name_with_login',
 			'include_selected' => true,
-			
+
 		) );
 	}
 }
@@ -2832,7 +2866,7 @@ if (!function_exists('workreap_post_author_meta_box_order_services')) {
   *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if (!function_exists('workreap_return_system_access')) {
 
@@ -2840,9 +2874,9 @@ if (!function_exists('workreap_return_system_access')) {
 		if (function_exists('fw_get_db_settings_option')) {
         	$application_access = fw_get_db_settings_option('application_access');
 		}
-		
+
 		$application_access	= !empty( $application_access ) ? $application_access : '';
-		
+
 		if( !empty( $application_access ) ) {
 			if($application_access === 'service_base') {
 				return 'service';
@@ -2882,16 +2916,16 @@ if ( ! function_exists( 'workreap_get_location_lat_long' ) ) {
 			$current_latitude	= esc_attr( $_GET['lat'] );
 			$current_longitude	= esc_attr( $_GET['long'] );
 		} else{
-			
+
 			$args = array(
 				'timeout'     => 15,
 				'headers' => array('Accept-Encoding' => ''),
 				'sslverify' => false
 			);
-			
+
 			$address	 = !empty($_GET['geo']) ?  $_GET['geo'] : '';
 			$prepAddr	= str_replace(' ','+',$address);
-			
+
 			$url	    = 'https://maps.google.com/maps/api/geocode/json?address='.$prepAddr.'&key='.$google_key;
 			$response   = wp_remote_get( $url, $args );
 			$geocode	= wp_remote_retrieve_body($response);
@@ -2902,7 +2936,7 @@ if ( ! function_exists( 'workreap_get_location_lat_long' ) ) {
 				$Latitude	 = $output->results[0]->geometry->location->lat;
 				$Longitude   = $output->results[0]->geometry->location->lng;
 			}
-			
+
 			if( !empty( $Latitude ) && !empty( $Longitude ) ){
 				$current_latitude	= $Latitude;
 				$current_longitude	= $Longitude;
@@ -2911,12 +2945,12 @@ if ( ! function_exists( 'workreap_get_location_lat_long' ) ) {
 				$current_longitude	= $dir_longitude;
 			}
 		}
-		
+
 		$location	= array();
-		
+
 		$location['lat']	= $current_latitude;
 		$location['long']	= $current_longitude;
-		
+
 		return $location;
 	}
 }
@@ -2943,7 +2977,7 @@ if ( ! function_exists( 'workreap_foldersize' ) ) {
 					$size = filesize( $currentFile );
 					$total_size += $size;
 				}
-			}   
+			}
 		}
 
 		return $total_size;
@@ -2955,7 +2989,7 @@ if ( ! function_exists( 'workreap_foldersize' ) ) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if (!function_exists('workreap_show_freelancers_list')) {
 	function workreap_show_freelancers_list($field_name) {
@@ -2978,12 +3012,12 @@ if (!function_exists('workreap_show_freelancers_list')) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if( !function_exists( 'workreap_apply_multiple_users_select_dropdown' ) ) {
 	// add_filter('wp_custom_dropdown_users','workreap_apply_multiple_users_select_dropdown', 10, 1);
 	function workreap_apply_multiple_users_select_dropdown($output){
-		$output = str_replace("id='users_multiselect'","id='users_multiselect' multiple data-placeholder='" . 
+		$output = str_replace("id='users_multiselect'","id='users_multiselect' multiple data-placeholder='" .
 			esc_html__('Select Freelancers', 'workreap') . "'", $output);
 		return trim( $output );
 	}
@@ -2994,7 +3028,7 @@ if( !function_exists( 'workreap_apply_multiple_users_select_dropdown' ) ) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 function wp_custom_dropdown_users( $args = '' ) {
     $defaults = array(
@@ -3020,28 +3054,28 @@ function wp_custom_dropdown_users( $args = '' ) {
         'role__in'                => array(),
         'role__not_in'            => array(),
     );
- 
+
     $defaults['selected'] = is_author() ? get_query_var( 'author' ) : 0;
- 
+
     $parsed_args = wp_parse_args( $args, $defaults );
- 
+
     $query_args = wp_array_slice_assoc( $parsed_args, array( 'blog_id', 'include', 'exclude', 'orderby', 'order', 'who', 'role', 'role__in', 'role__not_in' ) );
- 
+
     $fields = array( 'ID', 'user_login' );
- 
+
     $show = ! empty( $parsed_args['show'] ) ? $parsed_args['show'] : 'display_name';
     if ( 'display_name_with_login' === $show || 'display_name_with_rating' === $show ) {
         $fields[] = 'display_name';
     } else {
         $fields[] = $show;
     }
- 
+
     $query_args['fields'] = $fields;
- 
+
     $show_option_all   = $parsed_args['show_option_all'];
     $show_option_none  = $parsed_args['show_option_none'];
     $option_none_value = $parsed_args['option_none_value'];
- 
+
     /**
      * Filters the query arguments for the list of users in the dropdown.
      *
@@ -3051,9 +3085,9 @@ function wp_custom_dropdown_users( $args = '' ) {
      * @param array $parsed_args The arguments passed to wp_dropdown_users() combined with the defaults.
      */
     $query_args = apply_filters( 'wp_dropdown_users_args', $query_args, $parsed_args );
- 
+
     $users = get_users( $query_args );
- 
+
     $output = '';
     if ( ! empty( $users ) && ( empty( $parsed_args['hide_if_only_one_author'] ) || count( $users ) > 1 ) ) {
         $name = esc_attr( $parsed_args['name'] );
@@ -3063,16 +3097,16 @@ function wp_custom_dropdown_users( $args = '' ) {
             $id = $parsed_args['id'] ? " id='" . esc_attr( $parsed_args['id'] ) . "'" : " id='$name'";
         }
         $output = "<select name='{$name}'{$id} class='" . $parsed_args['class'] . "'>\n";
- 
+
         if ( $show_option_all ) {
             $output .= "\t<option value='0'>$show_option_all</option>\n";
         }
- 
+
         if ( $show_option_none ) {
             $_selected = selected( $option_none_value, $parsed_args['selected'], false );
             $output   .= "\t<option value='" . esc_attr( $option_none_value ) . "'$_selected>$show_option_none</option>\n";
         }
- 
+
         if ( $parsed_args['include_selected'] && ( $parsed_args['selected'] > 0 ) ) {
             $found_selected          = false;
             $parsed_args['selected'] = (int) $parsed_args['selected'];
@@ -3082,12 +3116,12 @@ function wp_custom_dropdown_users( $args = '' ) {
                     $found_selected = true;
                 }
             }
- 
+
             if ( ! $found_selected ) {
                 $users[] = get_userdata( $parsed_args['selected'] );
             }
         }
- 
+
         // sort by rating
         if('display_name_with_rating' === $show) {
             foreach ( (array) $users as $user ) {
@@ -3103,21 +3137,21 @@ function wp_custom_dropdown_users( $args = '' ) {
                 /* translators: 1: User's display name, 2: User login. */
                 $display = sprintf( _x( '%1$s (%2$s)', 'user dropdown' ), $user->display_name, $user->user_login );
             } elseif ( 'display_name_with_rating' === $show ) {
-                $display = sprintf('%1$s (rating: %3$0.1f/5.0)', $user->display_name, 
+                $display = sprintf('%1$s (rating: %3$0.1f/5.0)', $user->display_name,
                 	$user->rating * 100 / 5, $user->rating);
             } elseif ( ! empty( $user->$show ) ) {
                 $display = $user->$show;
             } else {
                 $display = '(' . $user->user_login . ')';
             }
- 
+
             $_selected = selected( $user->ID, $parsed_args['selected'], false );
             $output   .= "\t<option value='$user->ID'$_selected>" . esc_html( $display ) . "</option>\n";
         }
- 
+
         $output .= '</select>';
     }
- 
+
     /**
      * Filters the wp_dropdown_users() HTML output.
      *
@@ -3126,7 +3160,7 @@ function wp_custom_dropdown_users( $args = '' ) {
      * @param string $output HTML output generated by wp_dropdown_users().
      */
     $html = apply_filters( 'wp_custom_dropdown_users', $output );
- 
+
     if ( $parsed_args['echo'] ) {
         echo $html;
     }
@@ -3134,7 +3168,7 @@ function wp_custom_dropdown_users( $args = '' ) {
 }
 
 /**
- * Count new feedbacks sent to freelancr proposals 
+ * Count new feedbacks sent to freelancr proposals
  */
 if ( !function_exists( 'workreap_count_freelancer_proposals_new_feedbacks' ) ) {
     function workreap_count_freelancer_proposals_new_feedbacks($user_id = 0) {
@@ -3157,7 +3191,7 @@ if ( !function_exists( 'workreap_count_freelancer_proposals_new_feedbacks' ) ) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if (!function_exists('workreap_count_new_project_proposals')) {
     function workreap_count_new_project_proposals($project_id) {
@@ -3180,7 +3214,7 @@ if (!function_exists('workreap_count_new_project_proposals')) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if (!function_exists('workreap_count_employer_projects_new_proposals')) {
     function workreap_count_employer_projects_new_proposals( $user_id ) {
@@ -3205,7 +3239,7 @@ if (!function_exists('workreap_count_employer_projects_new_proposals')) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if (!function_exists('workreap_mark_project_proposals')) {
     function workreap_mark_project_proposals($project_id) {
@@ -3215,7 +3249,7 @@ if (!function_exists('workreap_mark_project_proposals')) {
 
         global $wpdb;
 
-        $proposals = $wpdb->get_results( $wpdb->prepare( "SELECT `post_id` FROM `{$wpdb->postmeta}` WHERE `meta_key` = %s AND `meta_value` = %d", 
+        $proposals = $wpdb->get_results( $wpdb->prepare( "SELECT `post_id` FROM `{$wpdb->postmeta}` WHERE `meta_key` = %s AND `meta_value` = %d",
             '_project_id', intval($project_id) ) );
 
         if( !empty($proposals) ) {
@@ -3237,7 +3271,7 @@ if (!function_exists('workreap_mark_project_proposals')) {
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
- * @return 
+ * @return
  */
 if( !function_exists('workreap_delete_freelancer_from_project_invitations') ) {
     function workreap_delete_freelancer_from_project_invitations($project_id, $freelancer_id) {
@@ -3261,7 +3295,7 @@ if( !function_exists('workreap_delete_freelancer_from_project_invitations') ) {
 			if (class_exists('WorkreapJobInvitationCancellation')) {
 				$email_helper = new WorkreapJobInvitationCancellation();
 				$emailData 	  = array();
-				
+
 				$employer_profile_id 	= workreap_get_linked_profile_id($employer_id);
 				$freelancer_profile_id 	= workreap_get_linked_profile_id($freelancer_id);
 				//update invitation
@@ -3285,6 +3319,57 @@ if( !function_exists('workreap_delete_freelancer_from_project_invitations') ) {
 			}
 		}
 
-        return $success;
-    }
+		return $success;
+	}
+}
+
+/**
+ * Get project design characteristics attributes
+ *
+ * @throws error
+ * @author Amentotech <theamentotech@gmail.com>
+ * @return
+ */
+if( !function_exists('workreap_get_design_characteristics') ) {
+	function workreap_get_design_characteristics(){
+		$attributes = array(
+			'modern_classic' => array(
+				'left' 	=> 'Modern',
+				'right' => 'Classic',
+			),
+			'youthful_mature' => array(
+				'left' 	=> 'Youthful',
+				'right' => 'Mature',
+			),
+			'feminine_masculine' => array(
+				'left' 	=> 'Feminine',
+				'right' => 'Masculine',
+			),
+			'playful_sophisticated' => array(
+				'left'	=> 'Playful',
+				'right'	=> 'Sophisticated',
+			),
+			'luxurious_economical' => array(
+				'left'	=> 'Luxurious',
+				'right'	=> 'Economical',
+			),
+			'loud_quiet' => array(
+				'left'	=> 'Loud',
+				'right'	=> 'Quiet',
+			),
+			'simple_complex' => array(
+				'left'	=> 'Simple',
+				'right'	=> 'Complex',
+			),
+			'subtle_obvious' => array(
+				'left'	=> 'Subtle',
+				'right'	=> 'Obvious',
+			),
+			'geometric_organic' => array(
+				'left'	=> 'Geometric',
+				'right'	=> 'Organic',
+			),
+		);
+		return $attributes;
+	}
 }

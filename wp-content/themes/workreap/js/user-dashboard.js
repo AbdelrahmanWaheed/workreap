@@ -7,6 +7,7 @@ jQuery(document).on('ready', function() {
 	var skillError      	= scripts_vars.skill_error;
 
 	var alreadySkill      	= scripts_vars.already_skill_value_error; 
+	var alreadyColor      	= scripts_vars.already_color_value_error; 
     var sys_upload_nonce  	= scripts_vars.sys_upload_nonce; 
     var uploadSize     		= scripts_vars.data_size_in_kb;
 	var featured_skills     = scripts_vars.featured_skills;
@@ -18,6 +19,7 @@ jQuery(document).on('ready', function() {
 	var is_rtl  		 	= scripts_vars.is_rtl;
 	var calendar_locale  	= scripts_vars.calendar_locale;
 	var emptySkill  		= scripts_vars.emptySkill;
+	var emptyColor  		= scripts_vars.emptyColor;
 	var chat_settings  		= scripts_vars.chat_settings;
 	var chat_host   		= scripts_vars.chat_host;
 	var chat_port   		= scripts_vars.chat_port;
@@ -1101,6 +1103,12 @@ jQuery(document).on('ready', function() {
         _this.parents('.wt-skill-list').remove();
     });
 	
+    //Remove color
+    jQuery(document).on('click', '.wt-delete-color', function(){
+        var _this = jQuery(this);
+        _this.parents('.wt-skill-list').remove();
+    });
+
 	//Load Award
     jQuery(document).on('click', '.wt-add-addons', function(e){
         e.preventDefault();
@@ -1605,6 +1613,34 @@ jQuery(document).on('ready', function() {
         }
     });
 	
+	//Add skills
+    jQuery(document).on('click','.add-job-colors', function() {
+        var _this 	= jQuery(this);
+        var _value  = jQuery('.color-dynamic-field').val();
+		
+		var check_color	= true;
+		jQuery('.jobcolors-wrap input').each( function(index){  
+			var val = $(this).val();
+			if(val == _value ) {
+				check_color	= false;
+			}
+		});
+		
+        if( _value == '') {
+            jQuery.sticky(emptyColor, {classList: 'important', speed: 200, autoclose: 5000});
+            return false;
+        } else if(check_color == false) {
+			jQuery.sticky(alreadyColor, {classList: 'important', speed: 200, autoclose: 5000});
+            return false;
+		} else {
+            var load_color  = wp.template('load-job-color');
+            var data        = {name:_value,value:_value};
+            load_color      = load_color(data);
+			console.log('here');
+            jQuery('.jobcolors-wrap').append(load_color);
+			console.log('here');
+        }
+    });
 	
 	//Post Job
     jQuery(document).on('click', '.wt-post-job', function (e) {
