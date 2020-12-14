@@ -54,6 +54,9 @@ $total_cancelled_jobs		= !empty($cancelled_jobs) ? $cancelled_jobs : 0;
 			<h3><?php echo esc_html($total_ongoing_jobs);?></h3>
 			<a href="<?php Workreap_Profile_Menu::workreap_profile_menu_link('projects', $user_identity,'','ongoing'); ?>"><?php esc_html_e('Total Ongoing Projects', 'workreap'); ?></a>
 		</div>
+		<em class="wtunread-count wt-tipso tipso_style" data-tipso="New Messages">
+			<?php echo workreap_get_total_ongoing_projects_new_messages_count( $user_identity ); ?>
+		</em>
 	</div>
 </div>
 <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">

@@ -725,7 +725,7 @@ main.wt-main{min-height:800px}
 .wt-package-modal .wt-packageinfo{font-size:14px}
 .wt-package-modal{padding:0!important}
 .wt-ongoing-dash .wt-tablecategories tbody tr a{color:#767676}
-.wt-ongoing-dash .wt-tablecategories tbody tr .wt-btn{color:#fff;padding:0 20px;line-height:35px}
+.wt-ongoing-dash .wt-tablecategories tbody tr .wt-btn{color:#fff;padding:0 20px;line-height:35px;white-space:nowrap;}
 .wt-ongoing-dash .wt-tablecategories tbody tr a .fa-check-circle{color:#00cc67}
 .wt-service-tabel{float:left;width:100%}
 .wt-tableservice .wt-service-tabel figure{margin:0;float:left;width:auto;min-height:80px;margin-right:20px;border-radius:4px}

@@ -74,6 +74,7 @@ if( $query->have_posts() ){
 									$milestone_option	= get_post_meta( $post->ID, '_milestone', true );
 								}
 								$proposal_id	= get_post_meta( $post->ID, '_proposal_id', true );
+								$comments_count = workreap_get_ongoing_project_new_messages_count( $post->ID );
 							?>
 							<div class="wt-userlistinghold wt-featured wt-userlistingvtwo">
 								<?php do_action('workreap_project_print_featured', $post->ID); ?>
@@ -91,17 +92,6 @@ if( $query->have_posts() ){
 									</div>
 									<div class="wt-rightarea">
 										<div class="wt-btnarea">
-											<?php
-											$args = array(
-												'count' 					=> true,
-												'post_id'					=> $proposal_id,
-												'author__not_in'	=> array( $user_identity ),
-												'status'					=> 'approve',
-												'meta_key'				=> '_new_comment',
-												'meta_value'			=> true,
-											);
-											$comments_count = get_comments( $args );
-											?>
 											<?php if(!empty($milestone_option) && $milestone_option === 'on' && !empty($proposal_id) ){ ?>
 												<a href="<?php Workreap_Profile_Menu::workreap_profile_menu_link('milestone', $user_identity, '','listing',$proposal_id); ?>" 
 													class="wt-btn">

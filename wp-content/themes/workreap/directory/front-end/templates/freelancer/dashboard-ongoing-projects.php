@@ -76,6 +76,7 @@ if( $query->have_posts() ){
 									$milestone_option	= get_post_meta( $post->ID, '_milestone', true );
 								}
 								$proposal_id	= get_post_meta( $post->ID, '_proposal_id', true );
+								$comments_count = workreap_get_ongoing_project_new_messages_count( $post->ID );
 							?>
 							<div class="wt-userlistinghold wt-featured wt-userlistingvtwo">
 								<?php do_action('workreap_project_print_featured', $post->ID); ?>
@@ -83,7 +84,6 @@ if( $query->have_posts() ){
 									<div class="wt-contenthead">
 										<div class="wt-title">
 											<?php do_action( 'workreap_get_verification_check', $linked_profile, $employer_title ); ?>
-											
 											<h2><a href="<?php echo esc_url( get_the_permalink()); ?>" target="_blank"><?php echo esc_html( get_the_title()); ?></a></h2>
 										</div>
 										<ul class="wt-saveitem-breadcrumb wt-userlisting-breadcrumb">
@@ -93,20 +93,9 @@ if( $query->have_posts() ){
 										</ul>
 									</div>
 									<div class="wt-rightarea">
-										<?php 
-										$args = array(
-											'count' 					=> true,
-											'post_id'					=> $proposal_id,
-											'author__not_in'	=> array( $user_identity ),
-											'status'					=> 'approve',
-											'meta_key'				=> '_new_comment',
-											'meta_value'			=> true,
-										);
-										$comments_count = get_comments( $args ); 
-										?>
 										<div class="wt-btnarea">
 											<?php if(!empty($milestone_option) && $milestone_option === 'on' && !empty($proposal_id) ){ ?>
-												<a href="<?php Workreap_Profile_Menu::workreap_profile_menu_link('milestone', $user_identity, '','listing',$proposal_id); ?>" 
+												<a href="<?php Workreap_Profile_Menu::workreap_profile_menu_link('milestone', $user_identity, '','listing',$proposal_id);?>" 
 													class="wt-btn">
 													<?php esc_html_e('View Details','workreap');?>
 													<?php if( $comments_count > 0 ) { ?>

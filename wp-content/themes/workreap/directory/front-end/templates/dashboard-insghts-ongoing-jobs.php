@@ -87,6 +87,7 @@ $query 					= new WP_Query($args);
 							
 							$project_cost	= get_post_meta( $proposal_id, '_amount', true );
 							$project_cost	= !empty($project_cost) ? $project_cost : 0;
+							$comments_count = workreap_get_ongoing_project_new_messages_count( $post->ID );
 
 							?>
 							<tr>
@@ -96,9 +97,16 @@ $query 					= new WP_Query($args);
 								<td>
 									<div class="wt-btnarea">
 										<?php if(!empty($milestone_option) && $milestone_option ==='on' ){ ?>
-											<a href="<?php Workreap_Profile_Menu::workreap_profile_menu_link('milestone', $user_identity, '','listing',$proposal_id); ?>" class="wt-btn"><?php esc_html_e('View Details','workreap');?></a>
+											<a href="<?php Workreap_Profile_Menu::workreap_profile_menu_link('milestone', $user_identity, '','listing',$proposal_id); ?>" class="wt-btn">
+												<?php esc_html_e('View Details','workreap');?>
+											</a>
 										<?php } else if( !empty( $user_type ) && $user_type === 'employer' ) { ?>
-											<a href="<?php Workreap_Profile_Menu::workreap_profile_menu_link('jobs', $user_identity, '','proposals',$post->ID); ?>" class="wt-btn"><?php esc_html_e('View Details','workreap');?></a>
+											<a href="<?php Workreap_Profile_Menu::workreap_profile_menu_link('jobs', $user_identity, '','proposals',$post->ID); ?>" class="wt-btn">
+												<?php esc_html_e('View Details','workreap');?>
+												<?php if( $comments_count > 0 ) { ?>
+													<span class="badge badge-light badge-pill"><?php echo $comments_count; ?> &nbsp; New</span>
+												<?php } ?>
+											</a>
 										<?php } elseif ( $user_type === 'freelancer' ) {?>
 											<a href="<?php Workreap_Profile_Menu::workreap_profile_menu_link('jobs', $user_identity, '','history',$post->ID); ?>" class="wt-btn"><?php esc_html_e('View Details','workreap');?></a>
 										<?php } ?>

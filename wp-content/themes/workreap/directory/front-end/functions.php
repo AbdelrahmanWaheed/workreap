@@ -3267,6 +3267,77 @@ if (!function_exists('workreap_mark_project_proposals')) {
 }
 
 /**
+ * Count new messages of the ongoing project
+ *
+ * @throws error
+ * @author Amentotech <theamentotech@gmail.com>
+ * @return
+ */
+if (!function_exists('workreap_get_ongoing_project_new_messages_count')) {
+    function workreap_get_ongoing_project_new_messages_count( $project_id ) {
+        if( empty($project_id) || intval($project_id) == 0 ) {
+            return 0;
+        }
+
+        global $current_user;
+        $proposal_id = get_post_meta( $project_id, '_proposal_id', true );
+
+        $args = array(
+            'count' 			=> true,
+            'post_id'			=> $proposal_id,
+            'author__not_in'	=> array( $current_user->ID ),
+            'status'			=> 'approve',
+            'meta_key'			=> '_new_comment',
+            'meta_value'		=> true,
+        );
+        return get_comments( $args );
+    }
+}
+
+/**
+ * Count new messages of total user ongoing projects
+ *
+ * @throws error
+ * @author Amentotech <theamentotech@gmail.com>
+ * @return
+ */
+if (!function_exists('workreap_get_total_ongoing_projects_new_messages_count')) {
+    function workreap_get_total_ongoing_projects_new_messages_count( $user_id = 0 ) {
+        if( empty($user_id) || intval($user_id) == 0 ) {
+            $user_id = get_current_user_id();
+        }
+        $user_type = apply_filters('workreap_get_user_type', $user_id);
+
+        $args = array(
+            'post_type'         => 'projects',
+            'post_status'       => array('hired'),
+            'posts_per_page'    => -1,
+        );
+        if( $user_type === 'employer' ) {
+        	$args['author'] = $user_id;
+        } elseif( $user_type === 'freelancer' ) {
+	        $linked_profile = workreap_get_linked_profile_id( $user_id );
+        	$args['meta_query'] = array(
+                'relation'      => 'AND',
+                array(
+                    'key'       => '_freelancer_id',
+                    'value'     => $linked_profile,
+                    'compare'   => '='
+                ),
+            );
+        }
+        $projects = get_posts( $args );
+        $count = 0;
+        if( !empty( $projects ) ) {
+            foreach ($projects as $project) {
+            	$count += workreap_get_ongoing_project_new_messages_count( $project->ID );
+            }
+        }
+        return $count;
+    }
+}
+
+/**
  * Delete freelancer from project invitations
  *
  * @throws error

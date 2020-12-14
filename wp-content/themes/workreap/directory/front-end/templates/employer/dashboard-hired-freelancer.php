@@ -19,6 +19,7 @@ $hired_freelancer_title 	= esc_html( get_the_title( $hire_linked_profile ));
 $hired_freelancer_avatar 	= apply_filters(
 	'workreap_freelancer_avatar_fallback', workreap_get_freelancer_avatar( array( 'width' => 225, 'height' => 225 ), $hire_linked_profile ), array( 'width' => 225, 'height' => 225 )
 );	
+$comments_count = workreap_get_ongoing_project_new_messages_count( $edit_id );
 
 if( !empty($hired_freelance_id) ) {?>
 <div class="wt-rcvproposalholder wt-hiredfreelancer wt-tabsinfo">
@@ -41,17 +42,6 @@ if( !empty($hired_freelance_id) ) {?>
 			</div>
 			<div class="wt-rightarea">
 				<div class="wt-btnarea">
-					<?php
-					$args = array(
-						'count' 					=> true,
-						'post_id'					=> $proposal_id,
-						'author__not_in'	=> array( $user_identity ),
-						'status'					=> 'approve',
-						'meta_key'				=> '_new_comment',
-						'meta_value'			=> true,
-					);
-					$comments_count = get_comments( $args );
-					?>
 					<a class="wt-btn" href="<?php Workreap_Profile_Menu::workreap_profile_menu_link('jobs', $user_identity,'','history',$edit_id); ?>">
 						<?php esc_html_e('View History','workreap');?>
 						<?php if( $comments_count > 0 ) { ?>
