@@ -4250,7 +4250,7 @@ if( !function_exists( 'workreap_job_detail_characteristics' ) ) {
 										<div class="col-sm-2 text-center"><?php echo $attribute['left']; ?></div>
 										<div class="col-sm-8">
 											<input type="range" data-provide="slider" data-slider-min="0" 
-												data-slider-max="100" data-slider-enabled="false" data-slider-tooltip="always"
+												data-slider-max="100" data-slider-enabled="false"
 												data-slider-value="<?php echo $project_characteristics[$key]; ?>" />
 										</div>
 										<div class="col-sm-2 text-center"><?php echo $attribute['right']; ?></div>

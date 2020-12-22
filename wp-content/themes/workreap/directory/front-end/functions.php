@@ -3404,41 +3404,33 @@ if( !function_exists('workreap_delete_freelancer_from_project_invitations') ) {
 if( !function_exists('workreap_get_design_characteristics') ) {
 	function workreap_get_design_characteristics(){
 		$attributes = array(
-			'modern_classic' => array(
-				'left' 	=> 'Modern',
-				'right' => 'Classic',
+			'elegant_bold' => array(
+				'left' 	=> 'Elegant',
+				'right' => 'Bold',
 			),
-			'youthful_mature' => array(
-				'left' 	=> 'Youthful',
-				'right' => 'Mature',
+			'playful_serious' => array(
+				'left' 	=> 'Playful',
+				'right' => 'Serious',
+			),
+			'traditional_modern' => array(
+				'left' 	=> 'Traditional',
+				'right' => 'Modern',
+			),
+			'personable_professional' => array(
+				'left'	=> 'Personable',
+				'right'	=> 'Professional',
 			),
 			'feminine_masculine' => array(
-				'left' 	=> 'Feminine',
-				'right' => 'Masculine',
+				'left'	=> 'Feminine',
+				'right'	=> 'Masculine',
 			),
-			'playful_sophisticated' => array(
-				'left'	=> 'Playful',
-				'right'	=> 'Sophisticated',
+			'colorful_conservative' => array(
+				'left'	=> 'Colorful',
+				'right'	=> 'Conservative',
 			),
-			'luxurious_economical' => array(
-				'left'	=> 'Luxurious',
-				'right'	=> 'Economical',
-			),
-			'loud_quiet' => array(
-				'left'	=> 'Loud',
-				'right'	=> 'Quiet',
-			),
-			'simple_complex' => array(
-				'left'	=> 'Simple',
-				'right'	=> 'Complex',
-			),
-			'subtle_obvious' => array(
-				'left'	=> 'Subtle',
-				'right'	=> 'Obvious',
-			),
-			'geometric_organic' => array(
-				'left'	=> 'Geometric',
-				'right'	=> 'Organic',
+			'economical_upmarket' => array(
+				'left'	=> 'Economical',
+				'right'	=> 'Upmarket',
 			),
 		);
 		return $attributes;

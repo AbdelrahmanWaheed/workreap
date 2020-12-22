@@ -3744,7 +3744,15 @@ if( !function_exists( 'workreap_cancel_project' ) ){
 					$emailData['job_link'] 				= esc_url( $job_link );
 					$emailData['cancel_msg'] 			= esc_textarea($cancelled_reason);
 
+					// send email to freelancer 
 					$email_helper->send_job_cancel_email($emailData);
+
+					// send email to admin
+					$adminData = $emailData;
+					$adminData['freelancer_name'] = 'Admin';
+					$adminData['freelancer_link'] = '#';
+					$adminData['email_to'] = get_option('admin_email');
+					$email_helper->send_job_cancel_email($adminData);
 				}
 			}
 			

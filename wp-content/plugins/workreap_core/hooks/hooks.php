@@ -655,7 +655,7 @@ if( !function_exists( 'workreap_registration_step_two' ) ){
 			$signup_page_slug	= $signup_page_slug;
 		}
 		
-		ob_start(); ?>		
+		ob_start(); ?>
 		<div class="wt-registerformmain">
 			<div class="wt-registerhead">
 				<div class="wt-title">
@@ -679,9 +679,9 @@ if( !function_exists( 'workreap_registration_step_two' ) ){
 				<?php wp_get_password_hint(); ?>
 				<form class="wt-formtheme wt-formregister wt-formregister-step-two">
 					<fieldset class="wt-registerformgroup">
-						<div class="form-group">
-							<?php do_action('worktic_get_locations_list','location',''); ?>	
-						</div>
+						<!-- <div class="form-group"> -->
+							<?php // do_action('worktic_get_locations_list','location',''); ?>	
+						<!-- </div> -->
 						<div class="form-group form-group-half">
 							<input type="password" name="password" class="form-control" placeholder="<?php esc_html_e('Password*', 'workreap_core' ); ?>">
 						</div>
@@ -713,22 +713,21 @@ if( !function_exists( 'workreap_registration_step_two' ) ){
 											<div class="wt-title">
 												<h4><?php esc_html_e('Your Department?', 'workreap_core'); ?></h4>
 											</div>
-											<?php do_action('worktic_get_departments_list'); ?>				
+											<?php do_action('worktic_get_departments_list'); ?>
 										</div>	
 										<div class="wt-radioboxholder">
 											<div class="wt-title">
 												<h4><?php esc_html_e('No. of employees you have', 'workreap_core'); ?></h4>
 											</div>
 											<?php do_action('workreap_print_employees_list'); ?>
-										</div>								
+										</div>
 									</div>
 								<?php }?>
 							</li>
-							
 						</ul>
 					</fieldset>
 					<fieldset class="wt-termsconditions">
-						<div class="wt-checkboxholder">								
+						<div class="wt-checkboxholder">
 							<span class="wt-checkbox">
 								<input id="termsconditions" type="checkbox" name="termsconditions" value="checked">
 								<label for="termsconditions"><?php echo esc_html( $term_text ); ?>
@@ -737,16 +736,16 @@ if( !function_exists( 'workreap_registration_step_two' ) ){
 									<?php } ?>
 								</label>
 							</span>
-							<a href="<?php echo esc_attr( $signup_page_slug ); ?>" class="wt-btn wt-back-to-one"><?php esc_html_e('Back', 'workreap_core'); ?></a>	
-							<a href="javascript:;" class="wt-btn <?php echo esc_attr( $post_class );?>"><?php esc_html_e('Continue', 'workreap_core'); ?></a>								
+							<a href="<?php echo esc_attr( $signup_page_slug ); ?>" class="wt-btn wt-back-to-one"><?php esc_html_e('Back', 'workreap_core'); ?></a>
+							<a href="javascript:;" class="wt-btn <?php echo esc_attr( $post_class );?>"><?php esc_html_e('Continue', 'workreap_core'); ?></a>
 						</div>
 					</fieldset>
 					<?php 
 						wp_nonce_field('workreap_register_step_two_nounce', 'workreap_register_step_two_nounce'); 
-					?>						
+					?>
 				</form>
 			</div>
-		</div>		
+		</div>
 		<?php
 		if( !empty( $post_class ) && $post_class === 'wt-model-reg2'){
 			$json['type'] 		= 'success';
@@ -820,9 +819,9 @@ if( !function_exists( 'workreap_social_registeration' ) ){
 				</ul>
 				<form class="wt-formtheme wt-formregister wt-formregister-step-two">
 					<fieldset class="wt-registerformgroup">
-						<div class="form-group">
-							<?php do_action('worktic_get_locations_list','location',''); ?>	
-						</div>
+						<!-- <div class="form-group"> -->
+							<?php // do_action('worktic_get_locations_list','location',''); ?>	
+						<!-- </div> -->
 						<div class="form-group form-group-half">
 							<input type="password" name="password" aautocomplete="off" class="form-control" placeholder="<?php esc_html_e('Password*', 'workreap_core' ); ?>">
 						</div>
@@ -1258,7 +1257,7 @@ if( !function_exists( 'workreap_process_registration_step_two' ) ){
 
 		//Validation
 		$validations = array(
-            'location' 			=> esc_html__('Location field is required', 'workreap_core'),
+            // 'location' 			=> esc_html__('Location field is required', 'workreap_core'),
             'password' 			=> esc_html__('Password field is required', 'workreap_core'),
             'verify_password' 	=> esc_html__('Verify Password field is required.', 'workreap_core'),
             'user_type'  		=> esc_html__('User type field is required.', 'workreap_core'),            
@@ -1792,7 +1791,7 @@ if( !function_exists( 'workreap_process_social_registration_step_two' ) ){
 		
 		//Validation
 		$validations = array(
-            'location' 			=> esc_html__('Location field is required', 'workreap_core'),
+            // 'location' 			=> esc_html__('Location field is required', 'workreap_core'),
             'password' 			=> esc_html__('Password field is required', 'workreap_core'),
             'verify_password' 	=> esc_html__('Verify Password field is required.', 'workreap_core'),
             'user_type'  		=> esc_html__('User type field is required.', 'workreap_core'),            

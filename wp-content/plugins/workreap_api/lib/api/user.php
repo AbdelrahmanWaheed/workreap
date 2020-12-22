@@ -241,7 +241,7 @@ if (!class_exists('AndroidApp_User_Route')) {
 								'first_name' 	=> esc_html__('First Name is required', 'workreap_api'),
 								'last_name' 	=> esc_html__('Last Name is required.', 'workreap_api'),
 								'email'  		=> esc_html__('Email field is required.', 'workreap_api'),   
-								'location' 			=> esc_html__('Location field is required', 'workreap_api'),
+								// 'location' 			=> esc_html__('Location field is required', 'workreap_api'),
 								'password' 			=> esc_html__('Password field is required', 'workreap_api'),
 								'verify_password' 	=> esc_html__('Verify Password field is required.', 'workreap_api'),
 								'user_type'  		=> esc_html__('User type field is required.', 'workreap_api'),            
