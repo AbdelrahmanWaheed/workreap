@@ -557,6 +557,7 @@ if( !function_exists( 'workreap_process_project_proposal' ) ){
         $validations = array(            
             'proposed_amount'       => esc_html__('Amount field is required', 'workreap'),
             'proposed_content'      => esc_html__('Cover latter field is required', 'workreap'),            
+            'temp_items'            => esc_html__('Attach at least one image', 'workreap'),
         );
         if(!empty($allow_proposal_amount_edit) && $allow_proposal_amount_edit == 'no') {
             unset($validations['proposed_amount']);
