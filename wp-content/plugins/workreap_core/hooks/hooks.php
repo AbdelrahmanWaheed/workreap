@@ -679,9 +679,9 @@ if( !function_exists( 'workreap_registration_step_two' ) ){
 				<?php wp_get_password_hint(); ?>
 				<form class="wt-formtheme wt-formregister wt-formregister-step-two">
 					<fieldset class="wt-registerformgroup">
-						<div class="form-group">
-							<?php do_action('worktic_get_locations_list','location',''); ?>	
-						</div>
+						<!-- <div class="form-group"> -->
+							<?php // do_action('worktic_get_locations_list','location',''); ?>	
+						<!-- </div> -->
 						<div class="form-group form-group-half">
 							<input type="password" name="password" class="form-control" placeholder="<?php esc_html_e('Password*', 'workreap_core' ); ?>">
 						</div>
@@ -820,9 +820,9 @@ if( !function_exists( 'workreap_social_registeration' ) ){
 				</ul>
 				<form class="wt-formtheme wt-formregister wt-formregister-step-two">
 					<fieldset class="wt-registerformgroup">
-						<div class="form-group">
-							<?php do_action('worktic_get_locations_list','location',''); ?>	
-						</div>
+						<!-- <div class="form-group"> -->
+							<?php // do_action('worktic_get_locations_list','location',''); ?>	
+						<!-- </div> -->
 						<div class="form-group form-group-half">
 							<input type="password" name="password" aautocomplete="off" class="form-control" placeholder="<?php esc_html_e('Password*', 'workreap_core' ); ?>">
 						</div>

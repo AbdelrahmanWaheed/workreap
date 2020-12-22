@@ -3779,9 +3779,9 @@ body.single .wt-chatbox .wt-replaybox .form-control{overflow:visible;}
 .wt-formpopup fieldset .form-group-margin {
 	margin-bottom: 20px;
 }
-.wt-project-characteristics .row{margin:35px 0;}
+.wt-project-characteristics .row{margin:20px 0;}
 .wt-project-characteristics .slider-selection{background:#0478b2;background-image:-webkit-linear-gradient(top,#0480BE,#036fa5)}
 .wt-project-characteristics .slider.slider-horizontal{width:100%;}
 .wt-project-colors .wt-widgettag .design-color{font-size:14px;float:left;margin:5px;padding:0 18px 0 2px;color:#767676;font-size:14px;line-height:38px;text-align:center;border-radius:20px;border:1px solid #ddd;}
 .wt-project-colors .wt-widgettag .design-color span{vertical-align:middle;display:inline-block;}
-.wt-project-colors .design-color .color-dynamic-field{height:36px;width:36px;margin-left:0px;border:1px solid #ddd;}
+.wt-project-colors .design-color .color-dynamic-field{height:36px;width:36px;margin-left:0px;border:1px solid #ddd;}.slider.slider-disabled .slider-handle{display: none;}
