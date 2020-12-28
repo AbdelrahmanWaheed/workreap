@@ -1667,9 +1667,9 @@ if ( !function_exists( 'worrketic_proposal_view_attachments' ) ) {
 		<div class="wt-hireduserstatus">
 			<a href="javascrript:;" class="show-project-<?php echo $job_id; ?>-attachments">
 				<i class="fa fa-image"></i>
-				<span><?php echo intval( $images_count );?>&nbsp;<?php esc_html_e('images','workreap');?></span>
+				<span><?php  printf(_n('1 image', '%d images', $images_count, 'workreap'), $images_count);?></span>
 			</a>
-			<div class="attahments-container-<?php echo $job_id; ?>">
+			<div class="attahments-container-<?php echo $job_id; ?> hidden">
 				<?php if(!empty($images)) { ?>
 					<?php foreach ($images as $image) { ?>
 						<a href="<?php echo $image; ?>"></a>
@@ -3976,7 +3976,7 @@ if( !function_exists( 'workreap_print_project_date' ) ){
             }
 
             if( !empty( $expiry_date ) && strtotime( $expiry_date ) ) {
-				if( current_time( 'timestamp' ) > strtotime($expiry_date) ){
+				if( strtotime(current_time('Y-m-d')) > strtotime($expiry_date) ){
 					$status	=  esc_html__('Expired','workreap');
 				} else{
 					$status	=  date_i18n( get_option('date_format'), strtotime($expiry_date));
@@ -4345,19 +4345,35 @@ if( !function_exists( 'workreap_job_detail_documents' ) ) {
 }
 
 /**
- * Return project comments
+ * Return project winner design if existing
  *
  * @throws error
  * @author Amentotech <theamentotech@gmail.com>
  * @return 
  */
-if( !function_exists( 'workreap_job_comments' ) ) {
-    function workreap_job_comments( $post_id = '' ){
-        if( !empty( $post_id ) ){
-
-        }
-    }
-    add_action('workreap_job_comments', 'workreap_job_comments', 10, 1);
+if( !function_exists( 'workreap_job_winner_design' ) ) {
+	function workreap_job_winner_design( $job_id = '' ){
+		if( !empty( $job_id ) && $job_id != 0 ){
+			$project = get_post( $job_id );
+			if( $project->post_status == 'completed' ) {
+				$winner_proposal = get_post_meta( $job_id, '_proposal_id', true );
+				$private_project = get_post_meta( $job_id, '_private_project', true );
+				
+				if( $private_project != 'yes' ) { ?>
+					<div class="wt-skillsrequired">
+						<div class="wt-title">
+							<h3><?php esc_html_e('Winner Design', 'workreap'); ?></h3>
+						</div>
+						<div class="wt-tag wt-widgettag winner-design">
+							<?php worrketic_proposal_view_attachments( $winner_proposal ); ?>
+						</div>
+					</div>
+					<?php
+				}
+			}
+		}
+	}
+	add_action('workreap_job_winner_design', 'workreap_job_winner_design', 10, 1);
 }
 
 /**

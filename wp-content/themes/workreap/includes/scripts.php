@@ -36,6 +36,7 @@ if (!function_exists('workreap_scripts')) {
         wp_register_style('workreap-dbresponsive', get_template_directory_uri() . '/css/dbresponsive.css', array(), $theme_version->get('Version'));
 		wp_register_style('emojionearea', get_template_directory_uri() . '/css/emoji/emojionearea.min.css', array(), $theme_version->get('Version'));      
 		wp_register_style('bootstrap-slider', get_template_directory_uri() . '/css/bootstrap-slider.min.css', array(), $theme_version->get('Version'));      
+		wp_register_style('magnific-popup', get_template_directory_uri() . '/css/magnific-popup.css', array(), $theme_version->get('Version'));      
         $custom_css = workreap_add_dynamic_styles();
 
         wp_enqueue_style('bootstrap');
@@ -62,6 +63,7 @@ if (!function_exists('workreap_scripts')) {
         }
 
         if(is_singular('projects')) {
+			wp_enqueue_style('magnific-popup');
             wp_enqueue_style('bootstrap-slider');
         }
         
@@ -167,6 +169,7 @@ if (!function_exists('workreap_scripts')) {
 		
         if( is_singular('projects') ) {
             wp_enqueue_script('bootstrap-slider');
+            wp_enqueue_script('magnific-popup');
         }
 
 		//tipso init

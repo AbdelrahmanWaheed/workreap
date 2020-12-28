@@ -226,6 +226,21 @@ jQuery(document).on('ready', function() {
 		});
 	}
 	
+	if(jQuery('input[type="checkbox"].toggle').length ){
+		jQuery('input[type="checkbox"].toggle').change(function(){
+			var _this = jQuery(this);
+			var _id   = _this.data('toggle-id');
+			var _element = jQuery('#' + _id);
+			if(_element.length) {
+				if(this.checked) {
+					_element.show();
+				} else {
+					_element.hide();
+				}
+			}
+		});
+	}
+
 	//Toolip init
 	function tipso_init(){
 		if(jQuery('.wt-tipso').length > 0){
@@ -1312,9 +1327,36 @@ jQuery(document).on('ready', function() {
                 if (response.type === 'success') {
                     jQuery.sticky(response.message, {classList: 'success', speed: 200, autoclose: 5000 });
                     window.location.replace(response.checkout_url);
-				} else if (response.type === 'checkout') {
+				} else if (response.type === 'redirect') {
 					jQuery.sticky(response.message, {classList: 'success', speed: 200, autoclose: 5000});
-					window.location.href = response.checkout_url;
+					window.location.href = response.redirect_url;
+                } else {
+                    jQuery.sticky(response.message, {classList: 'important', speed: 200, autoclose: 5000});
+                }
+            }
+        });
+    });
+
+	// Select Project Bundle	
+	jQuery(document).on('click', '.wt-select-addons', function (e) {
+        e.preventDefault();
+        var _this = jQuery(this);
+        var project_id = _this.data('project-id');
+
+        jQuery('body').append(loader_html);
+        jQuery.ajax({
+            type: "POST",
+            url: scripts_vars.ajaxurl,
+            data: _this.parents('form').serialize() + '&project_id=' + project_id + '&action=workreap_select_project_addons',
+            dataType: "json",
+            success: function (response) {
+				jQuery('body').find('.wt-preloader-section').remove();
+                if (response.type === 'success') {
+                    jQuery.sticky(response.message, {classList: 'success', speed: 200, autoclose: 5000 });
+                    window.location.replace(response.checkout_url);
+				} else if (response.type === 'redirect') {
+					jQuery.sticky(response.message, {classList: 'success', speed: 200, autoclose: 5000});
+					window.location.href = response.redirect_url;
                 } else {
                     jQuery.sticky(response.message, {classList: 'important', speed: 200, autoclose: 5000});
                 }

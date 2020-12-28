@@ -711,6 +711,15 @@ $options = array(
 						'limit' => 1,
 						'prepopulate' => 100,
 					), 
+					'job_addons_tpl' => array(
+						'label' => esc_html__('Choose Posting Job Addons Selection page', 'workreap'),
+						'type' => 'multi-select',
+						'population' => 'posts',
+						'source' => 'page',
+						'desc' => esc_html__('Choose Posting Job Addons Selection template page.', 'workreap'),
+						'limit' => 1,
+						'prepopulate' => 100,
+					), 
 					'search_services_tpl' => array(
 						'label' 		=> esc_html__('Choose Service Search Page', 'workreap'),
 						'type' 			=> 'multi-select',

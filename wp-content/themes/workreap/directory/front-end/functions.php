@@ -1112,7 +1112,7 @@ if( !function_exists(  'workreap_get_job_type' ) ) {
     function workreap_get_job_type($key=''){
         $list = array(
 			'fixed' => esc_html__('Fixed project','workreap'),
-			'hourly' => esc_html__('Hourly Based Project','workreap')
+			// 'hourly' => esc_html__('Hourly Based Project','workreap')
 		);
 
 		$data	= apply_filters('workreap_filters_job_type',$list);

@@ -120,6 +120,31 @@ $options = array(
             ),
         ),
     ),
+    'project_addons' => array(
+        'title' => esc_html__('Project Addons', 'workreap'),
+        'type' => 'box',
+        'options' => array(
+            'private_project' => array(
+                'label' => esc_html__('Private Job?', 'workreap'),
+                'desc' => esc_html__('Select to make this job as private (the job will not visible in the search after it is completed)', 'workreap'),
+                'type' => 'checkbox',
+                'value' => '',
+                'disable' => true,
+            ),
+            'faster_project' => array(
+                'label' => esc_html__('Faster Job?', 'workreap'),
+                'desc' => esc_html__('Make this job starts faster (number of days)', 'workreap'),
+                'type' => 'text',
+                'value' => '',
+            ),
+            'participation' => array(
+                'label' => esc_html__('Participation?', 'workreap'),
+                'desc' => esc_html__('Job participation with multiple freelancers', 'workreap'),
+                'type' => 'text',
+                'value' => '',
+            ),
+        )
+    ),
     'project_settings' => array(
         'title' => esc_html__('Project Settings', 'workreap'),
         'type' => 'box',
@@ -208,19 +233,19 @@ $options = array(
 			// 	),
 			// 	'desc' => esc_html__('Add date here', 'workreap')
 			// ),
-			// 'deadline' => array(
-			// 	'label' => esc_html__('Project deadline date', 'workreap'),
-			// 	'type' => 'datetime-picker',
-			// 	'datetime-picker' => array(
-			// 		'format'  => 'Y/m/d', // Format datetime.
-			// 		'maxDate' => false, // By default there is not maximum date , set a date in the datetime format.
-			// 		'minDate' => false, // By default minimum date will be current day, set a date in the datetime format.
-			// 		'timepicker' => false, // Show timepicker.
-			// 		'datepicker' => true, // Show datepicker.
-			// 		'defaultTime' => '' // If the input value is empty, timepicker will set time use defaultTime.
-			// 	),
-			// 	'desc' => esc_html__('Add date here', 'workreap')
-			// ),
+			'deadline' => array(
+				'label' => esc_html__('Project deadline date', 'workreap'),
+				'type' => 'datetime-picker',
+				'datetime-picker' => array(
+					'format'  => 'Y/m/d', // Format datetime.
+					'maxDate' => false, // By default there is not maximum date , set a date in the datetime format.
+					'minDate' => false, // By default minimum date will be current day, set a date in the datetime format.
+					'timepicker' => false, // Show timepicker.
+					'datepicker' => true, // Show datepicker.
+					'defaultTime' => '' // If the input value is empty, timepicker will set time use defaultTime.
+				),
+				'desc' => esc_html__('Add date here', 'workreap')
+			),
 			'show_attachments' => array(
                 'type'  => 'select',
                 'value' => '',

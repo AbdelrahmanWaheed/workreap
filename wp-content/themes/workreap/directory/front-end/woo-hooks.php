@@ -1475,6 +1475,10 @@ if (!function_exists('workreap_apply_custom_price_to_cart_item')) {
 							$bk_price = floatval( $value['cart_data']['price'] );
 							$value['data']->set_price($bk_price);
 						}
+						if( isset( $value['cart_data']['project_id'] ) ) {
+							$category = wp_get_post_terms($value['cart_data']['project_id'], 'project_cat', array('fields' => 'names'))[0];
+							$value['data']->set_name( $value['data']->get_name() . sprintf(' (%s)', $category) );
+						}
 					} else if( !empty( $value['payment_type'] ) && $value['payment_type'] == 'milestone' ){
 						if( isset( $value['cart_data']['price'] ) ){
 							$bk_price = floatval( $value['cart_data']['price'] );
@@ -1656,3 +1660,32 @@ if (!function_exists('workreap_update_posting_job_product')) {
  * @return 
  */
 add_filter( 'woocommerce_order_item_permalink', '__return_false' );
+
+/**
+ * Remove order again button after payment success
+ *
+ * @throws error
+ * @author Amentotech <theamentotech@gmail.com>
+ * @return 
+ */
+remove_action( 'woocommerce_order_details_after_order_table', 'woocommerce_order_again_button' );
+
+/**
+ * Update checkout with additional fees
+ *
+ * @throws error
+ * @author Amentotech <theamentotech@gmail.com>
+ * @return 
+ */
+if (!function_exists('workreap_posting_job_checkout_fees')) {
+
+    function workreap_posting_job_checkout_fees() {
+    	$fees = WC()->session->get('fees');
+    	if( !empty( $fees ) ) {
+			foreach ($fees as $fee) {
+				WC()->cart->add_fee( $fee['label'], $fee['fees'] );
+			}
+    	}
+   }
+}
+add_action( 'woocommerce_cart_calculate_fees', 'workreap_posting_job_checkout_fees' );

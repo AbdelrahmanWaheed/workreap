@@ -496,7 +496,7 @@ if( !function_exists( 'workreap_process_project_proposal' ) ){
 		//Check user role
         if( $user_role !== 'freelancers' ){
             $json['type'] = 'error';
-            $json['message'] = esc_html__('You are not allowed to send  the proposals', 'workreap');
+            $json['message'] = esc_html__('You are not allowed to send the proposals', 'workreap');
             wp_send_json( $json );
         }
 
@@ -3312,9 +3312,16 @@ if ( !function_exists( 'workreap_select_project_bundle' ) ) {
                 $cart_item_data = $cart_data;
                 WC()->cart->add_to_cart($product_id, 1, null, null, $cart_item_data);
 
-                $json['type']           = 'checkout';
-                $json['message']        = esc_html__('Please wait you are redirecting to the checkout page.', 'workreap');
-                $json['checkout_url']   = wc_get_checkout_url();
+                $job_addons_tpl      = fw_get_db_settings_option('job_addons_tpl');
+                if(empty($job_addons_tpl)) {
+                    $json['type']         = 'error';
+                    $json['message']      = esc_html__('Please specify the addons selection page in dashboard.', 'workreap');
+                    wp_send_json($json);
+                }
+
+                $json['type']         = 'redirect';
+                $json['message']      = esc_html__('Please wait while you are redirecting to addons selection page.', 'workreap');
+                $json['redirect_url'] = add_query_arg('project', $project_id, get_permalink((int) $job_addons_tpl[0]));
                 wp_send_json($json);
             } else {
                 $json['type']       = 'error';
@@ -3330,6 +3337,123 @@ if ( !function_exists( 'workreap_select_project_bundle' ) ) {
 
     add_action( 'wp_ajax_workreap_select_project_bundle', 'workreap_select_project_bundle' );
     add_action( 'wp_ajax_nopriv_workreap_select_project_bundle', 'workreap_select_project_bundle' );
+}
+
+/**
+ * Post a job
+ *
+ * @throws error
+ * @author Amentotech <theamentotech@gmail.com>
+ * @return 
+ */
+if ( !function_exists( 'workreap_select_project_addons' ) ) {
+
+    function workreap_select_project_addons() {
+
+        global $current_user;
+
+        $user_id    = $current_user->ID;
+        $project_id = intval( $_POST['project_id'] );
+
+        if (!isset($_POST['post_job']) || !wp_verify_nonce($_POST['post_job'], 'wt_select_job_addons_nonce')) {
+            $json['type'] = 'error';
+            $json['message'] = esc_html__('Error proceeding with the addons selection.', 'workreap');
+            wp_send_json($json);
+        }
+        // check project id
+        if(empty($project_id) || $project_id == 0) {
+            $json['type'] = 'error';
+            $json['message'] = esc_html__('Error proceeding with the addons selection.', 'workreap');
+            wp_send_json($json);
+        }
+        $project = get_post($project_id);
+        if($project->post_type != 'projects' || $project->post_status != 'not_paid' || $project->post_author != $user_id) {
+            $json['type'] = 'error';
+            $json['message'] = esc_html__('Error proceeding with the addons selection.', 'workreap');
+            wp_send_json($json);
+        }
+
+        extract($_POST['addon']);
+        $deadlines = array(
+            'one-day' => array(
+                'fees' => 100,
+                'period_in_days' => 1,
+            ),
+            'three-day' => array(
+                'fees' => 120,
+                'period_in_days' => 3,
+            ),
+            'five-day' => array(
+                'fees' => 140,
+                'period_in_days' => 5,
+            ),
+        );
+
+        $participations = array(
+            'two-freelancer' => array(
+                'fees' => 100,
+                'label' => 'Two Freelancers',
+            ),
+            'three-freelancer' => array(
+                'fees' => 120,
+                'label' => 'Three Freelancers',
+            ),
+            'four-freelancer' => array(
+                'fees' => 140,
+                'label' => 'Four Freelancers',
+            ),
+        );
+
+        // prepare checkout process
+        if ( class_exists('WooCommerce') ) {
+            global $woocommerce;
+            $fees = array();
+            
+            if(!empty($private_project) && $private_project == 'on') {
+                $fees['private_project'] = array(
+                    'label' => esc_html__('Private Project', 'workreap'), 
+                    'fees'  => 100,
+                );
+                fw_set_db_post_option($project_id, 'private_project', 'yes');
+                update_post_meta($project_id, '_private_project', 'yes');
+            }
+            if(!empty($faster_project) && $faster_project == 'on') {
+                $period = $deadlines[$project_deadline]['period_in_days'];
+                $fees['faster_project'] = array(
+                    'label' => esc_html__('Faster Project', 'workreap') . sprintf(_n(' (1 day)', ' (%d days)', $period), $period),
+                    'fees'  => $deadlines[$project_deadline]['fees'],
+                );
+                $deadline = date('Y/m/d', strtotime(sprintf(_n('+1 day', '+%d days', $period), $period), current_time('timestamp')));
+                update_post_meta($project_id, 'deadline', $deadline);
+                fw_set_db_post_option($project_id, 'deadline', $deadline);
+                fw_set_db_post_option($project_id, 'faster_project', sprintf(_n('1 day', '%d days', $period), $period));
+            }
+            if(!empty($participation_fees) && $participation_fees == 'on') {
+                $fees['participation'] = array(
+                    'label' => esc_html__('Participation', 'workreap') . sprintf(' ( %s )', $participations[$participation]['label']), 
+                    'fees' => $participations[$participation]['fees'],
+                );
+                fw_set_db_post_option($project_id, 'participation', $participations[$participation]['label']);
+                update_post_meta($project_id, '_participation', $participation);
+            }
+
+            if( !empty($fees) ) {
+                WC()->session->set('fees', $fees);
+            }
+
+            $json['type']           = 'redirect';
+            $json['message']        = esc_html__('Please wait you are redirecting to the checkout page.', 'workreap');
+            $json['redirect_url']   = wc_get_checkout_url();
+            wp_send_json($json);
+        } else {
+            $json['type']       = 'error';
+            $json['message']    = esc_html__('Please install WooCommerce plugin to process this order', 'workreap');
+            wp_send_json($json);
+        }
+    }
+
+    add_action( 'wp_ajax_workreap_select_project_addons', 'workreap_select_project_addons' );
+    add_action( 'wp_ajax_nopriv_workreap_select_project_addons', 'workreap_select_project_addons' );
 }
 
 /**
