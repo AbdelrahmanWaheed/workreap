@@ -4355,21 +4355,18 @@ if( !function_exists( 'workreap_job_winner_design' ) ) {
 	function workreap_job_winner_design( $job_id = '' ){
 		if( !empty( $job_id ) && $job_id != 0 ){
 			$project = get_post( $job_id );
-			if( $project->post_status == 'completed' ) {
+			if( $project->post_status == 'completed' || $project->post_status == 'hired' ) {
 				$winner_proposal = get_post_meta( $job_id, '_proposal_id', true );
-				$private_project = get_post_meta( $job_id, '_private_project', true );
-				
-				if( $private_project != 'yes' ) { ?>
-					<div class="wt-skillsrequired">
-						<div class="wt-title">
-							<h3><?php esc_html_e('Winner Design', 'workreap'); ?></h3>
-						</div>
-						<div class="wt-tag wt-widgettag winner-design">
-							<?php worrketic_proposal_view_attachments( $winner_proposal ); ?>
-						</div>
+				?>
+				<div class="wt-skillsrequired">
+					<div class="wt-title">
+						<h3><?php esc_html_e('Winner Design', 'workreap'); ?></h3>
 					</div>
-					<?php
-				}
+					<div class="wt-tag wt-widgettag winner-design">
+						<?php worrketic_proposal_view_attachments( $winner_proposal ); ?>
+					</div>
+				</div>
+				<?php
 			}
 		}
 	}

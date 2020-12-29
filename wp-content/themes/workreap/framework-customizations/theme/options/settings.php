@@ -26,6 +26,7 @@ $options = array (
 	fw()->theme->get_options('disputes-settings'),
     fw()->theme->get_options('social-connect-settings'),
     fw()->theme->get_options('social-profile'),
+    fw()->theme->get_options('fees-settings'),
     fw()->theme->get_options('underconstruction-settings'),
 	fw()->theme->get_options('captcha-settings'),
 );

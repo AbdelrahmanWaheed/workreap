@@ -3373,38 +3373,15 @@ if ( !function_exists( 'workreap_select_project_addons' ) ) {
             wp_send_json($json);
         }
 
+        if( function_exists('fw_get_db_settings_option') ) {
+            $private_project_cost          = fw_get_db_settings_option('private_project_cost');
+            $faster_project_options        = fw_get_db_settings_option('faster_project_options');
+            $project_participation_options = fw_get_db_settings_option('project_participation_options');
+        }
+
         extract($_POST['addon']);
-        $deadlines = array(
-            'one-day' => array(
-                'fees' => 100,
-                'period_in_days' => 1,
-            ),
-            'three-day' => array(
-                'fees' => 120,
-                'period_in_days' => 3,
-            ),
-            'five-day' => array(
-                'fees' => 140,
-                'period_in_days' => 5,
-            ),
-        );
 
-        $participations = array(
-            'two-freelancer' => array(
-                'fees' => 100,
-                'label' => 'Two Freelancers',
-            ),
-            'three-freelancer' => array(
-                'fees' => 120,
-                'label' => 'Three Freelancers',
-            ),
-            'four-freelancer' => array(
-                'fees' => 140,
-                'label' => 'Four Freelancers',
-            ),
-        );
-
-        // prepare checkout process
+        // prepare checkout extra fees
         if ( class_exists('WooCommerce') ) {
             global $woocommerce;
             $fees = array();
@@ -3412,29 +3389,28 @@ if ( !function_exists( 'workreap_select_project_addons' ) ) {
             if(!empty($private_project) && $private_project == 'on') {
                 $fees['private_project'] = array(
                     'label' => esc_html__('Private Project', 'workreap'), 
-                    'fees'  => 100,
+                    'fees'  => $private_project_cost,
                 );
                 fw_set_db_post_option($project_id, 'private_project', 'yes');
                 update_post_meta($project_id, '_private_project', 'yes');
             }
             if(!empty($faster_project) && $faster_project == 'on') {
-                $period = $deadlines[$project_deadline]['period_in_days'];
+                $period = $faster_project_options[$project_deadline]['period'];
                 $fees['faster_project'] = array(
-                    'label' => esc_html__('Faster Project', 'workreap') . sprintf(_n(' (1 day)', ' (%d days)', $period), $period),
-                    'fees'  => $deadlines[$project_deadline]['fees'],
+                    'label' => esc_html__('Faster Project', 'workreap') . sprintf(' (%s)', $faster_project_options[$project_deadline]['label']),
+                    'fees'  => $faster_project_options[$project_deadline]['fees'],
                 );
                 $deadline = date('Y/m/d', strtotime(sprintf(_n('+1 day', '+%d days', $period), $period), current_time('timestamp')));
                 update_post_meta($project_id, 'deadline', $deadline);
                 fw_set_db_post_option($project_id, 'deadline', $deadline);
-                fw_set_db_post_option($project_id, 'faster_project', sprintf(_n('1 day', '%d days', $period), $period));
+                fw_set_db_post_option($project_id, 'faster_project', $faster_project_options[$project_deadline]['label']);
             }
             if(!empty($participation_fees) && $participation_fees == 'on') {
                 $fees['participation'] = array(
-                    'label' => esc_html__('Participation', 'workreap') . sprintf(' ( %s )', $participations[$participation]['label']), 
-                    'fees' => $participations[$participation]['fees'],
+                    'label' => esc_html__('Participation', 'workreap') . sprintf(' ( %s )', $project_participation_options[$participation]['label']), 
+                    'fees' => $project_participation_options[$participation]['fees'],
                 );
-                fw_set_db_post_option($project_id, 'participation', $participations[$participation]['label']);
-                update_post_meta($project_id, '_participation', $participation);
+                fw_set_db_post_option($project_id, 'participation', $project_participation_options[$participation]['label']);
             }
 
             if( !empty($fees) ) {

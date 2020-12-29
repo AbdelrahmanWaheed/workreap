@@ -2212,7 +2212,7 @@ blockquote.wt-blockquotevone q,.wt-blockquotevone q{margin:0;display:block}
 .wt-prjoect-categories>div>div.col-xl-6:nth-child(2){margin-top:0}
 .wt-prjoect-categories>div .theme-nav{margin:0}
 .wt-profile-content-holder{float:left;width:100%}
-.wt-sticky .wt-header{top:0;left:0;z-index:9999;position:fixed;background:#fff;-webkit-box-shadow:0 0 20px 0 rgba(0,0,0,0.25);box-shadow:0 0 20px 0 rgba(0,0,0,0.25)}
+.wt-sticky .wt-header{top:0;left:0;z-index:1000;position:fixed;background:#fff;-webkit-box-shadow:0 0 20px 0 rgba(0,0,0,0.25);box-shadow:0 0 20px 0 rgba(0,0,0,0.25)}
 .fw-alert{float:left;width:100%;border:1px solid;line-height:inherit;list-style-type:none;margin:0 0 10px;position:relative;border-radius:4px;font-size:14px;padding:15px 50px 15px 20px}
 .fw-accordion .fw-accordion-title.ui-state-active{border-top:0}
 .fw-accordion .fw-accordion-title:first-child{border-top:1px solid #ddd}
