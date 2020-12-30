@@ -1814,7 +1814,7 @@ if( !function_exists( 'worktic_register_job_statuses' ) ) {
 		$statuses	= array_merge($statuses,$services);
 		foreach( $statuses as $key => $val ){
 			
-			if( $key ==='hired' || $key ==='completed' ) {
+			if( $key ==='hired' || $key ==='completed' || $key === 'cancelled' ) {
 				$public	= true;
 			} else {
 				$public	= false;
@@ -3866,7 +3866,7 @@ if( !function_exists( 'workreap_job_short_detail' ) ) {
 if( !function_exists( 'workreap_print_project_price' ) ){
     function workreap_print_project_price( $post_id = '', $type = 'v1' ){
         if( !empty( $post_id ) ){
-			$project_price	= workreap_project_price($post_id);
+			$project_price	= workreap_project_freelancer_fees($post_id);
 
 			$project_cost	= !empty($project_price['cost']) ? $project_price['cost'] : 0;
 			$job_type_text	= !empty($project_price['text']) ? $project_price['text'] : '';
@@ -3970,30 +3970,45 @@ if( !function_exists( 'workreap_print_project_duration_html' ) ){
 if( !function_exists( 'workreap_print_project_date' ) ){
     function workreap_print_project_date( $post_id = '' ){
         if( !empty( $post_id ) ){            
-            $expiry_date   = '';
-            if (function_exists('fw_get_db_post_option')) {                               
-                $expiry_date   = fw_get_db_post_option($post_id, 'deadline', true);
-            }
-
-            if( !empty( $expiry_date ) && strtotime( $expiry_date ) ) {
-				if( strtotime(current_time('Y-m-d')) > strtotime($expiry_date) ){
-					$status	=  esc_html__('Expired','workreap');
-				} else{
-					$status	=  date_i18n( get_option('date_format'), strtotime($expiry_date));
-				}
-				?>
-                <li data-tipso="<?php esc_attr_e('Project deadline','workreap');?>" class="tipso_style wt-tipso"><span><img class="wt-job-icon"  src="<?php echo esc_url(get_template_directory_uri());?>/images/job-expiry.png" alt="<?php esc_html_e('Project deadline', 'workreap'); ?>"><?php echo esc_html( $status ); ?></span></li>
-            <?php } else {
-            	?>
-                <li data-tipso="<?php esc_attr_e('Open For Proposals','workreap');?>" class="tipso_style wt-tipso">
-                	<span>
-                		<img class="wt-job-icon" src="<?php echo esc_url(get_template_directory_uri());?>/images/job-expiry.png" 
-                			alt="<?php esc_html_e('Open', 'workreap'); ?>">
-                		<?php esc_html_e('Open For Proposals', 'workreap'); ?>
-                	</span>
-                </li>
-            	<?php
-            }
+            $post_status = get_post_status( $post_id );
+            if( $post_status == 'publish' || $post_status == 'private' ) {
+	            $expiry_date   = '';
+	            if (function_exists('fw_get_db_post_option')) {                               
+	                $expiry_date   = fw_get_db_post_option($post_id, 'deadline', true);
+	            }
+	            if( !empty( $expiry_date ) && strtotime( $expiry_date ) ) {
+					if( strtotime(current_time('Y-m-d')) > strtotime($expiry_date) ){
+						$status	=  esc_html__('Expired','workreap');
+					} else{
+						$status	=  date_i18n( get_option('date_format'), strtotime($expiry_date));
+					}
+					?>
+	                <li data-tipso="<?php esc_attr_e('Project deadline','workreap');?>" class="tipso_style wt-tipso"><span><img class="wt-job-icon"  src="<?php echo esc_url(get_template_directory_uri());?>/images/job-expiry.png" alt="<?php esc_html_e('Project deadline', 'workreap'); ?>"><?php echo esc_html( $status ); ?></span></li>
+	            <?php } else {
+	            	?>
+	                <li data-tipso="<?php esc_attr_e('Open For Proposals','workreap');?>" class="tipso_style wt-tipso">
+	                	<span>
+	                		<img class="wt-job-icon" src="<?php echo esc_url(get_template_directory_uri());?>/images/job-expiry.png" 
+	                			alt="<?php esc_html_e('Open', 'workreap'); ?>">
+	                		<?php esc_html_e('Open For Proposals', 'workreap'); ?>
+	                	</span>
+	                </li>
+	            	<?php
+	            }
+	        } else if( $post_status == 'completed' || $post_status == 'hired' || $post_status == 'cancelled' ) {
+	        		$status = $post_status == 'completed' ? esc_html__('Completed', 'workreap') : ( 
+	        			$post_status == 'hired' ? esc_html__('Hired', 'workreap') : esc_html__('Cancelled', 'workreap')
+	        		);
+	            	?>
+	                <li data-tipso="<?php echo $status; ?>" class="tipso_style wt-tipso">
+	                	<span>
+	                		<img class="wt-job-icon" src="<?php echo esc_url(get_template_directory_uri());?>/images/job-expiry.png" 
+	                			alt="<?php echo $status; ?>">
+	                		<?php echo $status; ?>
+	                	</span>
+	                </li>
+	            	<?php
+	        }
         }
     }
     add_action('workreap_print_project_date', 'workreap_print_project_date', 10, 1);

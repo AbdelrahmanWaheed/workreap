@@ -379,7 +379,7 @@ if( !function_exists('workreap_post_job_notification') ) {
 							$db_project_type      = fw_get_db_post_option($post->ID,'project_type');
 						}
 						
-						$project_price	= workreap_project_price($post->ID);
+						$project_price	= workreap_project_freelancer_fees($post->ID);
 						
 						$proposal_page = array();
 						if (function_exists('fw_get_db_post_option')) {

@@ -44,7 +44,7 @@ if( apply_filters('workreap_system_access','job_base') === true ){
 	$job_type_text		= '';
 
 	
-	$project_price	= workreap_project_price($post->ID);
+	$project_price	= workreap_project_freelancer_fees($post->ID);
 	$project_cost	= !empty($project_price['cost']) ? $project_price['cost'] : 0;
 	$job_type_text	= !empty($project_price['text']) ? $project_price['text'] : '';
 	$price_text		= !empty($project_price['price_text']) ? $project_price['price_text'] : '';

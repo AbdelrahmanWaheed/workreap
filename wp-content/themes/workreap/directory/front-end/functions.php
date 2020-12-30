@@ -1223,6 +1223,29 @@ if( !function_exists(  'workreap_project_price ' ) ) {
 }
 
 /**
+ * Get project freelancer fees
+ *
+ * @throws error
+ * @author Amentotech <theamentotech@gmail.com>
+ * @return
+ */
+if( !function_exists(  'workreap_project_freelancer_fees' ) ) {
+	function workreap_project_freelancer_fees($job_id=''){
+		if (function_exists('fw_get_db_post_option')) {
+			$service_fee = fw_get_db_settings_option('service_fee');
+		}
+		$project_price  = workreap_project_price( $job_id );
+		$project_cost	= !empty($project_price['max_val']) ? $project_price['max_val'] : 0;
+		$service_count	= !empty($service_fee) && !empty($project_cost) ? (($service_fee * $project_cost) / 100) : 0.00;
+		$remaining_cost	= !empty($project_cost) && !empty($service_count) ? $project_cost - $service_count : 0.00 ;
+		$project_price['cost']	  = workreap_price_format($remaining_cost,'return');
+		$project_price['max_val'] = $remaining_cost;
+
+		return $project_price;
+	}
+}
+
+/**
  * Get Project Design Characteristics
  *
  * @throws error
@@ -1253,6 +1276,25 @@ if( !function_exists( 'workreap_get_project_design_colors' ) ) {
 			$characteristics = fw_get_db_post_option($job_id, 'colors');
 		}
 		return $characteristics;
+    }
+}
+
+/**
+ * Get Project Design Color
+ *
+ * @throws error
+ * @author Amentotech <theamentotech@gmail.com>
+ * @return
+ */
+if( !function_exists( 'workreap_is_project_expired' ) ) {
+    function workreap_is_project_expired( $job_id='' ){
+		if (function_exists('fw_get_db_post_option')) {                               
+			$expiry_date = fw_get_db_post_option($job_id, 'deadline', true);
+		}
+		if( !empty($expiry_date) && strtotime($expiry_date) && strtotime(current_time('Y-m-d')) > strtotime($expiry_date) ) {
+			return true;
+		}
+		return false;
     }
 }
 

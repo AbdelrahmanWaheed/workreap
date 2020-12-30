@@ -476,21 +476,25 @@ if( !function_exists( 'workreap_process_project_proposal' ) ){
 			$json['type'] = 'error';
             $json['message'] = esc_html__('This project has been completed, so you can\'t send proposals', 'workreap');
             wp_send_json( $json );
-		}else if( get_post_status( $project_id ) === 'cancelled' ){
+		} else if( get_post_status( $project_id ) === 'cancelled' ){
 			$json['type'] = 'error';
             $json['message'] = esc_html__('This project has been cancelled, when employer will re-open this project then you would be able to send proposal.', 'workreap');
             wp_send_json( $json );
-		}else if( get_post_status( $project_id ) === 'pending' ){
+		} else if( get_post_status( $project_id ) === 'pending' ){
 			$json['type'] = 'error';
             $json['message'] = esc_html__('This project is under review. You can\'t send proposals.', 'workreap');
             wp_send_json( $json );
-        }else if( get_post_status( $project_id ) === 'private' ){
+        } else if( get_post_status( $project_id ) === 'private' ){
             $invited_freelancers = get_post_meta( $project_id, 'suggested_freelancers' );
             if( empty( $invited_freelancers ) || ! in_array( $current_user->ID, $invited_freelancers ) ) {
                 $json['type'] = 'error';
                 $json['message'] = esc_html__('You are not allowed to send proposals to this project.', 'workreap');
                 wp_send_json( $json );
             }
+        } else if( workreap_is_project_expired( $project_id ) === true ){
+            $json['type'] = 'error';
+            $json['message'] = esc_html__('This project is expired. You can\'t send proposals.', 'workreap');
+            wp_send_json( $json );
 		}
 		
 		//Check user role
@@ -3376,6 +3380,7 @@ if ( !function_exists( 'workreap_select_project_addons' ) ) {
         if( function_exists('fw_get_db_settings_option') ) {
             $private_project_cost          = fw_get_db_settings_option('private_project_cost');
             $faster_project_options        = fw_get_db_settings_option('faster_project_options');
+            $project_default_deadline      = fw_get_db_settings_option('project_default_deadline');
             $project_participation_options = fw_get_db_settings_option('project_participation_options');
         }
 
@@ -3394,6 +3399,7 @@ if ( !function_exists( 'workreap_select_project_addons' ) ) {
                 fw_set_db_post_option($project_id, 'private_project', 'yes');
                 update_post_meta($project_id, '_private_project', 'yes');
             }
+            
             if(!empty($faster_project) && $faster_project == 'on') {
                 $period = $faster_project_options[$project_deadline]['period'];
                 $fees['faster_project'] = array(
@@ -3404,7 +3410,13 @@ if ( !function_exists( 'workreap_select_project_addons' ) ) {
                 update_post_meta($project_id, 'deadline', $deadline);
                 fw_set_db_post_option($project_id, 'deadline', $deadline);
                 fw_set_db_post_option($project_id, 'faster_project', $faster_project_options[$project_deadline]['label']);
+            } else if(!empty($project_default_deadline)) {
+                // default deadline
+                $deadline = date('Y/m/d', strtotime(sprintf(_n('+1 day', '+%d days', $project_default_deadline), $project_default_deadline), current_time('timestamp')));
+                update_post_meta($project_id, 'deadline', $deadline);
+                fw_set_db_post_option($project_id, 'deadline', $deadline);
             }
+
             if(!empty($participation_fees) && $participation_fees == 'on') {
                 $fees['participation'] = array(
                     'label' => esc_html__('Participation', 'workreap') . sprintf(' ( %s )', $project_participation_options[$participation]['label']), 
@@ -3415,6 +3427,8 @@ if ( !function_exists( 'workreap_select_project_addons' ) ) {
 
             if( !empty($fees) ) {
                 WC()->session->set('fees', $fees);
+            } else {
+                WC()->session->__unset('fees');
             }
 
             $json['type']           = 'redirect';

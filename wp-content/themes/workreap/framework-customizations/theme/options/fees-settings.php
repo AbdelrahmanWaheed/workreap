@@ -35,6 +35,12 @@ $options = array(
                         'type'  => 'checkbox',
                         'value' => false,
                     ),
+                    'project_default_deadline' => array(
+                        'label' => esc_html__('Job Default Deadline', 'workreap'),
+                        'desc'  => esc_html__('Set job default deadline in days', 'workreap'),
+                        'type'  => 'number',
+                        'value' => '7',
+                    ),
                     'faster_project_options' => array(
                         'type'  => 'addable-box',
                         'label' => esc_html__('Faster Job Options', 'workreap'),
