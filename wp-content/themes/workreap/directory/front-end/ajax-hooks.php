@@ -4175,6 +4175,8 @@ if ( !function_exists( 'workreap_job_reopen' ) ) {
 				'post_status'   => 'publish'
 			);
   			wp_update_post( $project_post_data );
+            delete_post_meta( $project_id, '_exclude_from_search' );
+
 			$json['type'] = 'success';
             $json['message'] = esc_html__('Job reopened successfully.', 'workreap');
             wp_send_json($json);
@@ -4220,6 +4222,11 @@ if ( !function_exists( 'workreap_hire_freelancer' ) ) {
 
             // hire the freelancer
             workreap_update_hiring_data($order_id);
+
+            // if private project, then hide from search
+            if( get_post_meta( $job_id, '_private_project', true ) === 'yes' ) {
+                update_post_meta( $job_id, '_exclude_from_search', 'yes' );
+            }
 
             // update api key data
             if( apply_filters('workreap_filter_user_promotion', 'disable') === 'enable' ){  

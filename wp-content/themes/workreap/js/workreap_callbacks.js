@@ -1003,7 +1003,7 @@ jQuery(document).on('ready', function() {
 				mime_types: [
 					{title: scripts_vars.proposal_attachments, extensions: image_extensions}
 				],
-				max_file_size: 50000000000,
+				max_file_size: uploadSize,
 				max_file_count: 1,
 				prevent_duplicates: false
 			}
@@ -1074,6 +1074,7 @@ jQuery(document).on('ready', function() {
                     {title: document_title, extensions: "pdf,doc,docx,xls,xlsx,ppt,pptx,csv,jpg,jpeg,gif,png,zip,rar,html,php,txt"}
                 ],
                 max_file_size: uploadSize,
+				max_file_count: 1,
                 prevent_duplicates: false
             }
         };

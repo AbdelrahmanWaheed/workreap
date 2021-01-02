@@ -38,6 +38,8 @@ if( apply_filters('workreap_system_access','job_base') === true ){
 	if( function_exists('fw_get_db_settings_option')  ){
 		$job_price_option	= fw_get_db_settings_option('job_price_option', $default_value = null);
 	}
+
+	$all_post_status = array('publish', 'hired', 'completed');
 		
 	//Search parameters
 	$keyword 		= !empty( $_GET['keyword']) ? $_GET['keyword'] : '';
@@ -53,6 +55,7 @@ if( apply_filters('workreap_system_access','job_base') === true ){
 	$english_level  = !empty( $_GET['english_level'] ) ? $_GET['english_level'] : array();
 	$minprice 		= !empty( $_GET['minprice']) ? intval($_GET['minprice'] ): 0;
 	$maxprice 		= !empty( $_GET['maxprice']) ? intval($_GET['maxprice']) : '';
+	$post_status    = !empty( $_GET['status']) ? $_GET['status'] : $all_post_status;
 	
 	$tax_query_args  = array();
 	$meta_query_args = array();
@@ -351,16 +354,20 @@ if( apply_filters('workreap_system_access','job_base') === true ){
 				'compare' 		=> 'BETWEEN'
 			);
 		}
-
-		
 	}
+
+	// exclude undesired projects from search
+	$meta_query_args[]  = array(
+		'key' 			=> '_exclude_from_search',
+		'compare' 		=> 'NOT EXISTS'
+	);
 
 	//Main Query
 	$query_args = array(
 		'posts_per_page' 	  => $show_posts,
 		'post_type' 	 	  => 'projects',
 		'paged' 		 	  => $paged,
-		'post_status' 	 	  => array( 'publish'),
+		'post_status' 	 	  => $post_status,
 		'ignore_sticky_posts' => 1
 	);
 
@@ -415,6 +422,8 @@ if( apply_filters('workreap_system_access','job_base') === true ){
 		?>
 	</div>
 	<?php }?>
+
+	<?php $search_page = workreap_get_search_page_uri('jobs'); ?>
 	<div class="search-result-template wt-haslayout">
 		<div class="wt-haslayout wt-job-search">
 			<div class="container">
@@ -430,23 +439,42 @@ if( apply_filters('workreap_system_access','job_base') === true ){
 								<div class="floating-mobile-filter">
 									<div class="wt-filter-scroll wt-collapse-filter">
 										<a class="wt-mobile-close" href="javascript:;"><i class="lnr lnr-cross"></i></a>
-										<form method="get" name="serach-projects" action="#">
+										<form method="get" name="serach-projects" action="<?php echo esc_url($search_page); ?>">
 											<h2 class="filter-byhead"><?php esc_html_e('Filter Project By', 'workreap'); ?></h2>
 											<?php // do_action('workreap_geoloacation_search'); ?>
 											<?php do_action('workreap_keyword_search'); ?>
+											<?php if( apply_filters('workreap_filter_settings','job','statuses') === 'enable' ) {
+												do_action('workreap_print_project_status', esc_html__('Status', 'workreap') );
+											} ?>
 											<?php 
-												if(!empty($job_option_type) && $job_option_type === 'enable' ){
-													if( apply_filters('workreap_filter_settings','job','option_type') === 'enable' ){do_action('workreap_print_project_option', esc_html__('Job Type', 'workreap') );} 
+												if(!empty($job_option_type) && $job_option_type === 'enable' ) {
+													if( apply_filters('workreap_filter_settings','job','option_type') === 'enable' ) {
+														do_action('workreap_print_project_option', esc_html__('Job Type', 'workreap') );
+													}
 												}
 											?>
-											<?php if( apply_filters('workreap_filter_settings','job','type') === 'enable' ){do_action('workreap_print_jobs_price_range');} ?>
-											<?php if( apply_filters('workreap_filter_settings','job','length') === 'enable' ){do_action('workreap_print_project_time_html');} ?>
-											<?php if( apply_filters('workreap_filter_settings','job','type') === 'enable' ){do_action('workreap_print_project_freelancer_type', esc_html__('Freelancer Type', 'workreap') );} ?>
-											<?php if( apply_filters('workreap_filter_settings','job','exprience_type') === 'enable' ){do_action('workreap_job_exprience');} ?>	
+											<?php if( apply_filters('workreap_filter_settings','job','type') === 'enable' ) {
+												do_action('workreap_print_jobs_price_range');
+											} ?>
+											<?php if( apply_filters('workreap_filter_settings','job','length') === 'enable' ) {
+												do_action('workreap_print_project_time_html');
+											} ?>
+											<?php if( apply_filters('workreap_filter_settings','job','type') === 'enable' ) {
+												do_action('workreap_print_project_freelancer_type', esc_html__('Freelancer Type', 'workreap') );
+											} ?>
+											<?php if( apply_filters('workreap_filter_settings','job','exprience_type') === 'enable' ) {
+												do_action('workreap_job_exprience');
+											} ?>	
 											<?php do_action('workreap_print_categories'); ?>
-											<?php if( apply_filters('workreap_filter_settings','job','skills') === 'enable' ){do_action('workreap_filter_skills');} ?>
-											<?php if( apply_filters('workreap_filter_settings','job','locations') === 'enable' ){do_action('workreap_print_locations');} ?>
-											<?php if( apply_filters('workreap_filter_settings','job','languages') === 'enable' ){do_action('workreap_print_languages');} ?>	
+											<?php if( apply_filters('workreap_filter_settings','job','skills') === 'enable' ) {
+												do_action('workreap_filter_skills');
+											} ?>
+											<?php if( apply_filters('workreap_filter_settings','job','locations') === 'enable' ) {
+												do_action('workreap_print_locations');
+											} ?>
+											<?php if( apply_filters('workreap_filter_settings','job','languages') === 'enable' ) {
+												do_action('workreap_print_languages');
+											} ?>	
 
 											<div class="wt-widget wt-effectiveholder">
 												<div class="wt-widgetcontent">

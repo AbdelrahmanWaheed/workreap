@@ -491,6 +491,7 @@ if (!function_exists('workreap_update_hiring_data')) {
 		}
     }
 }
+
 /**
  * Update User Hiring payment
  *

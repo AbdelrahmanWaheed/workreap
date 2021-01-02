@@ -67,7 +67,7 @@ if( $query->have_posts() ){
 									<div class="wt-contenthead">
 										<div class="wt-title">
 											<?php do_action('workreap_get_verification_check', $linked_profile, $employer_title ); ?>
-											<h2><?php the_title(); ?></h2>
+											<h2 class="w-100"><?php the_title(); ?></h2>
 										</div>
 										<ul class="wt-saveitem-breadcrumb wt-userlisting-breadcrumb">
 											<?php do_action('workreap_project_print_project_level', $post->ID); ?>

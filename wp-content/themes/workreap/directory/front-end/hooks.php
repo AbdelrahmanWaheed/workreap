@@ -4611,7 +4611,7 @@ if( !function_exists( 'workreap_save_project_html') ){
  * @author Amentotech <theamentotech@gmail.com>
  * @return 
  */
- if( !function_exists( 'workreap_keyword_search') ){
+if( !function_exists( 'workreap_keyword_search') ){
     function workreap_keyword_search( $classes = ''){
 		ob_start();
 		$keyword 		= !empty( $_GET['keyword']) ? stripslashes( $_GET['keyword'] ) : '';
@@ -4637,7 +4637,54 @@ if( !function_exists( 'workreap_save_project_html') ){
 		echo ob_get_clean();
     }
     add_action('workreap_keyword_search', 'workreap_keyword_search', 10, 1);
- }
+}
+
+/**
+ * Print project skills html
+ *
+ * @throws error
+ * @author Amentotech <theamentotech@gmail.com>
+ * @return 
+ */
+if( !function_exists( 'workreap_print_project_status' ) ){
+	function workreap_print_project_status( $title = '' ){ 
+		$status 			= !empty( $_GET['status'] ) ? $_GET['status'] : array();
+		$count  			= !empty($status) && is_array($status) ? count($status) : 0;
+		$active_class	= !empty($count) ? 'wt-displayfilter' : '';
+		$all_status   = array(
+			'publish'   => 'Open', 
+			'hired'     => 'Hired',
+			'completed' => 'Completed',
+		);
+		ob_start(); 
+		?>
+		<div class="wt-widget wt-effectiveholder <?php echo esc_attr($active_class);?>">
+			<?php if( !empty( $title ) ){ ?>
+				<div class="wt-widgettitle">
+					<h2><?php echo esc_html( $title ); ?>:<span>( <em><?php echo esc_html($count); ?></em> <?php esc_html_e('selected', 'workreap'); ?> )</span></h2>
+				</div>
+			<?php } ?>
+			<div class="wt-widgetcontent">
+				<div class="wt-formtheme wt-formsearch">
+					<fieldset>
+						<div class="wt-checkboxholder wt-filterscroll">
+							<?php foreach ( $all_status as $key => $value ) { ?>
+								<span class="wt-checkbox">
+									<input id="status-<?php echo esc_attr( $key ); ?>" type="checkbox" name="status[]" 
+										value="<?php echo esc_attr( $key ); ?>" <?php checked( in_array( $key, $status ) ); ?>>
+									<label for="status-<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $value ); ?></label>
+								</span>
+							<?php } ?>
+						</div>
+					</fieldset>
+				</div>
+			</div>
+		</div>
+		<?php
+		echo ob_get_clean();   
+	}
+	add_action('workreap_print_project_status', 'workreap_print_project_status', 10, 1);
+}
 
 /**
  * Display Departments HTML

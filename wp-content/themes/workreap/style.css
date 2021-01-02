@@ -864,7 +864,7 @@ body.wt-login .wt-userlogedin{display:block}
 .wt-viewjobclock{color:var(--primthemecolor)}
 .wt-viewjobclock.fa-hourglass-half{color:#ff9800}
 .wt-viewjobtag{color:#cf649a}
-.wt-userlistingholdvtwo{min-height:282px;position:relative}
+.wt-userlistingholdvtwo{min-height:241px;position:relative}
 .wt-amountbox{width:100%;float:left;text-align:center}
 .wt-amountbox span,.wt-amountbox input{display:inline-block;vertical-align:middle}
 .wt-amountbox span{color:#999;font-size:13px;line-height:16px;padding:0 8px 0 0}
@@ -2022,8 +2022,8 @@ blockquote:not(.blockquote-link){padding:20px;background:#f7f7f7;padding-left:15
 .wt-bannercontent .wt-formbanner .wt-radioholder{z-index:2}
 .woocommerce-billing-fields > h3 {font-size:20px;margin-bottom:25px;padding-bottom:10px;border-bottom:1px solid #bbb;}
 .fw-alert.woocommerce-notice{margin-bottom:25px;}i.fa-fw{margin-right:10px;}.wt-btn.show-feedback.new-feedback{background: transparent;border: 2px solid var(--primthemecolor);color: var(--primthemecolor);line-height: 32px !important;}
-.wt-btn .badge{margin-left:10px;font-size:92%}.wt-btn .badge.badge-light{color: var(--primthemecolor);background: #fff}
-.show-feedback .badge{margin-left:10px;font-size:92%}.show-feedback .badge-dark{background: var(--primthemecolor);}
+.wt-btn .badge{margin-left:10px;font-size:92%;vertical-align:middle;line-height:92%;}.wt-btn .badge.badge-light{color: var(--primthemecolor);background: #fff}
+.show-feedback .badge{margin-left:10px;font-size:92%;vertical-align:middle;line-height:92%;}.show-feedback .badge-dark{background: var(--primthemecolor);}
 .wt-userlistinghold .wt-skillsrequired{margin-bottom: 0px;}.wt-rcvproposalholder .wt-proposalitem.wt-newitem{border-left-color: var(--primthemecolor);border-left-width: 3px;}
 @media(max-width:1199px){body.post-template-full-single-post .wt-articlesingle-holder .wt-articlesingle-content{padding:30px}
 }@media(max-width:991px){.has-4-columns .wp-block-column{margin:0 10px}

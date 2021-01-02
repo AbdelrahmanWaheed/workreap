@@ -3170,6 +3170,7 @@ function init_files_uploader(current_uploader, current_type,role) {
 			mime_types: [
 				 {title: awardImage, extensions: "pdf,doc,docx,xls,xlsx,ppt,pptx,csv,jpg,jpeg,gif,png,zip,rar,mp4,mp3,3gp,flv,ogg,wmv,avi,stl,obj,iges,psd,mov"}
 			],
+			max_file_size: uploadSize,
 			max_file_count: 1,
 			prevent_duplicates: false
 		}

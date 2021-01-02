@@ -370,6 +370,20 @@ $options = array(
 								'desc' => esc_html__('You can enable or disable available filters', 'workreap'),
 								'help' => esc_html__('', 'workreap'),
 							),
+							'job_statuses' => array(
+								'type' => 'switch',
+								'value' => 'enable',
+								'label' => esc_html__('Project status filter?', 'workreap'),
+								'desc' => esc_html__('', 'workreap'),
+								'left-choice' => array(
+									'value' => 'enable',
+									'label' => esc_html__('Enable', 'workreap'),
+								),
+								'right-choice' => array(
+									'value' => 'disable',
+									'label' => esc_html__('Disable', 'workreap'),
+								),
+							),
 							'job_type' => array(
 								'type' => 'switch',
 								'value' => 'enable',

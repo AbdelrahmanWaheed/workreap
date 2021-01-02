@@ -3179,8 +3179,7 @@ function wp_custom_dropdown_users( $args = '' ) {
                 /* translators: 1: User's display name, 2: User login. */
                 $display = sprintf( _x( '%1$s (%2$s)', 'user dropdown' ), $user->display_name, $user->user_login );
             } elseif ( 'display_name_with_rating' === $show ) {
-                $display = sprintf('%1$s (rating: %3$0.1f/5.0)', $user->display_name,
-                	$user->rating * 100 / 5, $user->rating);
+                $display = sprintf('%1$s (rating: %2$0.1f/5.0)', workreap_get_username($user->ID), $user->rating);
             } elseif ( ! empty( $user->$show ) ) {
                 $display = $user->$show;
             } else {
