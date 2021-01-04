@@ -1346,7 +1346,7 @@ if ( ! function_exists( 'workreap_get_dashboard_menu' ) ) {
 			),
 			'payouts-settings'	=> array(
 				'title' => esc_html__('Payouts Settings','workreap'),
-				'type'	=> 'none'
+				'type'	=> 'freelancer'
 			),
 			'manage-projects'	=> array(
 				'title' => esc_html__('Manage Projects','workreap'),
@@ -1360,7 +1360,6 @@ if ( ! function_exists( 'workreap_get_dashboard_menu' ) ) {
 				'title' => esc_html__('Manage Services','workreap'),
 				'type'	=> 'freelancer'
 			),
-
 			'manage-service'	=> array(
 				'title' => esc_html__('Manage Services','workreap'),
 				'type'	=> 'employer'
