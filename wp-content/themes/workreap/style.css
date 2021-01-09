@@ -3786,3 +3786,4 @@ body.single .wt-chatbox .wt-replaybox .form-control{overflow:visible;}
 .wt-project-colors .wt-widgettag .design-color span{vertical-align:middle;display:inline-block;}
 .wt-project-colors .design-color .color-dynamic-field{height:36px;width:36px;margin-left:0px;border:1px solid #ddd;}.slider.slider-disabled .slider-handle{display: none;}
 .project-addons .wt-userformvtwo{padding:0 20px;}.project-addons .wt-dashboardboxcontent{float:left;width:100%;}.project-addons .wt-dashboardboxcontent+.wt-dashboardboxcontent{margin-top:40px;}
+.wt-userlistingcontent .wt-skillsrequired .show-winner-design{margin-top:10px;background-color:var(--primthemecolor);color:#fff;border-color:var(--primthemecolor);}

@@ -66,6 +66,10 @@ if (!function_exists('workreap_scripts')) {
 			wp_enqueue_style('magnific-popup');
             wp_enqueue_style('bootstrap-slider');
         }
+
+        if(is_page_template('directory/project-search.php')){
+            wp_enqueue_style('magnific-popup');
+        }
         
         //script
         wp_register_script('modernizr', get_template_directory_uri() . '/js/vendor/modernizr.min.js', array(), $theme_version->get('Version'), false);
@@ -240,6 +244,7 @@ if (!function_exists('workreap_scripts')) {
             wp_enqueue_script('workreap-infobox');
 			wp_enqueue_script('oms');
             wp_enqueue_script('workreap-gmaps');
+            wp_enqueue_script('magnific-popup');
 		}
 
 		if (is_page_template('directory/dashboard.php')) {

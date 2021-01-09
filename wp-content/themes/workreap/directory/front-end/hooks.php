@@ -1645,9 +1645,11 @@ if ( !function_exists( 'worrketic_proposal_attachments' ) ) {
  * @return 
  */
 if ( !function_exists( 'worrketic_proposal_view_attachments' ) ) {
-	add_action( 'worrketic_proposal_view_attachments', 'worrketic_proposal_view_attachments',10,1 );
-	function worrketic_proposal_view_attachments($job_id) {
-		if( empty($job_id) ){return;}
+	add_action( 'worrketic_proposal_view_attachments', 'worrketic_proposal_view_attachments', 10, 2 );
+	function worrketic_proposal_view_attachments($job_id, $button_label = '') {
+		if( empty($job_id) ){
+			return;
+		}
 
 		if (function_exists('fw_get_db_post_option')) {
 			$proposal_docs = fw_get_db_post_option($job_id, 'proposal_docs');
@@ -1665,9 +1667,13 @@ if ( !function_exists( 'worrketic_proposal_view_attachments' ) ) {
 		$images_count = !empty($images) ? count($images) : 0;
 		?>
 		<div class="wt-hireduserstatus">
-			<a href="javascrript:;" class="show-project-<?php echo $job_id; ?>-attachments">
-				<i class="fa fa-image"></i>
-				<span><?php  printf(_n('1 image', '%d images', $images_count, 'workreap'), $images_count);?></span>
+			<a href="javascrript:;" class="show-project-<?php echo $job_id; ?>-attachments show-winner-design">
+				<?php if( !empty( $button_label ) ) { ?>
+					<span><?php echo esc_attr( $button_label ); ?></span>
+				<?php } else { ?>
+					<i class="fa fa-image"></i>
+					<span><?php  printf(_n('1 image', '%d images', $images_count, 'workreap'), $images_count);?></span>
+				<?php } ?>
 			</a>
 			<div class="attahments-container-<?php echo $job_id; ?> hidden">
 				<?php if(!empty($images)) { ?>
@@ -4367,25 +4373,27 @@ if( !function_exists( 'workreap_job_detail_documents' ) ) {
  * @return 
  */
 if( !function_exists( 'workreap_job_winner_design' ) ) {
-	function workreap_job_winner_design( $job_id = '' ){
+	function workreap_job_winner_design( $job_id = '', $title = '', $button_label = '' ){
 		if( !empty( $job_id ) && $job_id != 0 ){
 			$project = get_post( $job_id );
 			if( $project->post_status == 'completed' || $project->post_status == 'hired' ) {
 				$winner_proposal = get_post_meta( $job_id, '_proposal_id', true );
 				?>
 				<div class="wt-skillsrequired">
-					<div class="wt-title">
-						<h3><?php esc_html_e('Winner Design', 'workreap'); ?></h3>
-					</div>
+					<?php if( !empty( $title ) ){ ?>
+						<div class="wt-title">
+							<h3><?php echo esc_html( $title ); ?></h3>
+						</div>
+					<?php } ?>
 					<div class="wt-tag wt-widgettag winner-design">
-						<?php worrketic_proposal_view_attachments( $winner_proposal ); ?>
+						<?php worrketic_proposal_view_attachments( $winner_proposal, $button_label ); ?>
 					</div>
 				</div>
 				<?php
 			}
 		}
 	}
-	add_action('workreap_job_winner_design', 'workreap_job_winner_design', 10, 1);
+	add_action('workreap_job_winner_design', 'workreap_job_winner_design', 10, 3);
 }
 
 /**

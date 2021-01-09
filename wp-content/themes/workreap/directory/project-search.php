@@ -560,7 +560,8 @@ if( apply_filters('workreap_system_access','job_base') === true ){
 												<div class="wt-description">
 													<p><?php echo wp_trim_words( stripslashes( get_the_excerpt() ), 30 ); ?></p>
 												</div>
-												<?php do_action( 'workreap_print_skills_html', $post->ID );?>										
+												<?php do_action( 'workreap_print_skills_html', $post->ID );?>
+												<?php do_action( 'workreap_job_winner_design', $post->ID, null, 'Winner Design' );?>
 											</div>
 											<div class="wt-viewjobholder relative-viewjobholder">
 												<ul>
@@ -573,7 +574,9 @@ if( apply_filters('workreap_system_access','job_base') === true ){
 													<?php do_action('workreap_print_project_date', $post->ID);?>
 													<?php // do_action('workreap_print_location', $post->ID); ?>
 													<li><?php  do_action('workreap_save_project_html', $post->ID, 'v2'); ?></li>
-													<li class="wt-btnarea"><a href="<?php echo esc_url( get_the_permalink() ); ?>" class="wt-btn"><?php esc_html_e( 'View Job', 'workreap' ) ?></a></li>
+													<li class="wt-btnarea">
+														<a href="<?php echo esc_url( get_the_permalink() ); ?>" class="wt-btn"><?php esc_html_e( 'View Job', 'workreap' ) ?></a>
+													</li>
 												</ul>
 											</div>
 										</div>

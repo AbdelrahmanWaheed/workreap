@@ -313,7 +313,7 @@ if (!class_exists('ChatSystem')) {
                     
                     $projects = get_posts( $args );
                     
-				}else {
+				} else {
 					$projects	= '';
                 }
                 $profile_id = workreap_get_linked_profile_id($userId);
@@ -327,35 +327,44 @@ if (!class_exists('ChatSystem')) {
 							<a href="javascript:;" class="wt-closebtn close"><i class="fa fa-close" data-dismiss="modal"></i></a>
 						</div>
 						<div class="modal-body">
-							<form class=" chat-form">
-								<?php if( apply_filters('workreap_system_access','job_base') === true && !empty($projects) ){?>
-									<div class="wt-projectdropdown-hold">
-										<div class="wt-projectdropdown">
-											<div class="wt-select">
-												<select name="project_id" class="project_id" id="project_id">
-													<option value=""><?php esc_html_e('Select a project','workreap_core');?></option>
-													<?php foreach( $projects as $project ) {?>
-														<option value="<?php echo intval( $project->ID );?>">
-															<?php echo esc_attr( $project->post_title );?>
-														</option>
-													<?php } ?>
-												</select>
-											</div>
-										</div>
-									</div>
-								<?php }?>
-								<div class="wt-formtheme wt-formpopup">
-									<fieldset class="wt-replaybox">
-										<div class="form-group">
-											<textarea class="form-control reply_msg" name="reply" placeholder="<?php esc_html_e('Type message here', 'workreap_core'); ?>"></textarea>
-										</div>
-										<div class="form-group wt-btnarea">
-											<p><?php esc_html_e('Click the button to send the offer to this freelancer','workreap_core');?></p>
-											<a href="javascript:;" class="wt-btn wt-send-offer" data-invitetype="<?php echo esc_attr($type); ?>" data-status="unread" data-msgtype="modal" data-projectid="" data-receiver_id="<?php echo esc_attr($userId);?>"><?php esc_html_e('Send offer','workreap_core');?></a>
-										</div>
-									</fieldset>
-								</div>
-							</form>
+                            <?php if( empty( $projects ) ) { ?>
+                                <br><br>
+                                <p class="text-center">
+                                    Sorry! You currently don't have open projects to send offer. <br>
+                                    Please <a href="<?php Workreap_Profile_Menu::workreap_profile_menu_link('post_job', $current_user->ID); ?>">Post A Job</a> at first.
+                                </p>
+                                <br><br><br>
+                            <?php } else { ?>
+      							<form class=" chat-form">
+      								<?php if( apply_filters('workreap_system_access','job_base') === true && !empty($projects) ){?>
+      									<div class="wt-projectdropdown-hold">
+      										<div class="wt-projectdropdown">
+      											<div class="wt-select">
+      												<select name="project_id" class="project_id" id="project_id">
+      													<option value=""><?php esc_html_e('Select a project','workreap_core');?></option>
+      													<?php foreach( $projects as $project ) {?>
+      														<option value="<?php echo intval( $project->ID );?>">
+      															<?php echo esc_attr( $project->post_title );?>
+      														</option>
+      													<?php } ?>
+      												</select>
+      											</div>
+      										</div>
+      									</div>
+      								<?php }?>
+      								<div class="wt-formtheme wt-formpopup">
+      									<fieldset class="wt-replaybox">
+      										<div class="form-group">
+      											<textarea class="form-control reply_msg" name="reply" placeholder="<?php esc_html_e('Type message here', 'workreap_core'); ?>"></textarea>
+      										</div>
+      										<div class="form-group wt-btnarea">
+      											<p><?php esc_html_e('Click the button to send the offer to this freelancer','workreap_core');?></p>
+      											<a href="javascript:;" class="wt-btn wt-send-offer" data-invitetype="<?php echo esc_attr($type); ?>" data-status="unread" data-msgtype="modal" data-projectid="" data-receiver_id="<?php echo esc_attr($userId);?>"><?php esc_html_e('Send offer','workreap_core');?></a>
+      										</div>
+      									</fieldset>
+      								</div>
+      							</form>
+                            <?php } ?>
 						</div>
 					</div>
 				</div>
@@ -743,6 +752,18 @@ if (!class_exists('ChatSystem')) {
                 wp_send_json($json);
             }
 
+            if( self::contains_email( $message ) ) {
+                $json['type'] = 'error';
+                $json['message'] = esc_html__('Please don\'t send email address in your message.', 'workreap_core');
+                wp_send_json($json);
+            }
+
+            if( self::contains_phone_number( $message ) ) {
+                $json['type'] = 'error';
+                $json['message'] = esc_html__('Please don\'t send phone number in your message.', 'workreap_core');
+                wp_send_json($json);
+            }
+
             if (function_exists('fw_get_db_settings_option')) {
                 $comet_chat = fw_get_db_settings_option('chat');
             }
@@ -915,6 +936,28 @@ if (!class_exists('ChatSystem')) {
 
             wp_send_json($json);
             
+        }
+
+        /**
+         * Check if text contains email address
+         *
+         * @param array $params
+         * @return boolean
+         */
+        private static function contains_email( $text ) {
+            $regex = '/[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})/'; 
+            return preg_match($regex, $text);
+        }
+
+        /**
+         * Check if text contains phone number
+         *
+         * @param array $params
+         * @return boolean
+         */
+        private static function contains_phone_number( $text ) {
+            $regex = '/[0-9]{8,}/'; 
+            return preg_match($regex, $text);
         }
 
         /**

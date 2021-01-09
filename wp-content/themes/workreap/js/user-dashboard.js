@@ -933,12 +933,23 @@ jQuery(document).on('ready', function() {
 	});
 	
 	jQuery(document).on('click','.wt-proposal-chat', function (e) {       
-		 var _this 			= jQuery(this);
-		 var receiver_id   	= _this.data('receiver_id');
-		 var status   	  	= _this.data('status');
-		 var url   	  		= _this.data('url');
-		 var msg_type   	= _this.data('msgtype');
-		 var reply_msg 	  	= _this.parents('.wt-formpopup').find('textarea.reply_msg').val(); 
+		var _this 			= jQuery(this);
+		var receiver_id   	= _this.data('receiver_id');
+		var status   	  	= _this.data('status');
+		var url   	  		= _this.data('url');
+		var msg_type   	    = _this.data('msgtype');
+		var reply_msg 	  	= _this.parents('.wt-formpopup').find('textarea.reply_msg').val(); 
+		
+		// validate message against emails or telephone numbers
+		if(checkIfEmailInString(reply_msg)) {
+			jQuery.sticky('Please don\'t send email address in your message.', {classList: 'important', speed: 200, autoclose: 5000});
+			return;
+		}
+		if(checkIfPhoneNumberInString(reply_msg)) {
+			jQuery.sticky('Please don\'t send phone number in your message.', {classList: 'important', speed: 200, autoclose: 5000});
+			return;
+		}
+
 		//Send message  
 		jQuery('body').append(loader_html);
 		jQuery.ajax({
