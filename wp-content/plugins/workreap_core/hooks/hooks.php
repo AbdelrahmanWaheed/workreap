@@ -1924,7 +1924,10 @@ if( !function_exists( 'workreap_process_social_registration_step_two' ) ){
 									);
 				wp_update_post($shor_name_array);
 			}
-			
+
+			update_post_meta($post_id, '_is_verified', 'no');
+			update_post_meta($post_id, '_linked_profile', $user_identity);
+
 			//Send email to users
 			if (class_exists('Workreap_Email_helper')) {
 				if ( function_exists('fw_get_db_post_option' )) {
