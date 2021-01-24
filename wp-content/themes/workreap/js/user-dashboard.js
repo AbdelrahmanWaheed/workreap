@@ -204,27 +204,8 @@ jQuery(document).on('ready', function() {
 	if(jQuery('.elementor-location-header').length > 0){
 		jQuery('body').addClass('elementor-header-used');
 	}
-	
-	
 
-	//widow width
-	var _win_width = jQuery(window).width();
-	if( _win_width <= 1680 ){
-		jQuery('.dashboard-menu-left .menu-item-has-children').removeClass('wt-open');
-		jQuery('.dashboard-menu-left .menu-item-has-children').find('.sub-menu').hide();
-	}
-	
-	if( _win_width <= 480 ){
-		jQuery(".dashboard-menu-top  > .menu-item-has-children > a").on('click', function(event) {
-			event.preventDefault();
-			var _this	= jQuery(this);
-			jQuery('.menu-item-has-children').find('.sub-menu').hide();
-			jQuery('.menu-item-has-children').removeClass('wt-open');
-			_this.parents('li').addClass('wt-open');
-			_this.next('.sub-menu').show();
-		});
-	}
-	
+
 	/* FIXED SIDEBAR */
 	function fixedNav(){			
 		$(window).scroll(function () {			

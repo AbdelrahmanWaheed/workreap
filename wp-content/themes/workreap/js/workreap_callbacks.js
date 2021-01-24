@@ -1383,6 +1383,27 @@ jQuery(document).on('ready', function() {
 			container.prepend(_this.parent());
 		});
 	}
+
+	//window width
+	var _win_width = jQuery(window).width();
+	if( _win_width <= 1680 ){
+		jQuery('.dashboard-menu-left .menu-item-has-children').removeClass('wt-open');
+		jQuery('.dashboard-menu-left .menu-item-has-children').find('.sub-menu').hide();
+	}
+	
+	if( _win_width <= 480 ){
+		jQuery(".dashboard-menu-top  > .menu-item-has-children > a").on('click', function(event) {
+			event.preventDefault();
+			var _this	= jQuery(this);
+			var show    = ! _this.parents('li').hasClass('wt-open');
+			jQuery('.menu-item-has-children').find('.sub-menu').hide();
+			jQuery('.menu-item-has-children').removeClass('wt-open');
+			if( show ) {
+				_this.parents('li').addClass('wt-open');
+				_this.next('.sub-menu').show();
+			}
+		});
+	}
 });
 
 //recaptcha
