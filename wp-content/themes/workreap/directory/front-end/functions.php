@@ -1745,6 +1745,23 @@ if ( !function_exists( 'workreap_get_employer_avatar' ) ) {
 }
 
 /**
+ * Get upload max size in mega byte
+ *
+ * @throws error
+ * @author Amentotech <theamentotech@gmail.com>
+ * @return
+ */
+if ( !function_exists( 'workreap_get_upload_max_size' ) ) {
+	function workreap_get_upload_max_size() {
+		if ( function_exists( 'fw_get_db_settings_option' ) ) {
+			$dir_datasize = fw_get_db_settings_option('dir_datasize');
+		}
+
+		return !empty($dir_datasize) ? intval($dir_datasize / 1024 / 1024) : 0;
+	}
+}
+
+/**
  * Add http from URL
  *
  * @throws error

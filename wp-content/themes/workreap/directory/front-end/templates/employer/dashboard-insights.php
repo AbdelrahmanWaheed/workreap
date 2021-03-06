@@ -13,6 +13,12 @@ global $current_user;
 ?>
 <div class="wt-haslayout wt-moredetailsholder">
 	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+		<div class="btn-area text-center">
+			<a href="<?php \Workreap_Profile_Menu::workreap_profile_menu_link('post_job', $current_user->ID); ?>" class="wt-btn wt-btn-v2">
+				<i class="ti-bolt"></i> &nbsp; <?php esc_html_e('Post New Job','workreap_core'); ?>
+			</a>
+		</div>
+		<br><br>
 		<div class="row">
 			<?php 
 				get_template_part('directory/front-end/templates/dashboard', 'statistics-messages'); 

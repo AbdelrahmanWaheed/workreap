@@ -122,6 +122,31 @@ if( !class_exists('Workreap_Home_Slider_V5') ){
 			);
 
 			$this->add_control(
+				'post_job_btn',
+				[
+					'type'      	=> \Elementor\Controls_Manager::SWITCHER,
+					'label' 		=> esc_html__( '"Create Job" Button', 'workreap_core' ),
+					'label_on' 		=> esc_html__( 'Show', 'workreap_core' ),
+					'label_off' 	=> esc_html__( 'Hide', 'workreap_core' ),
+					'return_value' 	=> 'yes',
+					'default' 		=> 'yes',
+					'description' 	=> esc_html__('Show/Hide create job button.', 'workreap_core'),
+				]
+			);
+
+			$this->add_control(
+				'post_job_btn_title',
+				[
+					'type'      	=> \Elementor\Controls_Manager::TEXT,
+					'label' 		=> esc_html__( '"Create Job" Button Title', 'workreap_core' ),
+					'default' 		=> 'Create A Job',
+					'condition' => [
+						'post_job_btn' => [ 'yes' ],
+					],
+				]
+			);
+
+			$this->add_control(
 				'top_title',
 				[
 					'type'      	=> Controls_Manager::TEXT,
@@ -198,6 +223,8 @@ if( !class_exists('Workreap_Home_Slider_V5') ){
 			$search_form_title		= !empty($settings['search_form_title']) ? $settings['search_form_title'] : '';
 			$search_form_subtitle	= !empty($settings['search_form_subtitle']) ? $settings['search_form_subtitle'] : '';
 			$searchs	    		= !empty($settings['search']) ? $settings['search'] : array();
+			$post_job_btn           = !empty($settings['post_job_btn']) ? $settings['post_job_btn'] : '';
+			$post_job_btn_title     = !empty($settings['post_job_btn_title']) ? $settings['post_job_btn_title'] : '';
 			$top_title				= !empty($settings['top_title']) ? $settings['top_title'] : '';
 			$title					= !empty($settings['title']) ? $settings['title'] : '';
 			$sub_title				= !empty($settings['sub_title']) ? $settings['sub_title'] : '';
@@ -262,8 +289,23 @@ if( !class_exists('Workreap_Home_Slider_V5') ){
 											<?php } ?>
 										</div>
 									<?php } ?>
+									<?php if(!empty($post_job_btn) && $post_job_btn === 'yes') { ?>
+										<div class="wt-bannerthree-title <?php echo $search_form !== 'yes' ? 'margin-center' : '' ; ?>">
+											<?php if( !is_user_logged_in() ) { ?>
+												<a href="javascript:;" data-toggle="modal" data-target="#joinpopup" 
+													class="wt-btn wt-post-job-btn wt-register-employer-btn">
+													<?php esc_html_e($post_job_btn_title,'workreap_core');?>
+												</a><br><br>
+											<?php } else if(workreap_get_user_type(get_current_user_id()) === 'employer') { ?>
+												<a href="<?php \Workreap_Profile_Menu::workreap_profile_menu_link('post_job', get_current_user_id()); ?>" 
+													class="wt-btn wt-post-job-btn">
+													<?php esc_html_e($post_job_btn_title,'workreap_core'); ?>
+												</a><br><br>
+											<?php } ?>
+										</div>
+									<?php } ?>
 									<?php if(!empty($top_title) || !empty($title) || !empty($sub_title) || !empty($description)) { ?>
-										<div class="wt-bannerthree-title">
+										<div class="wt-bannerthree-title <?php echo $search_form !== 'yes' ? 'margin-center' : '' ; ?>">
 											<?php if(!empty($top_title)) { ?><span><?php echo esc_html($top_title); ?></span><?php } ?>
 											<?php if(!empty($title) || !empty($sub_title)) { ?>
 												<h2><?php if(!empty($title)) { ?><em><?php echo esc_html($title); ?></em><?php } ?>

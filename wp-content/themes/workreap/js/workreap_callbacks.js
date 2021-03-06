@@ -1384,6 +1384,12 @@ jQuery(document).on('ready', function() {
 		});
 	}
 
+	if( jQuery("a.wt-register-employer-btn").length > 0 ) {
+		jQuery("a.wt-register-employer-btn").click(function() {
+			jQuery("input#wt-employer-single").prop('checked', true);
+		});
+	}
+
 	//window width
 	var _win_width = jQuery(window).width();
 	if( _win_width <= 1680 ){

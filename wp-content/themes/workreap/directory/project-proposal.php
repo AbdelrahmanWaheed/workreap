@@ -325,6 +325,7 @@ if( !empty( $project_id ) && get_post_type( $project_id ) == 'projects' ){
 												</label>
 												<span><?php esc_html_e('Drop files here to upload', 'workreap'); ?></span>
 											</div>
+											<p class="small text-right"><?php esc_html_e(sprintf('Max file size: %d MB', workreap_get_upload_max_size()), 'workreap'); ?></p>
 										</div>
 										<div class="form-group">
 											<ul class="wt-attachfile uploaded-placeholder">

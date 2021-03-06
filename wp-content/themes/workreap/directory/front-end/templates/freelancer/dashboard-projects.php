@@ -89,6 +89,7 @@ $default_img = get_template_directory_uri().'/images/project-65x65.jpg';
 									<span><?php esc_html_e('Drop files here to upload', 'workreap'); ?></span>
 									<em class="wt-fileuploading"><?php esc_html_e('Uploading', 'workreap'); ?><i class="fa fa-spinner fa-spin"></i></em>
 								</div>
+								<p class="small text-right"><?php esc_html_e(sprintf('Max file size: %d MB', workreap_get_upload_max_size()), 'workreap'); ?></p>
 							</div>					
 							<div class="form-group uploaded-placeholder">
 								<?php if( !empty( $image ) ){ ?>
@@ -155,6 +156,7 @@ $default_img = get_template_directory_uri().'/images/project-65x65.jpg';
 						<span><?php esc_html_e('Drop files here to upload', 'workreap'); ?></span>
 						<em class="wt-fileuploading"><?php esc_html_e('Uploading', 'workreap'); ?><i class="fa fa-spinner fa-spin"></i></em>
 					</div>
+					<p class="small text-right"><?php esc_html_e(sprintf('Max file size: %d MB', workreap_get_upload_max_size()), 'workreap'); ?></p>
 				</div>				
 				<div class="form-group uploaded-placeholder"></div>				
 			</fieldset>
