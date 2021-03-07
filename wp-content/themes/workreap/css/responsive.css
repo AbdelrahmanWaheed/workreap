@@ -379,7 +379,7 @@ form[name*="serach-projects"] .wt-widget{width:50%}
 }@media(max-width:767px){.wt-without.wt-joinnowpopup .modal-dialog{max-width: 500px;}.wt-without .wt-joinnowfooter-wrap {width: 100%; left: 0;}.wt-bannercontentseven.wt-bannercontent .wt-title h1 span{font-size:40px}
 .wt-bannerthree-content{padding-top:50px}
 .wt-bannerholdervthree:before,.wt-home-slider{clip-path:none}
-.wt-bannerthree-title{display:none}
+.wt-bannerthree-title.no-search-form{width:100%}
 .wt-bannerthree-form{width:100%}
 .wt-servicesslider figure img{min-height:300px;object-fit:cover;object-position:center}
 .wt-portfoliosingle .wt-servicesgallery{max-width:100%;padding:0 30px}

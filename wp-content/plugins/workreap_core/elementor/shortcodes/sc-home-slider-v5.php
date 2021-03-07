@@ -290,7 +290,7 @@ if( !class_exists('Workreap_Home_Slider_V5') ){
 										</div>
 									<?php } ?>
 									<?php if(!empty($post_job_btn) && $post_job_btn === 'yes') { ?>
-										<div class="wt-bannerthree-title <?php echo $search_form !== 'yes' ? 'margin-center' : '' ; ?>">
+										<div class="wt-bannerthree-title <?php echo $search_form !== 'yes' ? 'margin-center no-search-form' : '' ; ?>">
 											<?php if( !is_user_logged_in() ) { ?>
 												<a href="javascript:;" data-toggle="modal" data-target="#joinpopup" 
 													class="wt-btn wt-post-job-btn wt-register-employer-btn">
@@ -305,7 +305,7 @@ if( !class_exists('Workreap_Home_Slider_V5') ){
 										</div>
 									<?php } ?>
 									<?php if(!empty($top_title) || !empty($title) || !empty($sub_title) || !empty($description)) { ?>
-										<div class="wt-bannerthree-title <?php echo $search_form !== 'yes' ? 'margin-center' : '' ; ?>">
+										<div class="wt-bannerthree-title <?php echo $search_form !== 'yes' ? 'margin-center no-search-form' : '' ; ?>">
 											<?php if(!empty($top_title)) { ?><span><?php echo esc_html($top_title); ?></span><?php } ?>
 											<?php if(!empty($title) || !empty($sub_title)) { ?>
 												<h2><?php if(!empty($title)) { ?><em><?php echo esc_html($title); ?></em><?php } ?>
